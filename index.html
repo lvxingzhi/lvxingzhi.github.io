@@ -311,8 +311,7 @@
 
       
         
-          
-            <p>业务中使用MQ遇到的常见问题,进行分析并给出一个合理的解决方案.</p>
+          <p>业务中使用MQ遇到的常见问题,进行分析并给出一个合理的解决方案.</p>
 <h2 id="常见使用方式及问题"><a href="#常见使用方式及问题" class="headerlink" title="常见使用方式及问题"></a>常见使用方式及问题</h2><h3 id="场景一"><a href="#场景一" class="headerlink" title="场景一"></a>场景一</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: 发送MQ消息</span><br><span class="line">S4: commit Transaction</span><br></pre></td></tr></table></figure>
 <p><strong>问题</strong><br>1, 当S3失败,大量阻塞业务,可能造成整个业务线雪崩<br>2, 当S4失败,造成业务数据回滚, MQ消息发送成功,产生异常数据</p>
 <h3 id="场景二"><a href="#场景二" class="headerlink" title="场景二"></a>场景二</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: commit Transaction</span><br><span class="line">S4: 发送MQ消息</span><br></pre></td></tr></table></figure>
@@ -320,16 +319,13 @@
 <h2 id="针对上面两种场景进行优化"><a href="#针对上面两种场景进行优化" class="headerlink" title="针对上面两种场景进行优化"></a>针对上面两种场景进行优化</h2><h3 id="场景三"><a href="#场景三" class="headerlink" title="场景三"></a>场景三</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: 记录MQ消息(待发送)</span><br><span class="line">S4: commit Transaction</span><br><span class="line">S5: 触发MQ发送</span><br><span class="line">S6: 定时检测MQ发送</span><br></pre></td></tr></table></figure>
 <p>解决了不在一个事务中产生的不一致问题<br><strong>问题</strong><br>1, MQ消息落库与业务需要事务原子操作(通常考虑同一个库),不适合分布式场景</p>
 <h2 id="针对分布式场景继续优化"><a href="#针对分布式场景继续优化" class="headerlink" title="针对分布式场景继续优化"></a>针对分布式场景继续优化</h2><h3 id="场景四"><a href="#场景四" class="headerlink" title="场景四"></a>场景四</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">S1: 调用MQ消息落库服务(返回ID)</span><br><span class="line">S2: open Transaction</span><br><span class="line">S3: 处理业务 </span><br><span class="line">S4: commit Transaction</span><br><span class="line">S5: 调用MQ消息发送服务(根据ID)</span><br><span class="line">S6: 定时任务处理异常消息状态(业务提供检查逻辑)+发送</span><br></pre></td></tr></table></figure>
-<p><strong>解决了</strong><br>1,将MQ落库拆分成分布式服务,解决高可用性,避免每个业务库建立MQ表<br>2,定时任务+业务检查逻辑, 解决了MQ记录与业务逻辑不一致的情景<br>3,以服务间调用的形式发送MQ,提高了MQ服务的扩展性<br><strong>问题</strong><br>1, 增加了业务处理的复杂度<br>2, 增加了MQ使用上的复杂度</p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>以上没有分析消费者如何保证消息的处理,这里直接给出最终方案</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">S1: 接收MQ消息,调用MQ消息落库服务,更新发送消息接收状态</span><br><span class="line">S2: open Transaction</span><br><span class="line">S3: 处理业务</span><br><span class="line">S4: commit Transaction</span><br><span class="line">S5: 调用MQ接收消息状态更新服务</span><br><span class="line">S6: 定时任务检测消费失败的消息</span><br></pre></td></tr></table></figure>
-<p><strong>说明</strong><br>S1: 消费者接收消息后落库,保证数据持久性<br>S3: 异常, 由S6定时任务检测并处理,需要消费逻辑支持幂等<br>S5: 异常, 由S6定时任务检测并处理,需要消费逻辑支持幂等</p>
-<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><ul>
-<li>对业务一致性,时效性要求不是特别高,可结合人工介入,采用场景三的方案降低开发复杂度</li>
-<li>MQ定制化开发高的公司,可以结合MQ的特性配合业务,支撑数据的持久化,和重发机制</li>
-</ul>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/11/01/2-%E4%B8%9A%E5%8A%A1%E4%B8%ADMQ%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -468,8 +464,7 @@
 
       
         
-          
-            <p>Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档.(文档格式语言)</p>
+          <p>Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档.(文档格式语言)</p>
 <h1 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h1><h2 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h2><h4 id="一-使用-标识一级-二级标题-数量大于等于1"><a href="#一-使用-标识一级-二级标题-数量大于等于1" class="headerlink" title="一, 使用(=,-)标识一级,二级标题(数量大于等于1)"></a>一, 使用(=,-)标识一级,二级标题(数量大于等于1)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">一级标题</span><br><span class="line">=========</span><br><span class="line">二级标题</span><br><span class="line">---------</span><br></pre></td></tr></table></figure>
 <h4 id="一-使用-1-6个-标识"><a href="#一-使用-1-6个-标识" class="headerlink" title="一, 使用(#1-6个)标识"></a>一, 使用(#1-6个)标识</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一</span></span><br><span class="line"><span class="comment">## 二</span></span><br><span class="line"><span class="comment">### 三</span></span><br><span class="line"><span class="comment">#### 四</span></span><br><span class="line"><span class="comment">##### 五</span></span><br><span class="line"><span class="comment">###### 六</span></span><br></pre></td></tr></table></figure>
 
@@ -477,31 +472,13 @@
 
 <h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><h4 id="一-样式"><a href="#一-样式" class="headerlink" title="一, 样式"></a>一, 样式</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*斜体文本*</span><br><span class="line">_斜体文本_</span><br><span class="line">**粗体文本**</span><br><span class="line">__粗体文本__</span><br><span class="line">***粗斜体文本***</span><br><span class="line">___粗斜体文本___</span><br></pre></td></tr></table></figure>
 <h4 id="二-分隔线-如下几种效果相同"><a href="#二-分隔线-如下几种效果相同" class="headerlink" title="二, 分隔线(如下几种效果相同)"></a>二, 分隔线(如下几种效果相同)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">***</span><br><span class="line">* * *</span><br><span class="line">*****</span><br><span class="line">- - -</span><br><span class="line">----------</span><br></pre></td></tr></table></figure>
-<h4 id="三-删除线"><a href="#三-删除线" class="headerlink" title="三, 删除线"></a>三, 删除线</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~~BAIDU.COM~~</span><br></pre></td></tr></table></figure>
-<h4 id="四-下划线"><a href="#四-下划线" class="headerlink" title="四, 下划线"></a>四, 下划线</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;u&gt;内容&lt;/u&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="五-脚注"><a href="#五-脚注" class="headerlink" title="五, 脚注"></a>五, 脚注</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[^内容]</span><br></pre></td></tr></table></figure>
-
-<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><h3 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">* 1</span><br><span class="line">* 2</span><br><span class="line">* 3</span><br><span class="line"></span><br><span class="line">+ 1</span><br><span class="line">+ 2</span><br><span class="line">+ 3</span><br><span class="line"></span><br><span class="line">- 1</span><br><span class="line">- 2</span><br><span class="line">- 3</span><br></pre></td></tr></table></figure>
-<h4 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 1</span><br><span class="line">2. 2</span><br><span class="line">3. 3</span><br></pre></td></tr></table></figure>
-<h4 id="嵌套列表-子列表前增加4个空格"><a href="#嵌套列表-子列表前增加4个空格" class="headerlink" title="嵌套列表(子列表前增加4个空格)"></a>嵌套列表(子列表前增加4个空格)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 1</span><br><span class="line">    + A</span><br><span class="line">	+ B</span><br><span class="line">	+ C</span><br><span class="line">2. 2</span><br></pre></td></tr></table></figure>
-
-<h2 id="区块-行前增加竖线"><a href="#区块-行前增加竖线" class="headerlink" title="区块(行前增加竖线)"></a>区块(行前增加竖线)</h2><h3 id="一-行开头"><a href="#一-行开头" class="headerlink" title="一, 行开头"></a>一, 行开头</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;123</span><br></pre></td></tr></table></figure>
-<h4 id="二-列表开头-四个空格-gt"><a href="#二-列表开头-四个空格-gt" class="headerlink" title="二, 列表开头(四个空格+&gt;)"></a>二, 列表开头(四个空格+&gt;)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* 1</span><br><span class="line">    &gt;123</span><br><span class="line">* 2 </span><br><span class="line">* 3</span><br></pre></td></tr></table></figure>
-
-<h2 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h2><h4 id="一-四个空格-制表符"><a href="#一-四个空格-制表符" class="headerlink" title="一, 四个空格/制表符"></a>一, 四个空格/制表符</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   function action()&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="二-三点-指定语言"><a href="#二-三点-指定语言" class="headerlink" title="二, 三点(指定语言)"></a>二, 三点(指定语言)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">| ```(指定语言)</span><br><span class="line">| ```</span><br></pre></td></tr></table></figure>
-
-<h2 id="超链接"><a href="#超链接" class="headerlink" title="超链接"></a>超链接</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[链接名称](url)</span><br><span class="line"></span><br><span class="line">[链接名称][别名]</span><br><span class="line">[别名]: url</span><br></pre></td></tr></table></figure>
-
-<h2 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">![描述](url)</span><br><span class="line">![描述](url &quot;标题&quot;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|  表头   | 表头  |</span><br><span class="line">|  ----  | ----  |</span><br><span class="line">| 单元格  | 单元格 |</span><br><span class="line">| 单元格  | 单元格 |</span><br></pre></td></tr></table></figure>
-<h4 id="文字对齐方式"><a href="#文字对齐方式" class="headerlink" title="文字对齐方式"></a>文字对齐方式</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-: 设置内容和标题栏居右对齐。</span><br><span class="line">:- 设置内容和标题栏居左对齐。</span><br><span class="line">:-: 设置内容和标题栏居中对齐。</span><br></pre></td></tr></table></figure>
-
-<h2 id="高级特性"><a href="#高级特性" class="headerlink" title="高级特性"></a>高级特性</h2><h4 id="一-HTML"><a href="#一-HTML" class="headerlink" title="一, HTML"></a>一, HTML</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">支持HTML标签</span><br></pre></td></tr></table></figure>
-<h4 id="二-转义"><a href="#二-转义" class="headerlink" title="二, 转义"></a>二, 转义</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\+特殊符号</span><br></pre></td></tr></table></figure>
-<h4 id="三-公式-略-用不到"><a href="#三-公式-略-用不到" class="headerlink" title="三, 公式(略,用不到)"></a>三, 公式(略,用不到)</h4>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/10/27/1-markdown%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
