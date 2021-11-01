@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -95,7 +95,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '',
-    scheme: 'Mist',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -334,8 +334,8 @@
       
         
           
-            <p>针对业务中使用MQ遇到的常见问题,给出一个合理的解决方案.</p>
-<h2 id="常见的使用方式及问题"><a href="#常见的使用方式及问题" class="headerlink" title="常见的使用方式及问题"></a>常见的使用方式及问题</h2><h3 id="场景一"><a href="#场景一" class="headerlink" title="场景一"></a>场景一</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: 发送MQ消息</span><br><span class="line">S4: commit Transaction</span><br></pre></td></tr></table></figure>
+            <p>业务中使用MQ遇到的常见问题,进行分析并给出一个合理的解决方案.</p>
+<h2 id="常见使用方式及问题"><a href="#常见使用方式及问题" class="headerlink" title="常见使用方式及问题"></a>常见使用方式及问题</h2><h3 id="场景一"><a href="#场景一" class="headerlink" title="场景一"></a>场景一</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: 发送MQ消息</span><br><span class="line">S4: commit Transaction</span><br></pre></td></tr></table></figure>
 <p><strong>问题</strong><br>1, 当S3失败,大量阻塞业务,可能造成整个业务线雪崩<br>2, 当S4失败,造成业务数据回滚, MQ消息发送成功,产生异常数据</p>
 <h3 id="场景二"><a href="#场景二" class="headerlink" title="场景二"></a>场景二</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: commit Transaction</span><br><span class="line">S4: 发送MQ消息</span><br></pre></td></tr></table></figure>
 <p><strong>问题</strong><br>1,当S4失败, 造成MQ未正常发送,产生消费业务线产生异常数据</p>
@@ -700,7 +700,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 
@@ -799,6 +799,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
 
   
 
