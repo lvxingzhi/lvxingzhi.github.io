@@ -241,7 +241,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/01/3-%5B%E6%96%B9%E6%A1%88%5DRedis+%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/19/4-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -260,7 +260,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/11/01/3-%5B%E6%96%B9%E6%A1%88%5DRedis+%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E9%97%AE%E9%A2%98/" itemprop="url">【方案】Redis+数据库双写问题</a></h1>
+                <a class="post-title-link" href="/2021/11/19/4-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/" itemprop="url">【方案】前后端数据传输加密实现方案</a></h1>
         
 
         <div class="post-meta">
@@ -272,8 +272,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-01T14:12:31+08:00">
-                2021-11-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-19T15:56:31+08:00">
+                2021-11-19
               </time>
             
 
@@ -312,14 +312,287 @@
       
         
           <blockquote>
-<p>[方案系列文章说明]: 该类型的文章是笔者使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
 </blockquote>
-<p>业务中使用Redis进行数据缓存,通常会遇到数据一致性问题,这里进行分析和讨论几种方案.</p>
-<h2 id="常见使用方式及问题"><a href="#常见使用方式及问题" class="headerlink" title="常见使用方式及问题"></a>常见使用方式及问题</h2><h3 id="场景一"><a href="#场景一" class="headerlink" title="场景一"></a>场景一</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S1: update/delete redis</span><br><span class="line">S2: open Transaction</span><br><span class="line">S3: 处理业务</span><br><span class="line">S4: commit Transaction</span><br></pre></td></tr></table></figure>
-<p><strong>问题</strong><br>1, 并发时, 缓存删除后事务执行期间,其他线程的读将造成缓存脏数据<br><strong>结论</strong><br>脏数据的概率非常大,方案淘汰</p>
+<p>在处理前后端安全上,需要对数据进行加密增加安全性,这里列出我的方案</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前后端数据传输要求对敏感信息进行加密后传输, 后台统一进行解密后进入Controller</p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>1, 加密方式: AES/ECB/PKCS5Padding (PKCS5Padding,PKCS7Padding效果相同)<br>2, 生成的密文编码: UTF-8<br>3, 秘钥长度: 16位, 0000000000000000<br>4, 数据块长度: 128<br>5, header中设置加密开关,加密属性</p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>isEncrypt</td>
+<td>true/false 解密/不解密</td>
+</tr>
+<tr>
+<td>decryptFields</td>
+<td>user|age|id 需要解密的字段,以|分割</td>
+</tr>
+</tbody></table>
+<p>6, 支持请求方式: method支持GET/POST<br>7, 支持数据类型: contentType支持application/json,application/x-www-form-urlencoded</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">**问题**</span><br><span class="line">1, 并发时, 缓存删除后事务执行期间,其他线程的读将造成缓存脏数据</span><br><span class="line">**结论**</span><br><span class="line">脏数据的概率非常大,方案淘汰</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">### 场景二</span><br><span class="line">```bash</span><br><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: commit Transaction</span><br><span class="line">S4: update/delete redis</span><br></pre></td></tr></table></figure>
+<p><strong>问题</strong><br>1,同样是并发操作, 删除redis业务处理快过写缓存的业务,将造成缓存脏数据<br>2,update效率要低于delete,不管是本身执行效率还是命中率低的情况下<br><strong>结论</strong><br>概率小, 通过缓存设置过期时间可降低脏数据的持续时间</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/11/01/3-%5B%E6%96%B9%E6%A1%88%5DRedis+%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E9%97%AE%E9%A2%98/#more" rel="contents">
+            <a class="btn" href="/2021/11/19/4-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/03/5-%5B%E9%A1%B9%E7%9B%AE%5DSTC-stcconfig/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/11/03/5-%5B%E9%A1%B9%E7%9B%AE%5DSTC-stcconfig/" itemprop="url">【项目】STC-stcconfig</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-03T16:12:31+08:00">
+                2021-11-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/03/4-%5B%E9%A1%B9%E7%9B%AE%5DSTC-stcdatacache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/11/03/4-%5B%E9%A1%B9%E7%9B%AE%5DSTC-stcdatacache/" itemprop="url">【项目】STC-stcdatacache</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-03T14:12:31+08:00">
+                2021-11-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+</blockquote>
+<p>除了使用Spring cache之外, 项目对自定义缓存扩展有一定需求的情况下, 自己动手编写一个针对方法级别的缓存(可扩展支持到类,但不易维护, 不建议使用类级别的).<br>结合STC-stcconfig动态配置系统, 可实现缓存的动态删除, 缓存开关实时生效.</p>
+<blockquote>
+<p>代码地址: <a target="_blank" rel="noopener" href="https://github.com/lvxingzhi/stcdatacache">https://github.com/lvxingzhi/stcdatacache</a></p>
+</blockquote>
+<h2 id="系统实现原理"><a href="#系统实现原理" class="headerlink" title="系统实现原理"></a>系统实现原理</h2><blockquote>
+<p>利用Spring 提供的AOP机制,实现对方法的扩展.<br>利用Spel表达式实现方法入参与缓存key动态匹配.<br>预定义缓存接口,实现对不同缓存方式的兼容.<br>异常处理保证业务的可用性.<br>整理并不复杂, 流程图略.</p>
+</blockquote>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><blockquote>
+<p>1, Spring<br>2, 任意分布式缓存</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/11/03/4-%5B%E9%A1%B9%E7%9B%AE%5DSTC-stcdatacache/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -441,7 +714,7 @@
       
         
           <blockquote>
-<p>[方案系列文章说明]: 该类型的文章是笔者使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
 </blockquote>
 <p>业务中使用MQ遇到的常见问题,进行分析并给出一个合理的解决方案.</p>
 <h2 id="常见使用方式及问题"><a href="#常见使用方式及问题" class="headerlink" title="常见使用方式及问题"></a>常见使用方式及问题</h2><h3 id="场景一"><a href="#场景一" class="headerlink" title="场景一"></a>场景一</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: 发送MQ消息</span><br><span class="line">S4: commit Transaction</span><br></pre></td></tr></table></figure>
@@ -451,6 +724,135 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2021/11/01/2-%5B%E6%96%B9%E6%A1%88%5D%E4%B8%9A%E5%8A%A1%E4%B8%ADMQ%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/01/3-%5B%E6%96%B9%E6%A1%88%5DRedis+%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/11/01/3-%5B%E6%96%B9%E6%A1%88%5DRedis+%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E9%97%AE%E9%A2%98/" itemprop="url">【方案】Redis+数据库双写问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-01T14:12:31+08:00">
+                2021-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<p>业务中使用Redis进行数据缓存,通常会遇到数据一致性问题,这里进行分析和讨论几种方案.</p>
+<h2 id="常见使用方式及问题"><a href="#常见使用方式及问题" class="headerlink" title="常见使用方式及问题"></a>常见使用方式及问题</h2><h3 id="场景一"><a href="#场景一" class="headerlink" title="场景一"></a>场景一</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S1: update/delete redis</span><br><span class="line">S2: open Transaction</span><br><span class="line">S3: 处理业务</span><br><span class="line">S4: commit Transaction</span><br></pre></td></tr></table></figure>
+<p><strong>问题</strong><br>1, 并发时, 缓存删除后事务执行期间,其他线程的读将造成缓存脏数据<br><strong>结论</strong><br>脏数据的概率非常大,方案淘汰</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/11/01/3-%5B%E6%96%B9%E6%A1%88%5DRedis+%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E9%97%AE%E9%A2%98/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -688,7 +1090,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
