@@ -79,17 +79,19 @@
 
 
 
-<meta name="description" content="笔记原创">
-<meta property="og:type" content="website">
-<meta property="og:title" content="分类">
-<meta property="og:url" content="https://lvxingzhi.github.io/categories/index.html">
+<meta name="description" content="[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.  在处理前后端安全上,需要对数据进行加密增加安全性,这里列出我的方案 背景前后端数据传输要求对敏感信息进行加密后传输, 后台统一进行解密后进入Controller 方案1, 加密方式: AES&#x2F;ECB&#x2F;PKCS5Padding (PK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【方案】前后端数据传输加密实现方案">
+<meta property="og:url" content="https://lvxingzhi.github.io/2021/11/19/6-[%E6%96%B9%E6%A1%88]%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/index.html">
 <meta property="og:site_name" content="吕兴志的学习笔记">
-<meta property="og:description" content="笔记原创">
+<meta property="og:description" content="[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.  在处理前后端安全上,需要对数据进行加密增加安全性,这里列出我的方案 背景前后端数据传输要求对敏感信息进行加密后传输, 后台统一进行解密后进入Controller 方案1, 加密方式: AES&#x2F;ECB&#x2F;PKCS5Padding (PK">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-10-29T08:41:53.000Z">
-<meta property="article:modified_time" content="2021-10-29T10:34:56.335Z">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/06-01.png">
+<meta property="article:published_time" content="2021-11-19T07:56:31.000Z">
+<meta property="article:modified_time" content="2021-11-19T09:36:22.952Z">
 <meta property="article:author" content="吕兴志">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lvxingzhi.github.io/images/06-01.png">
 
 
 
@@ -119,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="https://lvxingzhi.github.io/categories/"/>
+  <link rel="canonical" href="https://lvxingzhi.github.io/2021/11/19/6-[方案]前后端数据传输加密实现方案/"/>
 
 
 
 
 
-  <title>分类 | 吕兴志的学习笔记</title>
+  <title>【方案】前后端数据传输加密实现方案 | 吕兴志的学习笔记</title>
   
 
 
@@ -230,34 +232,169 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/19/6-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">分类</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <p><a href="/categories/%E7%AC%94%E8%AE%B0">笔记</a><br><a href="/categories/%E5%8E%9F%E5%88%9B">原创</a></p>
-
+          <h1 class="post-title" itemprop="name headline">【方案】前后端数据传输加密实现方案</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-19T15:56:31+08:00">
+                2021-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<p>在处理前后端安全上,需要对数据进行加密增加安全性,这里列出我的方案</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前后端数据传输要求对敏感信息进行加密后传输, 后台统一进行解密后进入Controller</p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>1, 加密方式: AES/ECB/PKCS5Padding (PKCS5Padding,PKCS7Padding效果相同)<br>2, 生成的密文编码: UTF-8<br>3, 秘钥长度: 16位, 0000000000000000<br>4, 数据块长度: 128<br>5, header中设置加密开关,加密属性</p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>isEncrypt</td>
+<td>true/false 解密/不解密</td>
+</tr>
+<tr>
+<td>decryptFields</td>
+<td>user|age|id 需要解密的字段,以|分割</td>
+</tr>
+</tbody></table>
+<p>6, 支持请求方式: method支持GET/POST<br>7, 支持数据类型: contentType支持application/json,application/x-www-form-urlencoded</p>
+<span id="more"></span>
+
+<h2 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h2><p>见: 前后端数据传输加密实现方案-前端实现, 前后端数据传输加密实现方案-后端实现</p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p>测试加密解密地址: <a target="_blank" rel="noopener" href="http://tool.chacuo.net/cryptaes/">http://tool.chacuo.net/cryptaes/</a><br>配置如下<br><img src="/images/06-01.png"></p>
+<h2 id="待优化"><a href="#待优化" class="headerlink" title="待优化"></a>待优化</h2><p>1, 拦截路径优化<br>2, 增加非对称加密(真加密), 前端公钥加密, 后端私钥解密<br>3, 秘钥动态获取<br>4, filter转为实现OncePerRequestFilter纳入spring体系</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/03/5-%5B%E9%A1%B9%E7%9B%AE%5DSTC-stcconfig/" rel="next" title="【项目】STC-stcconfig">
+                <i class="fa fa-chevron-left"></i> 【项目】STC-stcconfig
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/11/19/7-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%89%8D%E7%AB%AF/" rel="prev" title="【方案】前后端数据传输加密实现方案 - 前端实现">
+                【方案】前后端数据传输加密实现方案 - 前端实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -290,8 +427,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -371,6 +517,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">4.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%85%E4%BC%98%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">待优化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -241,7 +241,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/19/4-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/19/8-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%90%8E%E7%AB%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -260,7 +260,265 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/11/19/4-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/" itemprop="url">【方案】前后端数据传输加密实现方案</a></h1>
+                <a class="post-title-link" href="/2021/11/19/8-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%90%8E%E7%AB%AF/" itemprop="url">【方案】前后端数据传输加密实现方案 - 后端实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-19T17:56:31+08:00">
+                2021-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<p>继续上代码</p>
+<h2 id="1-加密工具类"><a href="#1-加密工具类" class="headerlink" title="1, 加密工具类"></a>1, 加密工具类</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 前后端请求加解密工具</span><br><span class="line"> *</span><br><span class="line"> * @Description</span><br><span class="line"> * @Author xingzhi.lv</span><br><span class="line"> * @Version 1.0</span><br><span class="line"> * @Date 2021/7/2 15:36</span><br><span class="line"> */</span><br><span class="line">public class RequestAESUtils &#123;</span><br><span class="line">    private static final String ENCRYPT_TYPE = &quot;AES&quot;;</span><br><span class="line">    private static final String CIPHER_MODEL = &quot;AES/ECB/PKCS5Padding&quot;;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 初始化加密</span><br><span class="line">     *</span><br><span class="line">     * @return</span><br><span class="line">     * @throws Exception</span><br><span class="line">     */</span><br><span class="line">    private static Cipher createAesCipher() throws Exception &#123;</span><br><span class="line">        return Cipher.getInstance(CIPHER_MODEL);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * AES方式加密</span><br><span class="line">     * Base64输出</span><br><span class="line">     *</span><br><span class="line">     * @param content</span><br><span class="line">     * @return</span><br><span class="line">     * @throws Exception</span><br><span class="line">     */</span><br><span class="line">    public static String encryptByAES(String content, String key) throws Exception &#123;</span><br><span class="line">        Cipher cipher = createAesCipher();</span><br><span class="line">        KeyGenerator keyGenerator = KeyGenerator.getInstance(ENCRYPT_TYPE);</span><br><span class="line">        keyGenerator.init(128, new SecureRandom(key.getBytes()));</span><br><span class="line">        SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key.getBytes(StandardCharsets.UTF_8), 16), ENCRYPT_TYPE);</span><br><span class="line">        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);</span><br><span class="line">        byte[] bytes = cipher.doFinal(content.getBytes());</span><br><span class="line">        // 对字节数组加密生成字符串</span><br><span class="line">        BASE64Encoder base64encoder = new BASE64Encoder();</span><br><span class="line">        String result = base64encoder.encode(bytes);</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * AES方式解密</span><br><span class="line">     * Base64输入</span><br><span class="line">     *</span><br><span class="line">     * @param content</span><br><span class="line">     * @return</span><br><span class="line">     * @throws Exception</span><br><span class="line">     */</span><br><span class="line">    public static String decryptByAes(String content, String key) throws Exception &#123;</span><br><span class="line">        // 对字符串解密形成数组-&gt; 再转为对应编码字符串</span><br><span class="line">        BASE64Decoder dencode = new BASE64Decoder();//创建解码对象</span><br><span class="line">        byte[] bytes = dencode.decodeBuffer(content);//得到字节数组</span><br><span class="line">        Cipher cipher = createAesCipher();</span><br><span class="line">        KeyGenerator keyGenerator = KeyGenerator.getInstance(ENCRYPT_TYPE);</span><br><span class="line">        keyGenerator.init(128, new SecureRandom(key.getBytes()));</span><br><span class="line">        SecretKeySpec secretKeySpec = new SecretKeySpec(Arrays.copyOf(key.getBytes(StandardCharsets.UTF_8), 16), ENCRYPT_TYPE);</span><br><span class="line">        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);</span><br><span class="line">        byte[] resultDecryptByte = cipher.doFinal(bytes);</span><br><span class="line">        return new String(resultDecryptByte);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">//        String encryContent = RequestAESUtils.encryptByAES(&quot;138&quot;, &quot;0000000000000000&quot;);</span><br><span class="line">//        System.out.println(encryContent);</span><br><span class="line">//        String content = RequestAESUtils.decryptByAes(encryContent, &quot;0000000000000000&quot;);</span><br><span class="line">//        System.out.println(content);</span><br><span class="line">//        System.out.println(RequestAESUtils.decryptByAes(&quot;1BUqgKqSChvYM6xwB5wIzA==&quot;, &quot;0000000000000000&quot;));</span><br><span class="line">//    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/11/19/8-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%90%8E%E7%AB%AF/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/19/7-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%89%8D%E7%AB%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/11/19/7-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%89%8D%E7%AB%AF/" itemprop="url">【方案】前后端数据传输加密实现方案 - 前端实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-19T17:30:31+08:00">
+                2021-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<p>上代码</p>
+<h2 id="1-引入加密工具包-CryptoJS"><a href="#1-引入加密工具包-CryptoJS" class="headerlink" title="1, 引入加密工具包-CryptoJS"></a>1, 引入加密工具包-CryptoJS</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;/layui/cryptojs/aes.js&quot;&gt;&lt;/script&gt;&lt;script src=&quot;/layui/cryptojs/mode-ecb-min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-加密方法"><a href="#2-加密方法" class="headerlink" title="2, 加密方法"></a>2, 加密方法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function encryptAesParam(content)&#123;</span><br><span class="line">  const key = CryptoJS.enc.Utf8.parse(&quot;0000000000000000&quot;);</span><br><span class="line">  var ciphertext = CryptoJS.AES.encrypt(content+&quot;&quot;, key,&#123;mode: 	            CryptoJS.mode.ECB,    padding:CryptoJS.pad.Pkcs7  &#125;).toString();</span><br><span class="line">  return ciphertext;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/11/19/7-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%89%8D%E7%AB%AF/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/11/19/6-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/11/19/6-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/" itemprop="url">【方案】前后端数据传输加密实现方案</a></h1>
         
 
         <div class="post-meta">
@@ -334,11 +592,9 @@
 </tr>
 </tbody></table>
 <p>6, 支持请求方式: method支持GET/POST<br>7, 支持数据类型: contentType支持application/json,application/x-www-form-urlencoded</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">**问题**</span><br><span class="line">1, 并发时, 缓存删除后事务执行期间,其他线程的读将造成缓存脏数据</span><br><span class="line">**结论**</span><br><span class="line">脏数据的概率非常大,方案淘汰</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">### 场景二</span><br><span class="line">```bash</span><br><span class="line">S1: open Transaction</span><br><span class="line">S2: 处理业务</span><br><span class="line">S3: commit Transaction</span><br><span class="line">S4: update/delete redis</span><br></pre></td></tr></table></figure>
-<p><strong>问题</strong><br>1,同样是并发操作, 删除redis业务处理快过写缓存的业务,将造成缓存脏数据<br>2,update效率要低于delete,不管是本身执行效率还是命中率低的情况下<br><strong>结论</strong><br>概率小, 通过缓存设置过期时间可降低脏数据的持续时间</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/11/19/4-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/#more" rel="contents">
+            <a class="btn" href="/2021/11/19/6-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1090,7 +1346,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
