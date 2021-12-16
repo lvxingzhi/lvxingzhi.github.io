@@ -716,7 +716,24 @@
       
         
           
-            
+            <blockquote>
+</blockquote>
+<p>STC-stcconfig动态配置系统: 包含服务端,客户端包,WEB管理三大模块组成<br>1,可实现配置,环境,项目三级管理.<br>2,客户端动态下载,注解方式加载配置文件配置.<br>3,服务端管理环境,zookeeper节点管理,版本管理,历史记录管理.<br>4,WEB管理实现配置文件更新,客户端实时变更.</p>
+<blockquote>
+<p>代码地址: <a target="_blank" rel="noopener" href="https://github.com/lvxingzhi/stcconfig">https://github.com/lvxingzhi/stcconfig</a></p>
+</blockquote>
+<h2 id="系统实现原理"><a href="#系统实现原理" class="headerlink" title="系统实现原理"></a>系统实现原理</h2><blockquote>
+<p>注解实现配置注入<br>核心容器管理配置与注解对象,实现动态更新<br>https配置文件下载<br>zookeeper节点管理实现配置层级管理,监控机制实现订阅<br>服务器mysql持久化配置文件,客户端持久化本地<br>基于layui实现UI</p>
+</blockquote>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><blockquote>
+<p>1, spring boot<br>2, mysql<br>3, zookeeper<br>4, fastjson, lombok等</p>
+</blockquote>
+<h2 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h2><blockquote>
+<p>1, 客户端实现动态配置文件下载,更新,监听<br>2, 服务端实现zookeeper节点管理,更新,对比,删除</p>
+</blockquote>
+<h2 id="UI界面展示"><a href="#UI界面展示" class="headerlink" title="UI界面展示"></a>UI界面展示</h2><p>首页<br><img src="/images/05-01.png"><br>环境管理<br><img src="/images/05-02.png"><br>项目管理<br><img src="/images/05-03.png"><br>配置文件管理<br><img src="/images/05-04.png"></p>
+<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><p>请参考另一篇文章: 【项目】STC-stcconfig 使用文档</p>
+
           
         
       
