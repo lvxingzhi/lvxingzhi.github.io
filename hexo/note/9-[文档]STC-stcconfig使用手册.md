@@ -203,11 +203,11 @@ public class DemoClientBean {
 
 ### WEB管理
 #### 添加/修改环境
-![](/images/09-05.png)
+![](/images/05-05.png)
 #### 添加/修改项目
-![](/images/09-06.png)
+![](/images/05-06.png)
 #### 添加/修改配置
-![](/images/09-07.png)
+![](/images/05-07.png)
 
 
 
