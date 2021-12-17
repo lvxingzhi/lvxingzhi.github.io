@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="代码地址: https:&#x2F;&#x2F;github.com&#x2F;lvxingzhi&#x2F;stcconfig  概述 感谢使用stcconfig分布式动态配置中心, 为了更好地使用相关功能, 请按顺序阅读如下内容  stcconfig能做什么? stcconfig 分布式动态配置中心包含模块: stcconfig-server, stcconfig-client, stcconfig-web, demo-cli">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文档】STC-stcconfig 分布式动态配置中心使用手册">
+<meta property="og:url" content="https://lvxingzhi.github.io/2021/12/17/9-[%E6%96%87%E6%A1%A3]STC-stcconfig%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/index.html">
+<meta property="og:site_name" content="吕兴志的学习笔记">
+<meta property="og:description" content="代码地址: https:&#x2F;&#x2F;github.com&#x2F;lvxingzhi&#x2F;stcconfig  概述 感谢使用stcconfig分布式动态配置中心, 为了更好地使用相关功能, 请按顺序阅读如下内容  stcconfig能做什么? stcconfig 分布式动态配置中心包含模块: stcconfig-server, stcconfig-client, stcconfig-web, demo-cli">
+<meta property="og:locale">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/09-01.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/09-02.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/09-03.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/05-05.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/05-06.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/05-07.png">
+<meta property="article:published_time" content="2021-12-17T03:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-17T06:40:15.392Z">
+<meta property="article:author" content="吕兴志">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lvxingzhi.github.io/images/09-01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lvxingzhi.github.io/2021/12/17/9-[文档]STC-stcconfig使用手册/"/>
+
+
+
+
+
+  <title>【文档】STC-stcconfig 分布式动态配置中心使用手册 | 吕兴志的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吕兴志的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录,思考,成长,回忆</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/12/17/9-%5B%E6%96%87%E6%A1%A3%5DSTC-stcconfig%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【文档】STC-stcconfig 分布式动态配置中心使用手册</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-17T11:00:00+08:00">
+                2021-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+</blockquote>
+<blockquote>
+<p>代码地址: <a target="_blank" rel="noopener" href="https://github.com/lvxingzhi/stcconfig">https://github.com/lvxingzhi/stcconfig</a></p>
+</blockquote>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>感谢使用stcconfig分布式动态配置中心, 为了更好地使用相关功能, 请按顺序阅读如下内容</p>
+</blockquote>
+<h4 id="stcconfig能做什么"><a href="#stcconfig能做什么" class="headerlink" title="stcconfig能做什么?"></a>stcconfig能做什么?</h4><blockquote>
+<p>stcconfig 分布式动态配置中心包含模块: stcconfig-server, stcconfig-client, stcconfig-web, demo-client<br>stcconfig-server: 配置管理中心, 管理相关数据, 维护zookeeper相关节点, 提供对外API, 支持配置文件下载<br>stcconfig-client: 配置客户端, 项目引入后可通过注解动态注入配置, 配置更新后实时更新配置文件, 参数值<br>stcconfig-web: 配置管理WEB端, 通过UI方式管理环境,项目,配置文件</p>
+</blockquote>
+<h4 id="概念说明"><a href="#概念说明" class="headerlink" title="概念说明"></a>概念说明</h4><blockquote>
+<p>环境: 常见的项目开发部署通常包括多环境, 环境类型帮助定义区分不同的环境去使用<br>项目: 以开发的项目模块为单位,可用于区分不同系统间的配置文件<br>配置: 即配置文件元数据</p>
+</blockquote>
+<h4 id="适用范围"><a href="#适用范围" class="headerlink" title="适用范围"></a>适用范围</h4><blockquote>
+<p>如果你的项目基于Spring/Spring boot/Spring cloud, 那么就可以使用stcconfig进行配置的管理</p>
+</blockquote>
+<h4 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h4><p><img src="/images/09-01.png"></p>
+<span id="more"></span>
+<h4 id="ZK节点一览"><a href="#ZK节点一览" class="headerlink" title="ZK节点一览"></a>ZK节点一览</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/stcconfig -- 根节点</span><br><span class="line">/stcconfig/env --环境根节点</span><br><span class="line">/stcconfig/env/x --环境节点</span><br><span class="line">/stcconfig/env/x/project --项目根节点</span><br><span class="line">/stcconfig/env/x/project/x --项目节点</span><br><span class="line">/stcconfig/env/x/project/x/y --配置节点</span><br></pre></td></tr></table></figure>
+<h4 id="配置节点元数据"><a href="#配置节点元数据" class="headerlink" title="配置节点元数据"></a>配置节点元数据</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;data&quot;:&quot;1&quot;,</span><br><span class="line">&quot;fileName&quot;:&quot;app.properties&quot;,</span><br><span class="line">&quot;path&quot;:&quot;http://localhost:8100/client/getConfigFile?path=/stcconfig/env/1/project/1/1&quot;,</span><br><span class="line">&quot;version&quot;:1&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="服务端类关系图"><a href="#服务端类关系图" class="headerlink" title="服务端类关系图"></a>服务端类关系图</h4><p><img src="/images/09-02.png"></p>
+<h4 id="客户端类关系图"><a href="#客户端类关系图" class="headerlink" title="客户端类关系图"></a>客户端类关系图</h4><p><img src="/images/09-03.png"></p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>以下步骤将帮助你使用stcconfig</p>
+<h4 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1. 环境准备"></a>1. 环境准备</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JDK: 1.8+</span><br><span class="line">Mysql: 5+</span><br><span class="line">Spring: 3+</span><br><span class="line">Maven: 3+</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-下载源码"><a href="#2-下载源码" class="headerlink" title="2. 下载源码"></a>2. 下载源码</h4><p>从Github上下载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/lvxingzhi/stcconfig.git</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-添加必要的持久化库表-MYSQL"><a href="#3-添加必要的持久化库表-MYSQL" class="headerlink" title="3. 添加必要的持久化库表(MYSQL)"></a>3. 添加必要的持久化库表(MYSQL)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">路径: stcconfig-server/src/main/resources/SQL.sql</span><br><span class="line">执行初始化脚本</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-安装zookeeper"><a href="#4-安装zookeeper" class="headerlink" title="4. 安装zookeeper"></a>4. 安装zookeeper</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">略</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动服务端"><a href="#启动服务端" class="headerlink" title="启动服务端"></a>启动服务端</h3><h4 id="1-修改参数"><a href="#1-修改参数" class="headerlink" title="1. 修改参数"></a>1. 修改参数</h4><p>服务端参数本地化配置(数据库,ZK)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">server.port = 8100</span><br><span class="line">server.context-path=/</span><br><span class="line"></span><br><span class="line">#spring</span><br><span class="line">spring.datasource.name=stcconfig</span><br><span class="line">spring.datasource.url=jdbc:mysql://127.0.0.1:3306/stcconfig?serverTimezone=GMT%2B8&amp;useUnicode=true&amp;&amp;characterEncoding=UTF-8&amp;&amp;useSSL=false&amp;allowPublicKeyRetrieval=true</span><br><span class="line">spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver</span><br><span class="line">spring.datasource.username=root </span><br><span class="line">spring.datasource.password=admin </span><br><span class="line">spring.datasource.type=com.alibaba.druid.pool.DruidDataSource</span><br><span class="line"></span><br><span class="line"># mybatis</span><br><span class="line">mybatis.mapper-locations=classpath:/mapper/*.xml</span><br><span class="line">mybatis.type-aliases-package=cn.notenextday.stcconfigserver.dto</span><br><span class="line">mybatis.configuration.map-underscore-to-camel-case=true</span><br><span class="line"></span><br><span class="line">#stcconfig</span><br><span class="line">stcconfig.server.url=localhost</span><br><span class="line">stcconfig.server.port=8100</span><br><span class="line"></span><br><span class="line">#zookeeper</span><br><span class="line">#ZookeeperClientUtil单例配置类 --ZK配置去Util中修改</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-启动"><a href="#2-启动" class="headerlink" title="2. 启动"></a>2. 启动</h4><p>执行: StcconfigServerApplication</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">启动成功日志:</span><br><span class="line">[stcconfig][server]启动成功</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动WEB端"><a href="#启动WEB端" class="headerlink" title="启动WEB端"></a>启动WEB端</h3><h4 id="1-修改参数-1"><a href="#1-修改参数-1" class="headerlink" title="1. 修改参数"></a>1. 修改参数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerUrlConstant 配置类中BASE_URL 改为服务端的地址和端口</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-启动-1"><a href="#2-启动-1" class="headerlink" title="2. 启动"></a>2. 启动</h3><p>执行: StcconfigWebApplication</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">启动成功日志:</span><br><span class="line">2021-12-17 14:20:37.081  INFO 16200 --- [           main] c.n.s.StcconfigWebApplication            : Started StcconfigWebApplication in 2.182 seconds (JVM running for 2.936)</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动DEMO-CLIENT测试项目"><a href="#启动DEMO-CLIENT测试项目" class="headerlink" title="启动DEMO-CLIENT测试项目"></a>启动DEMO-CLIENT测试项目</h3><h4 id="1-添加stcconfig相关配置"><a href="#1-添加stcconfig相关配置" class="headerlink" title="1. 添加stcconfig相关配置"></a>1. 添加stcconfig相关配置</h4><p>项目application.properties中添加如下配置(根据真实环境修改相应配置)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server.port = 8102</span><br><span class="line">server.context-path=/</span><br><span class="line"></span><br><span class="line">#stcconfig 配置</span><br><span class="line">## 环境ID</span><br><span class="line">server.stcconfig.envId=1</span><br><span class="line">## 项目ID</span><br><span class="line">server.stcconfig.projectId=1</span><br><span class="line">## zookeeper地址</span><br><span class="line">server.stcconfig.zookeeperUrl=127.0.0.1:2181</span><br><span class="line">## resources目录下配置文件下载路径,默认stcconfig</span><br><span class="line">server.stcconfig.directory=myconfig</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-启动DEMO-CLIENT-引入stcconfig-client-可发布相应的maven包"><a href="#2-启动DEMO-CLIENT-引入stcconfig-client-可发布相应的maven包" class="headerlink" title="2. 启动DEMO-CLIENT(引入stcconfig-client,可发布相应的maven包)"></a>2. 启动DEMO-CLIENT(引入stcconfig-client,可发布相应的maven包)</h4><p>执行: DemoClientApplication</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">启动成功日志</span><br><span class="line">[stcconfig-client][2021-12-17 14:22:57.975][main-EventThread][INFO][c.n.s.u.ZookeeperClientUtil][lambda$init$0:146][] -</span><br><span class="line">                [stcconfig][client][zookeeper] 服务连接成功</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.026][main][WARN][c.n.s.m.PullConfigFileManage][pullConfigFile:106][] -</span><br><span class="line">                [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/app.properties</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.141][main][INFO][c.n.s.u.FileReadToTypeUtil][properties2Map:56][] -</span><br><span class="line">                [stcconfig][client] properties读取配置: name=韩梅梅1</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.142][main][WARN][c.n.s.m.PullConfigFileManage][pullConfigFile:106][] -</span><br><span class="line">                [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/app2.properties</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.174][main][INFO][c.n.s.u.FileReadToTypeUtil][properties2Map:56][] -</span><br><span class="line">                [stcconfig][client] properties读取配置: name=韩梅梅2</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.376][main][INFO][c.n.s.m.PullConfigFileManage][lambda$init$0:89][] -</span><br><span class="line">                [stcconfig][client]赋值,fieldName:name, value:韩梅梅1</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.376][main][INFO][c.n.s.m.PullConfigFileManage][lambda$init$0:89][] -</span><br><span class="line">                [stcconfig][client]赋值,fieldName:age, value:null</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.379][main][INFO][c.n.s.m.PullConfigFileManage][lambda$init$0:89][] -</span><br><span class="line">                [stcconfig][client]赋值,fieldName:name, value:韩梅梅2</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.379][main][INFO][c.n.s.m.PullConfigFileManage][lambda$init$0:89][] -</span><br><span class="line">                [stcconfig][client]赋值,fieldName:age, value:null</span><br><span class="line">[stcconfig-client][2021-12-17 14:23:01.379][main][INFO][c.n.s.m.PullConfigFileManage][init:92][] -</span><br><span class="line">                [stcconfig][client]测试赋值是否成功: demoBean.name=韩梅梅1</span><br></pre></td></tr></table></figure>
+
+<h3 id="应用中的使用方式"><a href="#应用中的使用方式" class="headerlink" title="应用中的使用方式"></a>应用中的使用方式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class DemoClientBean &#123;</span><br><span class="line"></span><br><span class="line">    @StcconfigValue(key = &quot;name&quot;, fileName = &quot;app2.properties&quot;)</span><br><span class="line">    private String name;</span><br><span class="line">    @StcconfigValue(key = &quot;age&quot;, fileName = &quot;app4.yaml&quot;)</span><br><span class="line">    private String age;</span><br><span class="line"></span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setName(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getAge() &#123;</span><br><span class="line">        return age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setAge(String age) &#123;</span><br><span class="line">        this.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用注解@StcconfigValue注入相应配置</p>
+<p>参数 key: 配置文件中的key值<br>参数 fileName: 配置文件名称</p>
+</blockquote>
+<h3 id="WEB管理"><a href="#WEB管理" class="headerlink" title="WEB管理"></a>WEB管理</h3><h4 id="添加-修改环境"><a href="#添加-修改环境" class="headerlink" title="添加/修改环境"></a>添加/修改环境</h4><p><img src="/images/05-05.png"></p>
+<h4 id="添加-修改项目"><a href="#添加-修改项目" class="headerlink" title="添加/修改项目"></a>添加/修改项目</h4><p><img src="/images/05-06.png"></p>
+<h4 id="添加-修改配置"><a href="#添加-修改配置" class="headerlink" title="添加/修改配置"></a>添加/修改配置</h4><p><img src="/images/05-07.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/19/8-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%90%8E%E7%AB%AF/" rel="next" title="【方案】前后端数据传输加密实现方案 - 后端实现">
+                <i class="fa fa-chevron-left"></i> 【方案】前后端数据传输加密实现方案 - 后端实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/myhead.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lvxingzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:349024548@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#stcconfig%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.</span> <span class="nav-text">stcconfig能做什么?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5%E8%AF%B4%E6%98%8E"><span class="nav-number">1.2.</span> <span class="nav-text">概念说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="nav-number">1.3.</span> <span class="nav-text">适用范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">1.4.</span> <span class="nav-text">架构图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZK%E8%8A%82%E7%82%B9%E4%B8%80%E8%A7%88"><span class="nav-number">1.5.</span> <span class="nav-text">ZK节点一览</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E8%8A%82%E7%82%B9%E5%85%83%E6%95%B0%E6%8D%AE"><span class="nav-number">1.6.</span> <span class="nav-text">配置节点元数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%B1%BB%E5%85%B3%E7%B3%BB%E5%9B%BE"><span class="nav-number">1.7.</span> <span class="nav-text">服务端类关系图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%B1%BB%E5%85%B3%E7%B3%BB%E5%9B%BE"><span class="nav-number">1.8.</span> <span class="nav-text">客户端类关系图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B"><span class="nav-number">2.</span> <span class="nav-text">开始</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">2.1.</span> <span class="nav-text">1. 环境准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">2. 下载源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%B7%BB%E5%8A%A0%E5%BF%85%E8%A6%81%E7%9A%84%E6%8C%81%E4%B9%85%E5%8C%96%E5%BA%93%E8%A1%A8-MYSQL"><span class="nav-number">2.3.</span> <span class="nav-text">3. 添加必要的持久化库表(MYSQL)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%AE%89%E8%A3%85zookeeper"><span class="nav-number">2.4.</span> <span class="nav-text">4. 安装zookeeper</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">启动服务端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BF%AE%E6%94%B9%E5%8F%82%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">1. 修改参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%90%AF%E5%8A%A8"><span class="nav-number">3.2.</span> <span class="nav-text">2. 启动</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8WEB%E7%AB%AF"><span class="nav-number">4.</span> <span class="nav-text">启动WEB端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BF%AE%E6%94%B9%E5%8F%82%E6%95%B0-1"><span class="nav-number">4.1.</span> <span class="nav-text">1. 修改参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%90%AF%E5%8A%A8-1"><span class="nav-number">5.</span> <span class="nav-text">2. 启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8DEMO-CLIENT%E6%B5%8B%E8%AF%95%E9%A1%B9%E7%9B%AE"><span class="nav-number">6.</span> <span class="nav-text">启动DEMO-CLIENT测试项目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%B7%BB%E5%8A%A0stcconfig%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="nav-number">6.1.</span> <span class="nav-text">1. 添加stcconfig相关配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%90%AF%E5%8A%A8DEMO-CLIENT-%E5%BC%95%E5%85%A5stcconfig-client-%E5%8F%AF%E5%8F%91%E5%B8%83%E7%9B%B8%E5%BA%94%E7%9A%84maven%E5%8C%85"><span class="nav-number">6.2.</span> <span class="nav-text">2. 启动DEMO-CLIENT(引入stcconfig-client,可发布相应的maven包)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">应用中的使用方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WEB%E7%AE%A1%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">WEB管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-%E4%BF%AE%E6%94%B9%E7%8E%AF%E5%A2%83"><span class="nav-number">8.1.</span> <span class="nav-text">添加&#x2F;修改环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-%E4%BF%AE%E6%94%B9%E9%A1%B9%E7%9B%AE"><span class="nav-number">8.2.</span> <span class="nav-text">添加&#x2F;修改项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">8.3.</span> <span class="nav-text">添加&#x2F;修改配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吕兴志</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
