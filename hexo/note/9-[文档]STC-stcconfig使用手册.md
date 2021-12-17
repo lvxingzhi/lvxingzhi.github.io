@@ -26,6 +26,7 @@ categories:
 
 #### 架构图
 ![](/images/09-01.png)
+<!--more-->
 #### ZK节点一览
 ```
 /stcconfig -- 根节点
