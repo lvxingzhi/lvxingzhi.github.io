@@ -156,28 +156,6 @@ server.stcconfig.directory=myconfig
                 [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/app2.properties
 [stcconfig-client][2021-12-17 14:23:01.174][main][INFO][c.n.s.u.FileReadToTypeUtil][properties2Map:56][] -
                 [stcconfig][client] properties读取配置: name=韩梅梅2
-[stcconfig-client][2021-12-17 14:23:01.174][main][WARN][c.n.s.m.PullConfigFileManage][pullConfigFile:106][] -
-                [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/app3.xml
-[stcconfig-client][2021-12-17 14:23:01.178][main][ERROR][c.n.s.m.PullConfigFileManage][pullConfigFile:114][] -
-                [stcconfig][client]文件解析失败,不支持该类型:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/app3.xml
-[stcconfig-client][2021-12-17 14:23:01.178][main][WARN][c.n.s.m.PullConfigFileManage][pullConfigFile:106][] -
-                [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/app4.yaml
-[stcconfig-client][2021-12-17 14:23:01.333][main][WARN][c.n.s.m.PullConfigFileManage][pullConfigFile:106][] -
-                [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/app5.txt
-[stcconfig-client][2021-12-17 14:23:01.344][main][INFO][c.n.s.u.FileReadToTypeUtil][properties2Map:56][] -
-                [stcconfig][client] properties读取配置: name=韩梅梅5
-[stcconfig-client][2021-12-17 14:23:01.344][main][WARN][c.n.s.m.PullConfigFileManage][pullConfigFile:106][] -
-                [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/aaa1.properties
-[stcconfig-client][2021-12-17 14:23:01.353][main][INFO][c.n.s.u.FileReadToTypeUtil][properties2Map:56][] -
-                [stcconfig][client] properties读取配置: a=1
-[stcconfig-client][2021-12-17 14:23:01.354][main][WARN][c.n.s.m.PullConfigFileManage][pullConfigFile:106][] -
-                [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/bb.properties
-[stcconfig-client][2021-12-17 14:23:01.360][main][INFO][c.n.s.u.FileReadToTypeUtil][properties2Map:56][] -
-                [stcconfig][client] properties读取配置: a=1
-[stcconfig-client][2021-12-17 14:23:01.360][main][WARN][c.n.s.m.PullConfigFileManage][pullConfigFile:106][] -
-                [stcconfig][client]下载配置文件:/C:/work/workspace/stcconfig/demo-client/target/classes/myconfig/bbb.properties
-[stcconfig-client][2021-12-17 14:23:01.366][main][INFO][c.n.s.u.FileReadToTypeUtil][properties2Map:56][] -
-                [stcconfig][client] properties读取配置: a=1
 [stcconfig-client][2021-12-17 14:23:01.376][main][INFO][c.n.s.m.PullConfigFileManage][lambda$init$0:89][] -
                 [stcconfig][client]赋值,fieldName:name, value:韩梅梅1
 [stcconfig-client][2021-12-17 14:23:01.376][main][INFO][c.n.s.m.PullConfigFileManage][lambda$init$0:89][] -
@@ -222,6 +200,14 @@ public class DemoClientBean {
 > 参数 key: 配置文件中的key值
 > 参数 fileName: 配置文件名称
 
+
+### WEB管理
+#### 添加/修改环境
+![](/images/09-05.png)
+#### 添加/修改项目
+![](/images/09-06.png)
+#### 添加/修改配置
+![](/images/09-07.png)
 
 
 
