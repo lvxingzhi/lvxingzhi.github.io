@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="markdown," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ECMAScript6 是JS的版本升级,主流浏览器和手机固件都已支持解析. 对过去来说的JS其实也是ECMAcript, 不过是老版本,名字也没有变. 6版本对JS的编写规则进行了封装, 形成了一套新的编写方式. 对于不支持解析的容器上,可以通过EC6转EC5工具进行转换后运行(如Babel) 背景故事ECMAScript 和 JavaScript 的关系 ECMAScript是发布国际标准">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【笔记】ECMAScript6学习">
+<meta property="og:url" content="https://lvxingzhi.github.io/2021/12/21/10-[%E7%AC%94%E8%AE%B0]ECMAScript6%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="吕兴志的学习笔记">
+<meta property="og:description" content="ECMAScript6 是JS的版本升级,主流浏览器和手机固件都已支持解析. 对过去来说的JS其实也是ECMAcript, 不过是老版本,名字也没有变. 6版本对JS的编写规则进行了封装, 形成了一套新的编写方式. 对于不支持解析的容器上,可以通过EC6转EC5工具进行转换后运行(如Babel) 背景故事ECMAScript 和 JavaScript 的关系 ECMAScript是发布国际标准">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-12-21T06:12:31.000Z">
+<meta property="article:modified_time" content="2021-12-21T09:14:42.022Z">
+<meta property="article:author" content="吕兴志">
+<meta property="article:tag" content="markdown">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lvxingzhi.github.io/2021/12/21/10-[笔记]ECMAScript6学习/"/>
+
+
+
+
+
+  <title>【笔记】ECMAScript6学习 | 吕兴志的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吕兴志的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录,思考,成长,回忆</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/12/21/10-%5B%E7%AC%94%E8%AE%B0%5DECMAScript6%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【笔记】ECMAScript6学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-21T14:12:31+08:00">
+                2021-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+</blockquote>
+<p>ECMAScript6 是JS的版本升级,主流浏览器和手机固件都已支持解析. 对过去来说的JS其实也是ECMAcript, 不过是老版本,名字也没有变. 6版本对JS的编写规则进行了封装, 形成了一套新的编写方式. 对于不支持解析的容器上,<br>可以通过EC6转EC5工具进行转换后运行(如Babel)</p>
+<h1 id="背景故事"><a href="#背景故事" class="headerlink" title="背景故事"></a>背景故事</h1><p>ECMAScript 和 JavaScript 的关系 ECMAScript是发布国际标准的组织,JavaScript是Netscape创建的,后提交给ECMAScript ECMAScript= 标准 JavaScript= 实现(<br>3.0)<br>ECMAScript的版本 从3.0到 3.1=5 到6 中间版本没有通过…</p>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><h2 id="新的关键字"><a href="#新的关键字" class="headerlink" title="新的关键字"></a>新的关键字</h2><h4 id="一-let-只作用于代码块内的变量声明关键字"><a href="#一-let-只作用于代码块内的变量声明关键字" class="headerlink" title="一, let(只作用于代码块内的变量声明关键字)"></a>一, let(只作用于代码块内的变量声明关键字)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="built_in">let</span> name = <span class="string">&quot;脆饼&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1, 适用于局部使用的变量: for循环, 临时变量 2, let非顺序执行将报错,var将显示undefined(var的变量提升未执行先使用将导致undefined)<br>3, let在区块中后者覆盖前者,前者将报错失效(单位内唯一性)<br>4, var中作用域为全局和方法中, ECMA6增加区块作用域,使用let实现</p>
+<h4 id="二-const-常量声明且初始化"><a href="#二-const-常量声明且初始化" class="headerlink" title="二, const(常量声明且初始化)"></a>二, const(常量声明且初始化)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const DEFAULT_VALUE = 3;</span><br></pre></td></tr></table></figure>
+
+<p>1, 声明后必须赋值 2, 再赋值将报错 3, 支持区块作用域 4, 地址级别的常量,类似JAVA中的对象常量</p>
+<span id="more"></span>
+
+<h4 id="三-class"><a href="#三-class" class="headerlink" title="三, class"></a>三, class</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>1,</p>
+<h4 id="四-import"><a href="#四-import" class="headerlink" title="四, import"></a>四, import</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>1,</p>
+<h2 id="解构-新的赋值方式"><a href="#解构-新的赋值方式" class="headerlink" title="解构(新的赋值方式)"></a>解构(新的赋值方式)</h2><h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">老的方式</span><br><span class="line"><span class="built_in">let</span> a = 1;</span><br><span class="line"><span class="built_in">let</span> b = 2;</span><br><span class="line"><span class="built_in">let</span> c = 3;</span><br><span class="line">新的方式</span><br><span class="line"><span class="built_in">let</span> [a, b, c] = [1, 2, 3];</span><br><span class="line"><span class="built_in">let</span> [a=1, b=2, c=3] = [];</span><br></pre></td></tr></table></figure>
+
+<h4 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">老的方式</span><br><span class="line">let obj =  &#123;&#125;</span><br><span class="line">obj.a = &quot;1&quot;</span><br><span class="line">obj.b= &quot;2&quot;</span><br><span class="line">新的方式</span><br><span class="line">let &#123;a : a, b : b&#125; = &#123;a : &quot;1&quot;, b : &quot;2&quot;&#125;</span><br><span class="line">// a = &quot;1&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">略</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串的扩展"><a href="#字符串的扩展" class="headerlink" title="字符串的扩展"></a>字符串的扩展</h2><p>支持unicode标识标识字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> a = <span class="string">&quot;aa&quot;</span>;</span><br><span class="line"><span class="built_in">let</span> a = <span class="string">&quot;\u0061\u0061&quot;</span></span><br><span class="line">改进版</span><br><span class="line"><span class="built_in">let</span> a = <span class="string">&quot;\u&#123;0061&#125;\u&#123;0061&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="字符串遍历字符"><a href="#字符串遍历字符" class="headerlink" title="字符串遍历字符"></a>字符串遍历字符</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for (let ch of &quot;abc&quot;)&#123;</span><br><span class="line">    console.log(ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="模板字符串"><a href="#模板字符串" class="headerlink" title="模板字符串"></a>模板字符串</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">反引号``中间内容代表模板字符串(数字1左边的按键)</span><br><span class="line">字符串中需要使用反引号增加\反斜杠</span><br><span class="line">模板字符串支持JS表达式</span><br><span class="line">$&#123;name&#125; $&#123;po.value&#125; $&#123;a+b&#125;$&#123;函数()&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="新的方法"><a href="#新的方法" class="headerlink" title="新的方法"></a>新的方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">是否包含</span><br><span class="line">includes()</span><br><span class="line">是否以开始</span><br><span class="line">startsWith()</span><br><span class="line">是否以结束</span><br><span class="line">endsWith()</span><br><span class="line">头部补全长度</span><br><span class="line">padStart()</span><br><span class="line">尾部补全长度</span><br><span class="line">padEnd()</span><br><span class="line">去空</span><br><span class="line">trim()</span><br><span class="line">trimStart()</span><br><span class="line">trimEnd()</span><br></pre></td></tr></table></figure>
+
+<h4 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">支持正则的方法: match(), replace(), search(), split()</span><br><span class="line">正则的格式: /xxxxxxxxxxxxxxxxxxxxxxxx/ </span><br></pre></td></tr></table></figure>
+
+<h2 id="数值的扩展"><a href="#数值的扩展" class="headerlink" title="数值的扩展"></a>数值的扩展</h2><h4 id="二进制-八进制表示"><a href="#二进制-八进制表示" class="headerlink" title="二进制,八进制表示"></a>二进制,八进制表示</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0b111110111 === 503 // true</span><br><span class="line">0B111110111 === 503 // true</span><br><span class="line">0o767 ===503 // true</span><br><span class="line">0O767 ===503 // true</span><br></pre></td></tr></table></figure>
+<h4 id="Number工具"><a href="#Number工具" class="headerlink" title="Number工具"></a>Number工具</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Number.isFinite() // 是否是有限的</span><br><span class="line">Number.isNaN() // 是否是NaN</span><br><span class="line">Number.parseInt() // 转换为整型</span><br><span class="line">Number.parseFloat() // 转为float</span><br><span class="line">Number.isInteger() // 是否为整数</span><br></pre></td></tr></table></figure>
+
+<h4 id="Math工具"><a href="#Math工具" class="headerlink" title="Math工具"></a>Math工具</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">略</span><br></pre></td></tr></table></figure>
+
+<h4 id="大整数-BigInt-支持更大的数值表示"><a href="#大整数-BigInt-支持更大的数值表示" class="headerlink" title="大整数(BigInt), 支持更大的数值表示"></a>大整数(BigInt), 支持更大的数值表示</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">略</span><br></pre></td></tr></table></figure>
+
+<h4 id="数组扩展方法"><a href="#数组扩展方法" class="headerlink" title="数组扩展方法"></a>数组扩展方法</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sort() // 排序</span><br><span class="line">includes() // 包含</span><br><span class="line">entries() // 遍历</span><br><span class="line">keys()</span><br><span class="line">values()</span><br></pre></td></tr></table></figure>
+
+<h2 id="对象扩展"><a href="#对象扩展" class="headerlink" title="对象扩展"></a>对象扩展</h2><h4 id="快捷赋值"><a href="#快捷赋值" class="headerlink" title="快捷赋值"></a>快捷赋值</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">let foo = &quot;abc&quot;</span><br><span class="line">let xoo = &#123;foo&#125; // 相当于 let xoo = &#123;foo: &quot;abc&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="属性遍历"><a href="#属性遍历" class="headerlink" title="属性遍历"></a>属性遍历</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1, for...in</span><br><span class="line">2, Object.keys(obj)</span><br><span class="line">3, Object.getOwnPropertyNames(obj)</span><br><span class="line">4, Object.getOwnPropertySymbols(obj)</span><br><span class="line">5, Reflect.ownKeys(obj)</span><br></pre></td></tr></table></figure>
+
+<h4 id="新关键字super"><a href="#新关键字super" class="headerlink" title="新关键字super"></a>新关键字super</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">只能这么写,其他形式报错</span><br><span class="line">const obj = &#123;</span><br><span class="line">  x: &#x27;world&#x27;,</span><br><span class="line">  foo() &#123;</span><br><span class="line">    super.foo();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object.is(a,b) // true false</span><br></pre></td></tr></table></figure>
+
+<h4 id="拷贝"><a href="#拷贝" class="headerlink" title="拷贝"></a>拷贝</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">浅拷贝</span><br><span class="line">Object.assign(target, source1,source2) // 后者覆盖前者</span><br></pre></td></tr></table></figure>
+
+<h2 id="新增数据结构"><a href="#新增数据结构" class="headerlink" title="新增数据结构"></a>新增数据结构</h2><h4 id="SET"><a href="#SET" class="headerlink" title="SET"></a>SET</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">let s = new Set();</span><br><span class="line">s.add(&quot;a&quot;);</span><br><span class="line">s.delete(&quot;a&quot;);</span><br><span class="line">s.has(&quot;a&quot;);</span><br><span class="line">s.clear();</span><br><span class="line"></span><br><span class="line">遍历1</span><br><span class="line">for (let item of set.entries()) &#123;</span><br><span class="line">  console.log(item);</span><br><span class="line">&#125;</span><br><span class="line">遍历2</span><br><span class="line">set.forEach((value, key) =&gt; console.log(key + &#x27; : &#x27; + value))</span><br></pre></td></tr></table></figure>
+
+<h4 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">let m = new Map();</span><br><span class="line">m.set(o, &quot;content&quot;);</span><br><span class="line">m.get(o);</span><br><span class="line">m.delete(o);</span><br><span class="line">m.has(o);</span><br><span class="line"></span><br><span class="line">size()</span><br><span class="line">clear()</span><br><span class="line"></span><br><span class="line">遍历</span><br><span class="line">for (let item of map.entries()) &#123;</span><br><span class="line">  console.log(item[0], item[1]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">转JSON: JSON.stringify(strMapToObj(strMap))</span><br><span class="line">JSON转MAP: new Map(JSON.parse(jsonStr))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><h4 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">集合: 数组, 对象, MAP, SET</span><br><span class="line">略</span><br></pre></td></tr></table></figure>
+
+<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><h4 id="新的语法糖"><a href="#新的语法糖" class="headerlink" title="新的语法糖"></a>新的语法糖</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">x, y</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.x = x;</span><br><span class="line">    <span class="built_in">this</span>.y = y;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">toString</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;(&#x27;</span> + <span class="built_in">this</span>.x + <span class="string">&#x27;, &#x27;</span> + <span class="built_in">this</span>.y + <span class="string">&#x27;)&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="继承特性"><a href="#继承特性" class="headerlink" title="继承特性"></a>继承特性</h4><h4 id="模块引入"><a href="#模块引入" class="headerlink" title="模块引入"></a>模块引入</h4><h2 id="编码规范-amp-风格"><a href="#编码规范-amp-风格" class="headerlink" title="编码规范&amp;风格"></a>编码规范&amp;风格</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1, let取代var</span><br><span class="line">2, 字符串使用单引号/反引号</span><br><span class="line">3, 对象最后用逗号结尾</span><br><span class="line">4, 实体用Class描述</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/markdown/" rel="tag"># markdown</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/17/9-%5B%E6%96%87%E6%A1%A3%5DSTC-stcconfig%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" rel="next" title="【文档】STC-stcconfig 分布式动态配置中心使用手册">
+                <i class="fa fa-chevron-left"></i> 【文档】STC-stcconfig 分布式动态配置中心使用手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/myhead.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lvxingzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:349024548@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E6%95%85%E4%BA%8B"><span class="nav-number">1.</span> <span class="nav-text">背景故事</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">2.1.</span> <span class="nav-text">新的关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80-let-%E5%8F%AA%E4%BD%9C%E7%94%A8%E4%BA%8E%E4%BB%A3%E7%A0%81%E5%9D%97%E5%86%85%E7%9A%84%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">2.1.0.1.</span> <span class="nav-text">一, let(只作用于代码块内的变量声明关键字)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C-const-%E5%B8%B8%E9%87%8F%E5%A3%B0%E6%98%8E%E4%B8%94%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.0.2.</span> <span class="nav-text">二, const(常量声明且初始化)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89-class"><span class="nav-number">2.1.0.3.</span> <span class="nav-text">三, class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B-import"><span class="nav-number">2.1.0.4.</span> <span class="nav-text">四, import</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E6%9E%84-%E6%96%B0%E7%9A%84%E8%B5%8B%E5%80%BC%E6%96%B9%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">解构(新的赋值方式)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">2.2.0.1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.2.0.2.</span> <span class="nav-text">对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.2.0.3.</span> <span class="nav-text">字符串</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%89%A9%E5%B1%95"><span class="nav-number">2.3.</span> <span class="nav-text">字符串的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%81%8D%E5%8E%86%E5%AD%97%E7%AC%A6"><span class="nav-number">2.3.0.1.</span> <span class="nav-text">字符串遍历字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">2.3.0.2.</span> <span class="nav-text">模板字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.0.3.</span> <span class="nav-text">新的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E5%88%99"><span class="nav-number">2.3.0.4.</span> <span class="nav-text">正则</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E7%9A%84%E6%89%A9%E5%B1%95"><span class="nav-number">2.4.</span> <span class="nav-text">数值的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6-%E5%85%AB%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">二进制,八进制表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Number%E5%B7%A5%E5%85%B7"><span class="nav-number">2.4.0.2.</span> <span class="nav-text">Number工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Math%E5%B7%A5%E5%85%B7"><span class="nav-number">2.4.0.3.</span> <span class="nav-text">Math工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7%E6%95%B4%E6%95%B0-BigInt-%E6%94%AF%E6%8C%81%E6%9B%B4%E5%A4%A7%E7%9A%84%E6%95%B0%E5%80%BC%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.4.0.4.</span> <span class="nav-text">大整数(BigInt), 支持更大的数值表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%89%A9%E5%B1%95%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.0.5.</span> <span class="nav-text">数组扩展方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E6%89%A9%E5%B1%95"><span class="nav-number">2.5.</span> <span class="nav-text">对象扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BF%AB%E6%8D%B7%E8%B5%8B%E5%80%BC"><span class="nav-number">2.5.0.1.</span> <span class="nav-text">快捷赋值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E9%81%8D%E5%8E%86"><span class="nav-number">2.5.0.2.</span> <span class="nav-text">属性遍历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%85%B3%E9%94%AE%E5%AD%97super"><span class="nav-number">2.5.0.3.</span> <span class="nav-text">新关键字super</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%94%E8%BE%83"><span class="nav-number">2.5.0.4.</span> <span class="nav-text">比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D"><span class="nav-number">2.5.0.5.</span> <span class="nav-text">拷贝</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.6.</span> <span class="nav-text">新增数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SET"><span class="nav-number">2.6.0.1.</span> <span class="nav-text">SET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Map"><span class="nav-number">2.6.0.2.</span> <span class="nav-text">Map</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF"><span class="nav-number">2.7.</span> <span class="nav-text">循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Iterator"><span class="nav-number">2.7.0.1.</span> <span class="nav-text">Iterator</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class"><span class="nav-number">2.8.</span> <span class="nav-text">Class</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-number">2.8.0.1.</span> <span class="nav-text">新的语法糖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E7%89%B9%E6%80%A7"><span class="nav-number">2.8.0.2.</span> <span class="nav-text">继承特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%BC%95%E5%85%A5"><span class="nav-number">2.8.0.3.</span> <span class="nav-text">模块引入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83-amp-%E9%A3%8E%E6%A0%BC"><span class="nav-number">2.9.</span> <span class="nav-text">编码规范&amp;风格</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吕兴志</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

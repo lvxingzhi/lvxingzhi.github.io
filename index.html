@@ -241,6 +241,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/12/21/10-%5B%E7%AC%94%E8%AE%B0%5DECMAScript6%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/12/21/10-%5B%E7%AC%94%E8%AE%B0%5DECMAScript6%E5%AD%A6%E4%B9%A0/" itemprop="url">【笔记】ECMAScript6学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-21T14:12:31+08:00">
+                2021-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+</blockquote>
+<p>ECMAScript6 是JS的版本升级,主流浏览器和手机固件都已支持解析. 对过去来说的JS其实也是ECMAcript, 不过是老版本,名字也没有变. 6版本对JS的编写规则进行了封装, 形成了一套新的编写方式. 对于不支持解析的容器上,<br>可以通过EC6转EC5工具进行转换后运行(如Babel)</p>
+<h1 id="背景故事"><a href="#背景故事" class="headerlink" title="背景故事"></a>背景故事</h1><p>ECMAScript 和 JavaScript 的关系 ECMAScript是发布国际标准的组织,JavaScript是Netscape创建的,后提交给ECMAScript ECMAScript= 标准 JavaScript= 实现(<br>3.0)<br>ECMAScript的版本 从3.0到 3.1=5 到6 中间版本没有通过…</p>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><h2 id="新的关键字"><a href="#新的关键字" class="headerlink" title="新的关键字"></a>新的关键字</h2><h4 id="一-let-只作用于代码块内的变量声明关键字"><a href="#一-let-只作用于代码块内的变量声明关键字" class="headerlink" title="一, let(只作用于代码块内的变量声明关键字)"></a>一, let(只作用于代码块内的变量声明关键字)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="built_in">let</span> name = <span class="string">&quot;脆饼&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1, 适用于局部使用的变量: for循环, 临时变量 2, let非顺序执行将报错,var将显示undefined(var的变量提升未执行先使用将导致undefined)<br>3, let在区块中后者覆盖前者,前者将报错失效(单位内唯一性)<br>4, var中作用域为全局和方法中, ECMA6增加区块作用域,使用let实现</p>
+<h4 id="二-const-常量声明且初始化"><a href="#二-const-常量声明且初始化" class="headerlink" title="二, const(常量声明且初始化)"></a>二, const(常量声明且初始化)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const DEFAULT_VALUE = 3;</span><br></pre></td></tr></table></figure>
+
+<p>1, 声明后必须赋值 2, 再赋值将报错 3, 支持区块作用域 4, 地址级别的常量,类似JAVA中的对象常量</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/12/21/10-%5B%E7%AC%94%E8%AE%B0%5DECMAScript6%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2021/12/17/9-%5B%E6%96%87%E6%A1%A3%5DSTC-stcconfig%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1506,7 +1661,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
