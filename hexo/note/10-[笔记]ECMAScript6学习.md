@@ -1,6 +1,9 @@
 ---
-title: 【笔记】ECMAScript6学习 date: 2021-12-17 14:12:31 tags:
-- markdown categories:
+title: 【笔记】ECMAScript6学习
+date: 2021-12-21 14:12:31
+tags:
+- markdown
+categories:
 - 笔记
 ---
 > [笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.
