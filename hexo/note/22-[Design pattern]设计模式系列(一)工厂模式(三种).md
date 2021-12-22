@@ -1,5 +1,5 @@
 ---
-title: 【Design pattern】设计模式系列一工厂模式(三种)
+title: 【Design pattern】设计模式系列(一)工厂模式(三种)
 date: 2015-06-01 11:22:02
 tags:
 categories:

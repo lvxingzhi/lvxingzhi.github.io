@@ -1,5 +1,5 @@
 ---
-title: 【Design pattern】设计模式系列一原型模式
+title: 【Design pattern】设计模式系列(二)原型模式
 date: 2015-06-01 11:22:02
 tags:
 categories:
