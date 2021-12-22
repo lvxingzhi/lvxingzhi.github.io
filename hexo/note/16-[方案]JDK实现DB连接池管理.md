@@ -25,7 +25,7 @@ public interface DBSource {
     void closeConnection(Connection con) throws SQLException;
 }
 ```
-
+<!--more-->
 #### 2,连接池接口实现
 ```java
 package dbsource;

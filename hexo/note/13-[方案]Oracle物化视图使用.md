@@ -46,7 +46,7 @@ select * from user_jobs；——查看调度任务
 select * from dba_jobs_running；——查看正在执行的调度任务
 select * from dba_jobs；——查看执行完的调度任务
 ```
-
+<!--more-->
 ### 关于 interval 的一些设置技巧
 ```text
 关于job运行时间

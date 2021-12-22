@@ -46,7 +46,7 @@ extensions/jdbc-driver/oracle目录下放入对应的oracle驱动jar包
 下载地址:http://docs.codehaus.org/display/SONAR/Chinese+Pack
 
 4, 找到对应系统的执行目录,这里运行/bin/linux-x86-64/sonar.sh
-
+<!--more-->
 5, 访问地址
 http://192.168.10.221:9000
 默认账户 admin/admin

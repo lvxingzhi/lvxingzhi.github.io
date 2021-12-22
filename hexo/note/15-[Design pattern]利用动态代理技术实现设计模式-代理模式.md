@@ -39,7 +39,7 @@ public class HelloWorldImpl implements HelloWorld{
     }
 }
 ```
-
+<!--more-->
 ##### 3,代理功能类实现
 
 ```java

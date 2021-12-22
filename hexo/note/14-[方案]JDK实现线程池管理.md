@@ -19,7 +19,7 @@ categories:
 2. 可以对线程的数量进行控制.
 
 #### CODE
-
+<!--more-->
 ```java
 import java.util.LinkedList;
 

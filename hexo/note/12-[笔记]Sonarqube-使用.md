@@ -48,7 +48,7 @@ categories:
 这种原因通常问题严重性标记为:Blocker(阻断)
 通过下图观察：
 ![](/images/12-02.png)
-
+<!--more-->
 点击问题进入如下图:
 ![](/images/12-03.png)
 
