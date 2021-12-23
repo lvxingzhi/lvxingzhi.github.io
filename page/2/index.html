@@ -1394,168 +1394,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/01/02/20-%5B%E7%AC%94%E8%AE%B0%5DOracle%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/myhead.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的学习笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/01/02/20-%5B%E7%AC%94%E8%AE%B0%5DOracle%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/" itemprop="url">【笔记】Oracle中的排序与分页踩坑实录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-02T15:02:12+08:00">
-                2016-01-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-</blockquote>
-<h4 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h4><p>  在项目中有用到某表作为数据来源，在页面以列表的形式显示。使用的数据库是Oracle，分页的时候使用到了rownum这个关键字。<br>  列表有排序功能，自然也用到了order by。<br>  接下来问题出现了，我在用order by查询数据库数据的时候显示的内容，和页面列表处显示的内容竟然不一致。心里想不明白，各种倒腾，终于弄明白了其中一二。</p>
-<h5 id="首先说结论"><a href="#首先说结论" class="headerlink" title="首先说结论"></a>首先说结论</h5><p>当使用order by与rownum结合时,请一定保证order by后有一个能保证唯一的列<br>例如 select t.* from person t order by t.age,t.id; //id为主键,age可能重复</p>
-<blockquote>
-<p>接下来验证之前的现象和我得出的结论</p>
-</blockquote>
-<p>1,首先创建表</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> A_LXZ (id <span class="type">int</span> ,name VARchar2(<span class="number">10</span>),age <span class="type">int</span>)</span><br></pre></td></tr></table></figure>
-
-<p>2,插入数据</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">1</span>,<span class="string">&#x27;a&#x27;</span>,<span class="number">3</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">2</span>,<span class="string">&#x27;b&#x27;</span>,<span class="number">4</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">3</span>,<span class="string">&#x27;c&#x27;</span>,<span class="number">5</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">4</span>,<span class="string">&#x27;d&#x27;</span>,<span class="number">6</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">8</span>,<span class="string">&#x27;h&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">9</span>,<span class="string">&#x27;i&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">6</span>,<span class="string">&#x27;f&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">5</span>,<span class="string">&#x27;e&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">7</span>,<span class="string">&#x27;g&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">10</span>,<span class="string">&#x27;j&#x27;</span>,<span class="number">8</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">11</span>,<span class="string">&#x27;k&#x27;</span>,<span class="number">9</span>);</span><br></pre></td></tr></table></figure>
-
-<p>3,查询结果<br><img src="/images/20-01.png"></p>
-<p>4,使用order by age查询结果<br><img src="/images/20-02.png"></p>
-<p>5,使用order by + rownum 获取前面的N条结果时,结果如下<br><img src="/images/20-03.png"></p>
-<p>到这里,问题就出来了,ID为7的数据去了哪里? 本来想要得到的结果集是这样的:<br><img src="/images/20-04.png"></p>
-<p>却得到了这样<br><img src="/images/20-05.png"></p>
-<h5 id="原因是"><a href="#原因是" class="headerlink" title="原因是:"></a>原因是:</h5><p>当order by 排序后遇到相同的数据时,rownum的确定是无序排列(不稳定排序),<br>比如打印出rownum的值:<br><img src="/images/20-06.png"></p>
-<p>可以看到id=7的rownum是9,所以我们获取rownum&lt;=8时,是获取不到id=7的数据的,所以看到的和真正获取到的可能不一致.  </p>
-<p>由此得出结论,当我们使用order by和rownum的时候,请保证order by 后至少有一个列是具有唯一值的.<br>例如:<br><img src="/images/20-07.png"><br><img src="/images/20-08.png"><br>这样数据就能够保证查询与获取是一致的了.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/01/02/19-%5B%E7%AC%94%E8%AE%B0%5DJava%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86%E4%BB%A5%E5%8F%8A%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1674,6 +1512,168 @@
             </a>
           </div>
           <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/01/02/20-%5B%E7%AC%94%E8%AE%B0%5DOracle%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/02/20-%5B%E7%AC%94%E8%AE%B0%5DOracle%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/" itemprop="url">【笔记】Oracle中的排序与分页踩坑实录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-02T15:02:12+08:00">
+                2016-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+</blockquote>
+<h4 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h4><p>  在项目中有用到某表作为数据来源，在页面以列表的形式显示。使用的数据库是Oracle，分页的时候使用到了rownum这个关键字。<br>  列表有排序功能，自然也用到了order by。<br>  接下来问题出现了，我在用order by查询数据库数据的时候显示的内容，和页面列表处显示的内容竟然不一致。心里想不明白，各种倒腾，终于弄明白了其中一二。</p>
+<h5 id="首先说结论"><a href="#首先说结论" class="headerlink" title="首先说结论"></a>首先说结论</h5><p>当使用order by与rownum结合时,请一定保证order by后有一个能保证唯一的列<br>例如 select t.* from person t order by t.age,t.id; //id为主键,age可能重复</p>
+<blockquote>
+<p>接下来验证之前的现象和我得出的结论</p>
+</blockquote>
+<p>1,首先创建表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> A_LXZ (id <span class="type">int</span> ,name VARchar2(<span class="number">10</span>),age <span class="type">int</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2,插入数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">1</span>,<span class="string">&#x27;a&#x27;</span>,<span class="number">3</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">2</span>,<span class="string">&#x27;b&#x27;</span>,<span class="number">4</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">3</span>,<span class="string">&#x27;c&#x27;</span>,<span class="number">5</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">4</span>,<span class="string">&#x27;d&#x27;</span>,<span class="number">6</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">8</span>,<span class="string">&#x27;h&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">9</span>,<span class="string">&#x27;i&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">6</span>,<span class="string">&#x27;f&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">5</span>,<span class="string">&#x27;e&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">7</span>,<span class="string">&#x27;g&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">10</span>,<span class="string">&#x27;j&#x27;</span>,<span class="number">8</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">11</span>,<span class="string">&#x27;k&#x27;</span>,<span class="number">9</span>);</span><br></pre></td></tr></table></figure>
+
+<p>3,查询结果<br><img src="/images/20-01.png"></p>
+<p>4,使用order by age查询结果<br><img src="/images/20-02.png"></p>
+<p>5,使用order by + rownum 获取前面的N条结果时,结果如下<br><img src="/images/20-03.png"></p>
+<p>到这里,问题就出来了,ID为7的数据去了哪里? 本来想要得到的结果集是这样的:<br><img src="/images/20-04.png"></p>
+<p>却得到了这样<br><img src="/images/20-05.png"></p>
+<h5 id="原因是"><a href="#原因是" class="headerlink" title="原因是:"></a>原因是:</h5><p>当order by 排序后遇到相同的数据时,rownum的确定是无序排列(不稳定排序),<br>比如打印出rownum的值:<br><img src="/images/20-06.png"></p>
+<p>可以看到id=7的rownum是9,所以我们获取rownum&lt;=8时,是获取不到id=7的数据的,所以看到的和真正获取到的可能不一致.  </p>
+<p>由此得出结论,当我们使用order by和rownum的时候,请保证order by 后至少有一个列是具有唯一值的.<br>例如:<br><img src="/images/20-07.png"><br><img src="/images/20-08.png"><br>这样数据就能够保证查询与获取是一致的了.</p>
+
+          
         
       
     </div>
