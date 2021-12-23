@@ -1,6 +1,6 @@
 ---
 title: 【Design pattern】设计模式系列(十)桥接模式
-date: 2015-06-01 11:22:02
+date: 2015-06-10 11:22:02
 tags:
 categories:
 - 笔记

@@ -1,6 +1,6 @@
 ---
 title: 【Design pattern】设计模式系列(五)外观模式
-date: 2015-06-01 11:22:02
+date: 2015-06-05 11:22:02
 tags:
 categories:
 - 笔记
