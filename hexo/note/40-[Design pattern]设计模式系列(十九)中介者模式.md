@@ -41,7 +41,7 @@ public abstract class Element {
     public abstract void changeBad();
 }
 ```
-
+<!--more-->
 > 模块具体实现
 ```java
 package note.com.mediator;

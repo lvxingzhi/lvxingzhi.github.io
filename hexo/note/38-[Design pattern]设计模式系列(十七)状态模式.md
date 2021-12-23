@@ -34,7 +34,7 @@ public interface State {
      void doThree();
 }
 ```
-
+<!--more-->
 > 具体状态
 ```java
 package note.com.state;

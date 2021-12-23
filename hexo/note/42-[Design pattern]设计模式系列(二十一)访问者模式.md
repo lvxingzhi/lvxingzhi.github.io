@@ -24,7 +24,7 @@ public abstract class Food {
     public abstract void show(IVisitor visitor);
 }
 ```
-
+<!--more-->
 > 具体实体
 ```java
 package note.com.visitor;

@@ -17,7 +17,7 @@ categories:
 #### CODE
 在Java中有已经预定义好的发布-订阅模式的抽象类和接口,直接使用就好了.如果想要自己实现,源代码也很简单,仿写即可.JDK中定义的订阅者接口是java.util.Observer,发布者抽象类是java.util.Observable
 下面编写实例
-
+<!--more-->
 > 订阅者(观察者)
 ```java
 package note.com.observer;

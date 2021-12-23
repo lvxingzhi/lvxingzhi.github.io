@@ -36,7 +36,7 @@ public abstract class ATool {
 
 }
 ```
-
+<!--more-->
 > 具体工具类
 ```java
 package note.com.strategy;

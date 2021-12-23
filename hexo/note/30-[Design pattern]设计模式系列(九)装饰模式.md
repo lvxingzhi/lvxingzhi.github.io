@@ -25,7 +25,7 @@ public interface Deal {
     public String read();
 }
 ```
-
+<!--more-->
 > 过滤功能接口实现
 ```java
 package note.com.decorator;

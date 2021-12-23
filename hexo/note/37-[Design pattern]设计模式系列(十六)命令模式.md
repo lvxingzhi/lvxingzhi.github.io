@@ -25,7 +25,7 @@ public interface ICommand {
 
 }
 ```
-
+<!--more-->
 > 定义各种情况的处理实现
 ```java
 package note.com.Command;

@@ -37,7 +37,7 @@ insert into A_LXZ(id,name,age)values(7,'g',7);
 insert into A_LXZ(id,name,age)values(10,'j',8);
 insert into A_LXZ(id,name,age)values(11,'k',9);
 ```
-
+<!--more-->
 3,查询结果
 ![](/images/20-01.png)
 

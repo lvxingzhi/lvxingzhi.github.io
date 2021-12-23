@@ -36,7 +36,7 @@ public class MyString {
 
 }
 ```
-
+<!--more-->
 > 自创字符串常量池
 ```java
 package note.com.flyweight;

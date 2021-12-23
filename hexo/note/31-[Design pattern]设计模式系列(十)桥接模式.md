@@ -28,7 +28,7 @@ public interface IColour {
 
 }
 ```
-
+<!--more-->
 > 功能1实现
 ```java
 package note.com.bridge;

@@ -24,7 +24,7 @@ public interface Builder {
 
 }
 ```
-
+<!--more-->
 > 生产1过程
 ```java
 package note.com.builder;

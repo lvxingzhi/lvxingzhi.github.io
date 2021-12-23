@@ -38,7 +38,7 @@ public class Action {
 
 }
 ```
-
+<!--more-->
 > 权限控制类
 ```java
 package note.com.proxy;

@@ -32,7 +32,7 @@ public class Singleton {
     }
 }
 ```
-
+<!--more-->
 > 测试类
 ```java
 package note.com.singleton;

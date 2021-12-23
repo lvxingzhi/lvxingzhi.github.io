@@ -32,7 +32,7 @@ public interface Government{
     public boolean delete(Government gov);
 }
 ```
-
+<!--more-->
 > 定义了默认方法的抽象类
 ```java
 package note.com.composite;

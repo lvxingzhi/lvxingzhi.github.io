@@ -32,7 +32,7 @@ import note.com.bean.*;public class SimpleFactory {
     }
 }
 ```
-
+<!--more-->
 > 测试类
 ```java
 package note.com.factory;

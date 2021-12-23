@@ -36,7 +36,7 @@ public abstract class Prototype {
     }
 }
 ```
-
+<!--more-->
 > 子类
 ```java
 package note.com.bean;

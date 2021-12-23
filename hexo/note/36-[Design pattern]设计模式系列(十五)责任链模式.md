@@ -14,7 +14,7 @@ categories:
 **好处:** 扩展灵活.结构清晰.
 
 #### CODE
-
+<!--more-->
 > 处理器接口定义
 ```java
 package note.com.chain;

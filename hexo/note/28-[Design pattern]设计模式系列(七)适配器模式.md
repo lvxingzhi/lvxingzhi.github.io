@@ -25,7 +25,7 @@ public class OldActionA {
     }
 }
 ```
-
+<!--more-->
 > 新的类基类
 ```java
 package note.com.adapter;
