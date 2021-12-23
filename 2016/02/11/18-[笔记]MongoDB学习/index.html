@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="NOSQL认识MongoDB流行的数据库Oracle,SqlServer,MySql为关系性数据库,相对的,也有非关系性数据库,统称为NoSql,而MongoDB就是NoSql的其中一种. 关系性数据库特点 高度组织化结构化数据 结构化查询语言（SQL） (SQL) 数据和关系都存储在单独的表中。 数据操纵语言，数据定义语言 严格的一致性 基础事务  非关系型数据库特点 代表着不仅仅是SQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【笔记】MongoDB学习">
+<meta property="og:url" content="https://lvxingzhi.github.io/2016/02/11/18-[%E7%AC%94%E8%AE%B0]MongoDB%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="吕兴志的学习笔记">
+<meta property="og:description" content="NOSQL认识MongoDB流行的数据库Oracle,SqlServer,MySql为关系性数据库,相对的,也有非关系性数据库,统称为NoSql,而MongoDB就是NoSql的其中一种. 关系性数据库特点 高度组织化结构化数据 结构化查询语言（SQL） (SQL) 数据和关系都存储在单独的表中。 数据操纵语言，数据定义语言 严格的一致性 基础事务  非关系型数据库特点 代表着不仅仅是SQL">
+<meta property="og:locale">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/18-01.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/18-02.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/18-03.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/18-04.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/18-05.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/18-06.png">
+<meta property="article:published_time" content="2016-02-11T10:01:56.000Z">
+<meta property="article:modified_time" content="2021-12-22T07:23:56.396Z">
+<meta property="article:author" content="吕兴志">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lvxingzhi.github.io/images/18-01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lvxingzhi.github.io/2016/02/11/18-[笔记]MongoDB学习/"/>
+
+
+
+
+
+  <title>【笔记】MongoDB学习 | 吕兴志的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吕兴志的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录,思考,成长,回忆</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/02/11/18-%5B%E7%AC%94%E8%AE%B0%5DMongoDB%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【笔记】MongoDB学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-11T18:01:56+08:00">
+                2016-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+</blockquote>
+<h3 id="NOSQL"><a href="#NOSQL" class="headerlink" title="NOSQL"></a>NOSQL</h3><h4 id="认识MongoDB"><a href="#认识MongoDB" class="headerlink" title="认识MongoDB"></a>认识MongoDB</h4><p>流行的数据库Oracle,SqlServer,MySql为关系性数据库,相对的,也有非关系性数据库,统称为NoSql,而MongoDB就是NoSql的其中一种.</p>
+<h4 id="关系性数据库特点"><a href="#关系性数据库特点" class="headerlink" title="关系性数据库特点"></a>关系性数据库特点</h4><ul>
+<li>高度组织化结构化数据</li>
+<li>结构化查询语言（SQL） (SQL)</li>
+<li>数据和关系都存储在单独的表中。</li>
+<li>数据操纵语言，数据定义语言</li>
+<li>严格的一致性</li>
+<li>基础事务</li>
+</ul>
+<h4 id="非关系型数据库特点"><a href="#非关系型数据库特点" class="headerlink" title="非关系型数据库特点"></a>非关系型数据库特点</h4><ul>
+<li>代表着不仅仅是SQL</li>
+<li>没有声明性查询语言</li>
+<li>没有预定义的模式</li>
+<li>键 - 值对存储，列存储，文档存储，图形数据库</li>
+<li>最终一致性，而非ACID属性</li>
+<li>非结构化和不可预知的数据</li>
+<li>CAP定理</li>
+<li>高性能，高可用性和可伸缩性<blockquote>
+<p>由上可以看出,关系型数据库更加安全,严谨,而非关系型数据库更加追求性能.从他们遵从的原则同样可以得出以上结论</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/images/18-01.png"></p>
+<span id="more"></span>
+<h3 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h3><h4 id="MongoDB简介"><a href="#MongoDB简介" class="headerlink" title="MongoDB简介"></a>MongoDB简介</h4><blockquote>
+<p>文档型数据库,由C++编写.</p>
+</blockquote>
+<h4 id="MongoDB使用场景"><a href="#MongoDB使用场景" class="headerlink" title="MongoDB使用场景"></a>MongoDB使用场景</h4><ol>
+<li>海量数据,经常用来分析,查询.</li>
+<li>数据通常较为固定.</li>
+<li>数据格式不固定.<br>从下图亦可得出以上结论<br><img src="/images/18-02.png"></li>
+</ol>
+<h4 id="mongodb中基本的概念"><a href="#mongodb中基本的概念" class="headerlink" title="mongodb中基本的概念"></a>mongodb中基本的概念</h4><p>文档、集合、数据库<br>与关系数据库的概念对比更容易理解<br><img src="/images/18-03.png"></p>
+<p>关系型数据库数据形式与mongodb数据形式<br><img src="/images/18-04.png"></p>
+<p>mongodb支持的数据类型<br><img src="/images/18-05.png"></p>
+<h4 id="MongoDB命令"><a href="#MongoDB命令" class="headerlink" title="MongoDB命令"></a>MongoDB命令</h4><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>命令</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>创建数据库</td>
+<td>use DATABASE_NAME</td>
+<td>有则使用,无则创建(添加了数据才算是真正的创建)</td>
+</tr>
+<tr>
+<td>查询所有数据库</td>
+<td>show dbs</td>
+<td></td>
+</tr>
+<tr>
+<td>删除数据库</td>
+<td>db.dropDatabase()</td>
+<td>删除前需use</td>
+</tr>
+<tr>
+<td>查看当前数据库</td>
+<td>db</td>
+<td></td>
+</tr>
+<tr>
+<td>创建集合</td>
+<td>db.createCollection(name, {capped: <Boolean>, autoIndexId: <Boolean>, size: <number>, max <number>} )</td>
+<td>name:集合的名字capped:是否启用集合限制，如果开启需要制定一个限制条件，默认为不启用，这个参数没有实际意义size:限制集合使用空间的大小，默认为没有限制max:集合中最大条数限制，默认为没有限制autoIndexId:是否使用_id作为索引，默认为使用(true或false)size的优先级比max要高注意:集合也可在插入数据时创建</td>
+</tr>
+<tr>
+<td>删除集合</td>
+<td>db.集合名称.drop()</td>
+<td></td>
+</tr>
+<tr>
+<td>插入文档</td>
+<td>db.集合.insert(document)</td>
+<td>文档格式为BSON格式(二进制JSON)</td>
+</tr>
+<tr>
+<td>插入多个文档</td>
+<td>db.集合.insert([document,document,document])</td>
+<td>数组形式</td>
+</tr>
+<tr>
+<td>更新文档</td>
+<td>db.collection.update(<query>,<update>,{upsert: <boolean>,multi: <boolean>,writeConcern: <document>})</td>
+<td>query : update的查询条件，类似sql update查询内where后面的。update : update的对象和一些更新的操作符（如$,$inc…）等，也可以理解为sql update查询内set后面的upsert : 可选，这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。multi : 可选，mongodb 默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。writeConcern :可选，抛出异常的级别。</td>
+</tr>
+<tr>
+<td>替换文档</td>
+<td>db.collection.save(<document>,{writeConcern: <document>})</td>
+<td>document : 文档数据。writeConcern :可选，抛出异常的级别。注意:document中必须有”_id” : ObjectId(“56064f89ade2f21f36b03136”)</td>
+</tr>
+<tr>
+<td>定义变量</td>
+<td>xxx=({xxx:xxx});</td>
+<td></td>
+</tr>
+<tr>
+<td>查询文档</td>
+<td>db.集合.find(&lt;条件&gt;&lt;显示控制&gt;)</td>
+<td>具体条件和显示控制这里略形如:{}{name:1,age:0} 1:显示,0:不显示</td>
+</tr>
+<tr>
+<td>格式化查询结果</td>
+<td>db.集合.find(&lt;条件&gt;&lt;显示控制&gt;).pretty()</td>
+<td>容易看</td>
+</tr>
+<tr>
+<td>删除文档</td>
+<td>db.collection.remove(<query>,{justOne: <boolean>,writeConcern: <document>})</td>
+<td>query :（可选）删除的文档的条件。justOne : （可选）如果设为 true 或 1，则只删除一个文档。writeConcern :（可选）抛出异常的级别。</td>
+</tr>
+<tr>
+<td>限制获取数量</td>
+<td>db.集合.find().limit(num)</td>
+<td>限制取多少个</td>
+</tr>
+<tr>
+<td>从哪里开始取</td>
+<td>db.集合.find().skip(num)</td>
+<td>从第几个开始取,第一个为0</td>
+</tr>
+<tr>
+<td>排序</td>
+<td>db.集合.find().sort({KEY:1})</td>
+<td>1:升序  -1:降序默认升序</td>
+</tr>
+<tr>
+<td>创建索引</td>
+<td>db.集合.ensureIndex({KEY:1},{参数})</td>
+<td>1:升序  -1:降序默认升序参数略</td>
+</tr>
+<tr>
+<td>删除索引</td>
+<td>db.集合.dropIndex({KEY:1})</td>
+<td></td>
+</tr>
+<tr>
+<td>使用管道</td>
+<td>db.集合.aggregate([{$操作:{}},{$操作:{}}])</td>
+<td>利用管道可使用各种查询组合具体管道表达式支持 略</td>
+</tr>
+</tbody></table>
+<h4 id="维护"><a href="#维护" class="headerlink" title="维护"></a>维护</h4><h5 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h5><p>MongoDB有主从复制技术,解决高可用和容灾问题,也就是备份.<br><img src="/images/18-06.png"><br>配置主从的特点:</p>
+<ul>
+<li>N 个节点的集群</li>
+<li>任何节点可作为主节点</li>
+<li>所有写入操作都在主节点上</li>
+<li>自动故障转移</li>
+<li>自动恢复</li>
+</ul>
+<p>数据分布式存储:<br>MongoDB支持分布式存储<br>推荐网址:<a target="_blank" rel="noopener" href="http://www.lanceyan.com/tech/arch/mongodb_shard1.html">http://www.lanceyan.com/tech/arch/mongodb_shard1.html</a></p>
+<p>MongoDB数据备份</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodump -h dbhost -d dbname -o dbdirectory</span><br></pre></td></tr></table></figure>
+<ul>
+<li>h：<br>MongDB所在服务器地址，例如：127.0.0.1，当然也可以指定端口号：127.0.0.1:27017</li>
+<li>d：<br>需要备份的数据库实例，例如：test</li>
+<li>o：<br>备份的数据存放位置，例如：c:\data\dump，当然该目录需要提前建立，在备份完成后，系统自动在dump目录下建立一个test目录，这个目录里面存放该数据库实例的备份数据。</li>
+</ul>
+<p>MongoDB数据恢复</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongorestore -h dbhost -d dbname --directoryperdb dbdirectory</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>h：<br>MongoDB所在服务器地址</p>
+</li>
+<li><p>d：<br>需要恢复的数据库实例，例如：test，当然这个名称也可以和备份时候的不一样，比如test2</p>
+</li>
+<li><p>directoryperdb：<br>备份数据所在位置，例如：c:\data\dump\test，这里为什么要多加一个test，而不是备份时候的dump，读者自己查看提示吧！</p>
+</li>
+<li><p>drop：<br>恢复的时候，先删除当前数据，然后恢复备份的数据。就是说，恢复后，备份后添加修改的数据都会被删除，慎用哦！</p>
+</li>
+</ul>
+<h5 id="MongoDB运行情况监控"><a href="#MongoDB运行情况监控" class="headerlink" title="MongoDB运行情况监控"></a>MongoDB运行情况监控</h5><p>参考地址:<a target="_blank" rel="noopener" href="http://my.oschina.net/costaxu/blog/189406">http://my.oschina.net/costaxu/blog/189406</a></p>
+<h5 id="mongostat查看当前运行情况"><a href="#mongostat查看当前运行情况" class="headerlink" title="mongostat查看当前运行情况"></a>mongostat查看当前运行情况</h5><p>参考地址:<a target="_blank" rel="noopener" href="http://blog.csdn.net/samxx8/article/details/36640037">http://blog.csdn.net/samxx8/article/details/36640037</a></p>
+<h5 id="mongotop查看效率"><a href="#mongotop查看效率" class="headerlink" title="mongotop查看效率"></a>mongotop查看效率</h5>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/02/20-%5B%E7%AC%94%E8%AE%B0%5DOracle%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/" rel="next" title="【笔记】Oracle中的排序与分页踩坑实录">
+                <i class="fa fa-chevron-left"></i> 【笔记】Oracle中的排序与分页踩坑实录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/23/17-%5B%E6%96%B9%E6%A1%88%5D%E6%8E%A5%E5%8F%A3+%E6%8A%BD%E8%B1%A1%E7%B1%BB+%E5%AE%9E%E7%8E%B0%E7%B1%BB%E7%9A%84%E4%B8%89%E5%B1%82%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%9E%8B/" rel="prev" title="【方案】接口+抽象类+实现类的三层设计模型">
+                【方案】接口+抽象类+实现类的三层设计模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/myhead.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lvxingzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:349024548@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#NOSQL"><span class="nav-number">1.</span> <span class="nav-text">NOSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A4%E8%AF%86MongoDB"><span class="nav-number">1.1.</span> <span class="nav-text">认识MongoDB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E6%80%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%B9%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">关系性数据库特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%B9%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">非关系型数据库特点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB"><span class="nav-number">2.</span> <span class="nav-text">MongoDB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MongoDB%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">MongoDB简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MongoDB%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.2.</span> <span class="nav-text">MongoDB使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mongodb%E4%B8%AD%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">2.3.</span> <span class="nav-text">mongodb中基本的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MongoDB%E5%91%BD%E4%BB%A4"><span class="nav-number">2.4.</span> <span class="nav-text">MongoDB命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4"><span class="nav-number">2.5.</span> <span class="nav-text">维护</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">2.5.1.</span> <span class="nav-text">主从复制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MongoDB%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B5%E7%9B%91%E6%8E%A7"><span class="nav-number">2.5.2.</span> <span class="nav-text">MongoDB运行情况监控</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mongostat%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B5"><span class="nav-number">2.5.3.</span> <span class="nav-text">mongostat查看当前运行情况</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mongotop%E6%9F%A5%E7%9C%8B%E6%95%88%E7%8E%87"><span class="nav-number">2.5.4.</span> <span class="nav-text">mongotop查看效率</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吕兴志</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

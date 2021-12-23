@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.  使用命令123456789101112131415----删除TRUNCATE TABLE mlog$_xxx_lxz_tmp;DROP MATERIALIZED VIEW LOG ON xxx_lxz_tmp;drop mater">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【方案】Oracle物化视图使用">
+<meta property="og:url" content="https://lvxingzhi.github.io/2017/11/01/13-[%E6%96%B9%E6%A1%88]Oracle%E7%89%A9%E5%8C%96%E8%A7%86%E5%9B%BE%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="吕兴志的学习笔记">
+<meta property="og:description" content="[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.  使用命令123456789101112131415----删除TRUNCATE TABLE mlog$_xxx_lxz_tmp;DROP MATERIALIZED VIEW LOG ON xxx_lxz_tmp;drop mater">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-11-01T14:01:21.000Z">
+<meta property="article:modified_time" content="2021-12-22T07:23:56.376Z">
+<meta property="article:author" content="吕兴志">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lvxingzhi.github.io/2017/11/01/13-[方案]Oracle物化视图使用/"/>
+
+
+
+
+
+  <title>【方案】Oracle物化视图使用 | 吕兴志的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吕兴志的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录,思考,成长,回忆</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2017/11/01/13-%5B%E6%96%B9%E6%A1%88%5DOracle%E7%89%A9%E5%8C%96%E8%A7%86%E5%9B%BE%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【方案】Oracle物化视图使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-01T22:01:21+08:00">
+                2017-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<h3 id="使用命令"><a href="#使用命令" class="headerlink" title="使用命令"></a>使用命令</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">----删除</span></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> mlog$_xxx_lxz_tmp;</span><br><span class="line"><span class="keyword">DROP</span> MATERIALIZED <span class="keyword">VIEW</span> LOG <span class="keyword">ON</span> xxx_lxz_tmp;</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> materialized <span class="keyword">view</span> mv_xxx_lxz_tmp</span><br><span class="line"></span><br><span class="line"><span class="comment">----原表创建增量刷新日志</span></span><br><span class="line"><span class="keyword">CREATE</span> MATERIALIZED <span class="keyword">VIEW</span> LOG <span class="keyword">ON</span> xxx_lxz_tmp <span class="keyword">WITH</span>  <span class="keyword">PRIMARY</span> KEY INCLUDING <span class="keyword">NEW</span> <span class="keyword">VALUES</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">----创建物化视图</span></span><br><span class="line"><span class="keyword">CREATE</span> MATERIALIZED <span class="keyword">VIEW</span> mv_xxx_lxz_tmp</span><br><span class="line">   Build immediate                                                  <span class="operator">/</span><span class="operator">/</span>默认方式    创建即刷新     DEFERRED    下次刷新填入数据</span><br><span class="line">    REFRESH fast <span class="keyword">START</span> <span class="keyword">WITH</span> SYSDATE <span class="operator">+</span> <span class="number">2</span><span class="operator">/</span><span class="number">24</span>      <span class="operator">/</span><span class="operator">/</span> fast刷新       开始时间  凌晨两点</span><br><span class="line">   NEXT round(sysdate<span class="operator">+</span><span class="number">1</span>) <span class="operator">+</span> <span class="number">2</span><span class="operator">/</span><span class="number">24</span>                          <span class="operator">/</span><span class="operator">/</span>下次刷新        明天两点</span><br><span class="line">   <span class="keyword">AS</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> xxx_lxz_tmp;                       <span class="operator">/</span><span class="operator">/</span>语句</span><br></pre></td></tr></table></figure>
+
+<h3 id="物化视图刷新"><a href="#物化视图刷新" class="headerlink" title="物化视图刷新"></a>物化视图刷新</h3><p>需创建定时任务</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> joblxz NUMBER;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">dbms_job.submit(job<span class="operator">=</span><span class="operator">&gt;</span>joblxz,what<span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;mv_xxx_lxz_tmp;&#x27;</span>,next_date<span class="operator">=</span><span class="operator">&gt;</span>to_date(<span class="string">&#x27;20191120 21:30:00&#x27;</span>,<span class="string">&#x27;yyyyMMdd hh24:mi:ss&#x27;</span>),<span class="type">interval</span><span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;sysdate+1+30/(24*60)&#x27;</span>,no_parse<span class="operator">=</span><span class="operator">&gt;</span><span class="literal">false</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  DBMS_JOB.RUN(<span class="number">23</span>);</span><br><span class="line">  <span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="number">23</span> 就是定时器得索引  可根据下面方式查出</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> user_jobs；——查看调度任务</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> dba_jobs_running；——查看正在执行的调度任务</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> dba_jobs；——查看执行完的调度任务</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h3 id="关于-interval-的一些设置技巧"><a href="#关于-interval-的一些设置技巧" class="headerlink" title="关于 interval 的一些设置技巧"></a>关于 interval 的一些设置技巧</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">关于job运行时间</span><br><span class="line">1:每分钟执行</span><br><span class="line">Interval =&gt; TRUNC(sysdate,&#x27;mi&#x27;) + 1/(24*60)</span><br><span class="line">2:每天定时执行</span><br><span class="line">例如：每天的凌晨1点执行</span><br><span class="line">Interval =&gt; TRUNC(sysdate) + 1 +1/(24)</span><br><span class="line">3:每周定时执行</span><br><span class="line">例如：每周一凌晨1点执行</span><br><span class="line">Interval =&gt; TRUNC(next_day(sysdate,&#x27;星期一&#x27;))+1/24</span><br><span class="line">4:每月定时执行</span><br><span class="line">例如：每月1日凌晨1点执行</span><br><span class="line">Interval =&gt;TRUNC(LAST_DAY(SYSDATE))+1+1/24</span><br><span class="line">5:每季度定时执行</span><br><span class="line">例如每季度的第一天凌晨1点执行</span><br><span class="line">Interval =&gt; TRUNC(ADD_MONTHS(SYSDATE,3),&#x27;Q&#x27;) + 1/24</span><br><span class="line">6:每半年定时执行</span><br><span class="line">例如：每年7月1日和1月1日凌晨1点</span><br><span class="line">Interval =&gt; ADD_MONTHS(trunc(sysdate,&#x27;yyyy&#x27;),6)+1/24</span><br><span class="line">7:每年定时执行</span><br><span class="line">例如：每年1月1日凌晨1点执行</span><br><span class="line">Interval =&gt;ADD_MONTHS(trunc(sysdate,&#x27;yyyy&#x27;), 12)+1/24</span><br></pre></td></tr></table></figure>
+
+<p>job的运行频率设置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.每天固定时间运行，比如早上8:10分钟：Trunc(Sysdate+1) + (8*60+10)/24*60</span><br><span class="line">2.Toad中提供的：</span><br><span class="line">每天：trunc(sysdate+1)</span><br><span class="line">每周：trunc(sysdate+7)</span><br><span class="line">每月：trunc(sysdate+30)</span><br><span class="line">每个星期日：next_day(trunc(sysdate),&#x27;星期日&#x27;)</span><br><span class="line">每天6点：trunc(sysdate+1)+6/24</span><br><span class="line">半个小时：sysdate+30/(24*60)</span><br><span class="line">3.每个小时的第15分钟运行，比如：8:15，9:15，10:15…：trunc(sysdate,&#x27;hh&#x27;)+(60+15)/(24*60)。</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="定时器得多种操作"><a href="#定时器得多种操作" class="headerlink" title="定时器得多种操作"></a>定时器得多种操作</h4><p>1.设置定时器开关</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dbms_job.broken(jobid,off);</span><br><span class="line">jobid:user_jobs表中的jobid（主键），数字格式</span><br><span class="line">off:定时任务开关，true or false，true关闭，false开启</span><br></pre></td></tr></table></figure>
+
+<p>2.运行定时器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dbms_job.run(23);</span><br><span class="line">jobid:user_jobs表中的jobid（主键），数字格式</span><br></pre></td></tr></table></figure>
+
+<p>3.删除定时器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dbms_job.remove(jobid);</span><br><span class="line">jobid:user_jobs表中的jobid（主键），数字格式</span><br></pre></td></tr></table></figure>
+
+<p>4.修改定时器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dbms_job.change(jobid,what,next_date,interval);</span><br><span class="line">jobid:user_jobs表中的jobid（主键），数字格式</span><br><span class="line">what:要执行的存储过程，不用写begin end 但在结尾要加分号</span><br><span class="line">next_date:下一次执行的时间，这个参数是时间格式的，而不是字符串</span><br><span class="line">interval:执行频率，也就是计算下一次执行时间的公式，是字符串格式的</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/01/14-%5B%E6%96%B9%E6%A1%88%5DJDK%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%A1%E7%90%86/" rel="next" title="【方案】JDK实现线程池管理">
+                <i class="fa fa-chevron-left"></i> 【方案】JDK实现线程池管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/07/15-%5BDesign%20pattern%5D%E5%88%A9%E7%94%A8%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" rel="prev" title="【Design pattern】利用动态代理技术实现设计模式-代理模式">
+                【Design pattern】利用动态代理技术实现设计模式-代理模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/myhead.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lvxingzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:349024548@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">使用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E5%8C%96%E8%A7%86%E5%9B%BE%E5%88%B7%E6%96%B0"><span class="nav-number">2.</span> <span class="nav-text">物化视图刷新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-interval-%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%BE%E7%BD%AE%E6%8A%80%E5%B7%A7"><span class="nav-number">3.</span> <span class="nav-text">关于 interval 的一些设置技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8%E5%BE%97%E5%A4%9A%E7%A7%8D%E6%93%8D%E4%BD%9C"><span class="nav-number">3.1.</span> <span class="nav-text">定时器得多种操作</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吕兴志</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

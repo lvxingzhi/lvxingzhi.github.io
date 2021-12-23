@@ -241,6 +241,532 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2017/11/20/16-%5B%E6%96%B9%E6%A1%88%5DJDK%E5%AE%9E%E7%8E%B0DB%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/20/16-%5B%E6%96%B9%E6%A1%88%5DJDK%E5%AE%9E%E7%8E%B0DB%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%AE%A1%E7%90%86/" itemprop="url">【方案】JDK实现DB连接池管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-20T21:21:27+08:00">
+                2017-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<h4 id="1-连接池接口定义"><a href="#1-连接池接口定义" class="headerlink" title="1,连接池接口定义"></a>1,连接池接口定义</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> dbsource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 连接池接口</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lxz</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DBSource</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Connection <span class="title">getConnection</span><span class="params">()</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">closeConnection</span><span class="params">(Connection con)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/20/16-%5B%E6%96%B9%E6%A1%88%5DJDK%E5%AE%9E%E7%8E%B0DB%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%AE%A1%E7%90%86/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2017/11/07/15-%5BDesign%20pattern%5D%E5%88%A9%E7%94%A8%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/07/15-%5BDesign%20pattern%5D%E5%88%A9%E7%94%A8%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" itemprop="url">【Design pattern】利用动态代理技术实现设计模式-代理模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-07T21:01:21+08:00">
+                2017-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+</blockquote>
+<h4 id="什么时候可以使用代理模式"><a href="#什么时候可以使用代理模式" class="headerlink" title="什么时候可以使用代理模式?"></a>什么时候可以使用代理模式?</h4><p>需要在原有功能的基础上神不知鬼不觉的增加一些额外功能时,使用代理模式.</p>
+<h4 id="如何实现？"><a href="#如何实现？" class="headerlink" title="如何实现？"></a>如何实现？</h4><h5 id="1-接口定义"><a href="#1-接口定义" class="headerlink" title="1,接口定义"></a>1,接口定义</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> kooko.com.proxy;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHelloWorld</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayBye</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-接口实现"><a href="#2-接口实现" class="headerlink" title="2,接口实现"></a>2,接口实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> kooko.com.proxy;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldImpl</span> <span class="keyword">implements</span> <span class="title">HelloWorld</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHelloWorld</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;say hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayBye</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;say bye&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/07/15-%5BDesign%20pattern%5D%E5%88%A9%E7%94%A8%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2017/11/01/13-%5B%E6%96%B9%E6%A1%88%5DOracle%E7%89%A9%E5%8C%96%E8%A7%86%E5%9B%BE%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/01/13-%5B%E6%96%B9%E6%A1%88%5DOracle%E7%89%A9%E5%8C%96%E8%A7%86%E5%9B%BE%E4%BD%BF%E7%94%A8/" itemprop="url">【方案】Oracle物化视图使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-01T22:01:21+08:00">
+                2017-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<h3 id="使用命令"><a href="#使用命令" class="headerlink" title="使用命令"></a>使用命令</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">----删除</span></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> mlog$_xxx_lxz_tmp;</span><br><span class="line"><span class="keyword">DROP</span> MATERIALIZED <span class="keyword">VIEW</span> LOG <span class="keyword">ON</span> xxx_lxz_tmp;</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> materialized <span class="keyword">view</span> mv_xxx_lxz_tmp</span><br><span class="line"></span><br><span class="line"><span class="comment">----原表创建增量刷新日志</span></span><br><span class="line"><span class="keyword">CREATE</span> MATERIALIZED <span class="keyword">VIEW</span> LOG <span class="keyword">ON</span> xxx_lxz_tmp <span class="keyword">WITH</span>  <span class="keyword">PRIMARY</span> KEY INCLUDING <span class="keyword">NEW</span> <span class="keyword">VALUES</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">----创建物化视图</span></span><br><span class="line"><span class="keyword">CREATE</span> MATERIALIZED <span class="keyword">VIEW</span> mv_xxx_lxz_tmp</span><br><span class="line">   Build immediate                                                  <span class="operator">/</span><span class="operator">/</span>默认方式    创建即刷新     DEFERRED    下次刷新填入数据</span><br><span class="line">    REFRESH fast <span class="keyword">START</span> <span class="keyword">WITH</span> SYSDATE <span class="operator">+</span> <span class="number">2</span><span class="operator">/</span><span class="number">24</span>      <span class="operator">/</span><span class="operator">/</span> fast刷新       开始时间  凌晨两点</span><br><span class="line">   NEXT round(sysdate<span class="operator">+</span><span class="number">1</span>) <span class="operator">+</span> <span class="number">2</span><span class="operator">/</span><span class="number">24</span>                          <span class="operator">/</span><span class="operator">/</span>下次刷新        明天两点</span><br><span class="line">   <span class="keyword">AS</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> xxx_lxz_tmp;                       <span class="operator">/</span><span class="operator">/</span>语句</span><br></pre></td></tr></table></figure>
+
+<h3 id="物化视图刷新"><a href="#物化视图刷新" class="headerlink" title="物化视图刷新"></a>物化视图刷新</h3><p>需创建定时任务</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> joblxz NUMBER;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">dbms_job.submit(job<span class="operator">=</span><span class="operator">&gt;</span>joblxz,what<span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;mv_xxx_lxz_tmp;&#x27;</span>,next_date<span class="operator">=</span><span class="operator">&gt;</span>to_date(<span class="string">&#x27;20191120 21:30:00&#x27;</span>,<span class="string">&#x27;yyyyMMdd hh24:mi:ss&#x27;</span>),<span class="type">interval</span><span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;sysdate+1+30/(24*60)&#x27;</span>,no_parse<span class="operator">=</span><span class="operator">&gt;</span><span class="literal">false</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  DBMS_JOB.RUN(<span class="number">23</span>);</span><br><span class="line">  <span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="number">23</span> 就是定时器得索引  可根据下面方式查出</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> user_jobs；——查看调度任务</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> dba_jobs_running；——查看正在执行的调度任务</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> dba_jobs；——查看执行完的调度任务</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/01/13-%5B%E6%96%B9%E6%A1%88%5DOracle%E7%89%A9%E5%8C%96%E8%A7%86%E5%9B%BE%E4%BD%BF%E7%94%A8/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2017/11/01/14-%5B%E6%96%B9%E6%A1%88%5DJDK%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/01/14-%5B%E6%96%B9%E6%A1%88%5DJDK%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%A1%E7%90%86/" itemprop="url">【方案】JDK实现线程池管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-01T22:01:21+08:00">
+                2017-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<h4 id="线程池的特点"><a href="#线程池的特点" class="headerlink" title="线程池的特点"></a>线程池的特点</h4><ol>
+<li>迅速响应.</li>
+<li>线程之间无优先级.</li>
+<li>线程执行时间短,不阻塞其他任务.</li>
+<li>线程不可绑定操作,不可被跟踪.</li>
+</ol>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>对象线程不用重复的创建与销毁,节省时间,资源.</li>
+<li>可以对线程的数量进行控制.</li>
+</ol>
+<h4 id="CODE"><a href="#CODE" class="headerlink" title="CODE"></a>CODE</h4>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/01/14-%5B%E6%96%B9%E6%A1%88%5DJDK%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%A1%E7%90%86/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2017/10/21/12-%5B%E7%AC%94%E8%AE%B0%5DSonarqube-%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -333,8 +859,7 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 </blockquote>
 <h3 id="帮助理解"><a href="#帮助理解" class="headerlink" title="帮助理解"></a>帮助理解</h3><p>技术债务:没有按照规范所编写设计的代码(走捷径),或者错误代码.<br>这些产生的问题,需要在以后的工作中需要被修复所花的时间(即称为债务).</p>
 <h3 id="本地Sonarqube环境"><a href="#本地Sonarqube环境" class="headerlink" title="本地Sonarqube环境"></a>本地Sonarqube环境</h3><p>测试地址:192.168.10.221:9000   用户名:admin 密码:admin   数据库:192.168.10.222 scholar2test/scholar2test</p>
@@ -345,37 +870,13 @@
 </blockquote>
 <p>以下介绍七种产生债务原因在图形化界面上的查看与分析方式<br>以下会穿插部分界面的解释，以默认规则，默认插件为例。</p>
 <h4 id="1-Bug和潜在的Bug"><a href="#1-Bug和潜在的Bug" class="headerlink" title="1:Bug和潜在的Bug"></a>1:Bug和潜在的Bug</h4><p>根据字面意思可以理解<br>这种原因通常问题严重性标记为:Blocker(阻断)<br>通过下图观察：<br><img src="/images/12-02.png"></p>
-<p>点击问题进入如下图:<br><img src="/images/12-03.png"></p>
-<p>名词解释:<br>规则组：若干规则组成的策略.<br><img src="/images/12-04.png"></p>
-<p>扩展<br>1,这些问题生成的依据 叫做规则<br>2,规则存在于规则组中<br>3,如何查看和配置规则组?</p>
-<p>通过新建规则或者修改规则,确定规则下的问题等级.比如点击findbugs规则组,显示如下<br><img src="/images/12-05.png"></p>
-<p>列出5个级别问题的对应规则数量.点击后查看对应的规则,并且能够通过操作对规则产生的问题级别进行修改,或者从本规则配置中去掉规则.<br>另外一种直接进入rules菜单下进行对规则的操作<br>具体规则操作见下文.</p>
-<h4 id="2-违反编码标准"><a href="#2-违反编码标准" class="headerlink" title="2,违反编码标准"></a>2,违反编码标准</h4><p>命名习惯,代码格式,常量大写等.</p>
-<h4 id="3-重复"><a href="#3-重复" class="headerlink" title="3,重复"></a>3,重复</h4><p>解释:<br>重复的意思是重复相似的代码<br>监测显示重复的面板如下图:<br><img src="/images/12-06.png"></p>
-<p>点击进入重复详细内容,见下图.大多数视图都可以纵深到具体代码.<br><img src="/images/12-07.png"></p>
-<p>如何查看重复代码,点击如下图的橘黄色线,弹出重复位置提示<br><img src="/images/12-08.png"></p>
-<p>默认重复检查只检查一个项目内的,,要实现多个项目之间的重复检查需要设置,如下图:<br><img src="/images/12-09.png"></p>
-<h4 id="4-单元测试信息"><a href="#4-单元测试信息" class="headerlink" title="4,单元测试信息"></a>4,单元测试信息</h4><p>解释:<br>单元测试覆盖率.<br>面板如下图:<br><img src="/images/12-10.png"></p>
-<p>结合分析时采用插件<br>详细使用参考:<a target="_blank" rel="noopener" href="http://docs.sonarqube.org/display/SONAR/Lack+of+Unit+Tests">http://docs.sonarqube.org/display/SONAR/Lack+of+Unit+Tests</a><br>由于项目中没有用到,暂时没有分析.</p>
-<h4 id="5-复杂的代码"><a href="#5-复杂的代码" class="headerlink" title="5,复杂的代码"></a>5,复杂的代码</h4><p>解释:<br>一个文件或者方法,放入了太多逻辑,相应的复杂度就会增加.<br><img src="/images/12-11.png"><br>权值:复杂度/方法<br>柱状图从左到右权值上升 柱状图的高度为文件或方法数.<br>方法:平均权值<br>类:类的平均复杂度<br>文件:包的平均复杂度</p>
-<p>6,结构设计</p>
-<p>主要体现在三个方面:<br>(1)同级相互调用关系,死锁等<br>(2)层次结构调用关系,编码分层调用,如mvc,mvp等<br>(3)包的管理</p>
-<h5 id="1-同级相互调用关系-死锁等"><a href="#1-同级相互调用关系-死锁等" class="headerlink" title="(1)同级相互调用关系,死锁等"></a>(1)同级相互调用关系,死锁等</h5><p><img src="/images/12-12.png"></p>
-<p>选中文件:<br>蓝色表示选中的文件或包,绿色表示依赖于选中的蓝色文件或包<br>黄色表示蓝色依赖的文件或包<br><img src="/images/12-13.png"></p>
-<p>双击组件进入子组件依赖关系图<br><img src="/images/12-14.png"></p>
-<p>选中右边格子<br>绿色依赖黄色,数字代表依赖个数,红色代表存在反向依赖,数字代表反向依赖的个数.出现红色表示容易造成循环的地方.<br>出现这种相互调用的,就要考虑设计是否合理<br><img src="/images/12-15.png"></p>
-<p>双击单元格显示依赖文件详情:<br><img src="/images/12-16.png"></p>
-<h5 id="2-层次结构调用关系-编码分层调用-如mvc等"><a href="#2-层次结构调用关系-编码分层调用-如mvc等" class="headerlink" title="(2)层次结构调用关系,编码分层调用,如mvc等"></a>(2)层次结构调用关系,编码分层调用,如mvc等</h5><p>以下介绍如何设置可以自定义规则来使自定义约束起作用.<br>增加架构约束规则,来分析显示层级调用关系<br>例:<br>Rules中查找Architectural 规则 (此规则主要用于架构规则定义)<br><img src="/images/12-17.png"></p>
-<p>点击create按钮,自定义规则<br><img src="/images/12-18.png"></p>
-<p>设置规则参数<br><img src="/images/12-19.png"></p>
-<p>分配规则(把规则加入到规则组,规则组应用于具体项目)<br><img src="/images/12-20.png"></p>
-<h5 id="3-包的管理"><a href="#3-包的管理" class="headerlink" title="(3)包的管理"></a>(3)包的管理</h5><p>引用包的管理,点击Libraries栏目显示项目引用包<br><img src="/images/12-21.png"><br><img src="/images/12-22.png"><br>另外可以根据依赖关系查看包的使用情况,具体操作<br>点击右上角的usages按钮,进入包的使用查询,如下图<br><img src="/images/12-23.png"></p>
-<p>7,注释<br>下图显示注释分析情况:<br><img src="/images/12-24.png"></p>
-<p>点击进入,以权值排列显示<br><img src="/images/12-25.png"></p>
-<p>具体的注释量取决于具体的项目设计情况.</p>
-<h3 id="终"><a href="#终" class="headerlink" title="终"></a>终</h3><p>Sonar不能直接提高我们的代码质量和优化项目结构，只是用来反应我们的问题，间接关系。<br><img src="/images/12-26.png"></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/21/12-%5B%E7%AC%94%E8%AE%B0%5DSonarqube-%E4%BD%BF%E7%94%A8/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -514,8 +1015,7 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 </blockquote>
 <h3 id="软件作用"><a href="#软件作用" class="headerlink" title="软件作用"></a>软件作用</h3><p>根据规则分析源代码，进行数据统计，呈现在可视化界面，方便使用者对代码分析。</p>
 <blockquote>
@@ -540,34 +1040,640 @@
 <p>2, 版权问题使用oracle时自己导jdbc包<br>extensions/jdbc-driver/oracle目录下放入对应的oracle驱动jar包<br>路径oracle客户端目录 client_1\jdbc\lib下</p>
 <p>3, 导入汉化包extensions/plugins<br>下载地址:<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/Chinese+Pack">http://docs.codehaus.org/display/SONAR/Chinese+Pack</a></p>
 <p>4, 找到对应系统的执行目录,这里运行/bin/linux-x86-64/sonar.sh</p>
-<p>5, 访问地址<br><a target="_blank" rel="noopener" href="http://192.168.10.221:9000/">http://192.168.10.221:9000</a><br>默认账户 admin/admin</p>
-<h6 id="二-sonar-runner"><a href="#二-sonar-runner" class="headerlink" title="二,sonar-runner"></a>二,sonar-runner</h6><p>1, 解压到任何目录,配置环境变量到bin目录(/etc/profile),方便执行命令,记得用source 该文件命令使之生效<br>2, 在conf配置目录下配置sonar-runner.properties配置文件<br>形如下面:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sonar.host.url=http://localhost:9000     sonar服务器地址</span><br><span class="line">sonar.jdbc.url=jdbc:oracle:thin:@192.168.10.222:1521:ora11g    oracle地址表空间配置</span><br><span class="line">sonar.jdbc.username=scholar2test          oracle用户名</span><br><span class="line">sonar.jdbc.password=scholar2test          oracle密码</span><br><span class="line">sonar.login=admin                      sonar服务器web登陆用户名</span><br><span class="line">sonar.password=admin                   sonar服务器web登陆密码</span><br></pre></td></tr></table></figure>
-<p>3, 比如我想监测ABC这个项目的源代码质量怎么样,在ABC目录中新建一个文件sonar-project.properties（换位置就修改下面的配置文件sources）    这个文件里面配置要监测的目录,监测规则,上传到服务器的名称,唯一标识等.<br>例如:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sonar.projectName=My project</span><br><span class="line">sonar.projectVersion=1.0</span><br><span class="line">sonar.sources=.</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/21/11-%5B%E7%AC%94%E8%AE%B0%5DSonarqube-%E5%AE%89%E8%A3%85/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
 
-<p>4, 配置完成后,在所在的目录执行sonar-runner命令（自动当前目录寻找配置文件）,随即开始上传到服务端进行分析存储.<br>根据提示链接访问查看分析结果.如图：<br><img src="/images/11-01.png"></p>
-<h6 id="可能不成功的原因-具体根据错误信息分析"><a href="#可能不成功的原因-具体根据错误信息分析" class="headerlink" title="可能不成功的原因:具体根据错误信息分析"></a>可能不成功的原因:具体根据错误信息分析</h6><p>1,Oracle驱动包没有导入<br>2,安装启动提示jvm内存不足   修改wrapper.conf配置文件的内存分配(4—&gt;8)<br>3,运行出现内容内存溢出,修改sonar运行内存<br>Linux:export SONAR_RUNNER_OPTS=”-Xmx512m -XX:MaxPermSize=128m”<br>Windows:set SONAR_RUNNER_OPTS=-Xmx512m -XX:MaxPermSize=128m</p>
-<h6 id="Sonar-project-properties配置文件详细功能"><a href="#Sonar-project-properties配置文件详细功能" class="headerlink" title="Sonar-project.properties配置文件详细功能"></a>Sonar-project.properties配置文件详细功能</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">常用参数(Mandatory Parameters):</span><br><span class="line">Sonar.host.url=http://localhost:9000        服务器地址</span><br><span class="line">Sonar.jdbc.url=jdbc:h2:tcp://localhost:9092/sonar   数据源</span><br><span class="line">Sonar.jdbc.username=sonar       数据库用户名</span><br><span class="line">Sonar.jdbc.password=sonar       数据库密码</span><br><span class="line">sonar.projectVersion=版本号</span><br><span class="line">sonar.projectKey=唯一标识</span><br><span class="line">Sonar.language=解析语言</span><br><span class="line">sonar.projectName=web平台显示名称</span><br><span class="line">Sonar.sources=目录</span><br><span class="line">其他扩展参数(Optional Parameters)</span><br><span class="line">见地址:</span><br><span class="line">http://docs.sonarqube.org/display/SONAR/Analysis+Parameters</span><br></pre></td></tr></table></figure>
+    
 
-<h6 id="Sonarqube插件扩展下载地址-（注：使用中渐渐扩展，循序渐进）"><a href="#Sonarqube插件扩展下载地址-（注：使用中渐渐扩展，循序渐进）" class="headerlink" title="Sonarqube插件扩展下载地址:（注：使用中渐渐扩展，循序渐进）"></a>Sonarqube插件扩展下载地址:（注：使用中渐渐扩展，循序渐进）</h6><ul>
-<li>JavaScript代码检查：<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/JavaScript+Plugin">http://docs.codehaus.org/display/SONAR/JavaScript+Plugin</a></li>
-<li>python代码检查：<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/Python+Plugin">http://docs.codehaus.org/display/SONAR/Python+Plugin</a><br>Web页面检查（HTML、JSP、JSF、Ruby、PHP等）</li>
-<li><a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/Web+Plugin">http://docs.codehaus.org/display/SONAR/Web+Plugin</a></li>
-<li>xml文件检查：<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/XML+Plugin">http://docs.codehaus.org/display/SONAR/XML+Plugin</a></li>
-<li>scm源码库统计分析：<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/SCM+Stats+Plugin">http://docs.codehaus.org/display/SONAR/SCM+Stats+Plugin</a></li>
-<li>文件度量：<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/Tab+Metrics+Plugin">http://docs.codehaus.org/display/SONAR/Tab+Metrics+Plugin</a></li>
-<li>中文语言包：<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/Chinese+Pack">http://docs.codehaus.org/display/SONAR/Chinese+Pack</a></li>
-<li>时间表显示度量结果：<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/Timeline+Plugin">http://docs.codehaus.org/display/SONAR/Timeline+Plugin</a></li>
-<li>度量结果演进图：<a target="_blank" rel="noopener" href="http://docs.codehaus.org/display/SONAR/Motion+Chart+Plugin">http://docs.codehaus.org/display/SONAR/Motion+Chart+Plugin</a></li>
-</ul>
-<h4 id="Sonar-Maven进行项目的源代码分析"><a href="#Sonar-Maven进行项目的源代码分析" class="headerlink" title="Sonar+Maven进行项目的源代码分析"></a>Sonar+Maven进行项目的源代码分析</h4><h5 id="准备-下面是版本兼容信息-使用对应的版本"><a href="#准备-下面是版本兼容信息-使用对应的版本" class="headerlink" title="准备: 下面是版本兼容信息,使用对应的版本"></a>准备: 下面是版本兼容信息,使用对应的版本</h5><p><img src="/images/11-02.png"></p>
-<h5 id="步骤"><a href="#步骤" class="headerlink" title="步骤:"></a>步骤:</h5><p>1,配置maven settings配置文件,加入sonarqube的配置信息如下:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--sonar配置--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">id</span>&gt;</span>sonar<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line"></span><br><span class="line">     <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">sonar.jdbc.url</span>&gt;</span></span><br><span class="line">          jdbc:oracle:thin:@192.168.10.222:1521:ora11g</span><br><span class="line">          <span class="tag">&lt;/<span class="name">sonar.jdbc.url</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">sonar.jdbc.username</span>&gt;</span>scholar2test<span class="tag">&lt;/<span class="name">sonar.jdbc.username</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">sonar.jdbc.password</span>&gt;</span>scholar2test<span class="tag">&lt;/<span class="name">sonar.jdbc.password</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">sonar.host.url</span>&gt;</span>http://192.168.10.221:9000<span class="tag">&lt;/<span class="name">sonar.host.url</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br></pre></td></tr></table></figure>
+    
 
-<p>2, 针对科研之友项目特别注意:<br>在分析项目之前,需要执行mvn clean 编译一下scm3-parent项目,把各自依赖的项目打包,保证所有的模块（即code包）jar包都生成, 否则在分析模块的时候去本地库/远程库找不到对应的包,不需要使用mvn install.<br>在pom.xml所在文件夹运行mvn sonar:sonar 开始分析 提示成功则可登陆sonar服务器web平台查看分析结果.</p>
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/06/23/17-%5B%E6%96%B9%E6%A1%88%5D%E6%8E%A5%E5%8F%A3+%E6%8A%BD%E8%B1%A1%E7%B1%BB+%E5%AE%9E%E7%8E%B0%E7%B1%BB%E7%9A%84%E4%B8%89%E5%B1%82%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/23/17-%5B%E6%96%B9%E6%A1%88%5D%E6%8E%A5%E5%8F%A3+%E6%8A%BD%E8%B1%A1%E7%B1%BB+%E5%AE%9E%E7%8E%B0%E7%B1%BB%E7%9A%84%E4%B8%89%E5%B1%82%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%9E%8B/" itemprop="url">【方案】接口+抽象类+实现类的三层设计模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-23T11:21:11+08:00">
+                2016-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
 
           
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<h4 id="结构模型"><a href="#结构模型" class="headerlink" title="结构模型"></a>结构模型</h4><p><img src="/images/17-01.png"></p>
+<h4 id="应用情景"><a href="#应用情景" class="headerlink" title="应用情景"></a>应用情景</h4><ol>
+<li>访问入口是统一的</li>
+<li>具体实现有多种变化</li>
+</ol>
+<h4 id="模拟情景"><a href="#模拟情景" class="headerlink" title="模拟情景"></a>模拟情景</h4><p>1,蛋糕店有一台生产蛋糕的机器(接口),机器有磨具插槽(定义入口)<br>2,机器需要有不同的蛋糕磨具才能塑形(抽象类),磨具与机器之间有相匹配的型号(入口实现)<br>3,磨具又规定了蛋糕的大小,但是蛋糕材料没有固定(差异化定义)<br>4,果仁蛋糕磨具中放入果仁,鸡蛋蛋糕磨具中放入鸡蛋(差异化实现)<br>(1),机器是接口 (2),磨具是抽象类 (3),磨具+材料是具体实现</p>
+<blockquote>
+<p>抽象类对接口进行了统一入口的实现,并且约束了具体实现类的定义</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/02/11/18-%5B%E7%AC%94%E8%AE%B0%5DMongoDB%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/02/11/18-%5B%E7%AC%94%E8%AE%B0%5DMongoDB%E5%AD%A6%E4%B9%A0/" itemprop="url">【笔记】MongoDB学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-11T18:01:56+08:00">
+                2016-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+</blockquote>
+<h3 id="NOSQL"><a href="#NOSQL" class="headerlink" title="NOSQL"></a>NOSQL</h3><h4 id="认识MongoDB"><a href="#认识MongoDB" class="headerlink" title="认识MongoDB"></a>认识MongoDB</h4><p>流行的数据库Oracle,SqlServer,MySql为关系性数据库,相对的,也有非关系性数据库,统称为NoSql,而MongoDB就是NoSql的其中一种.</p>
+<h4 id="关系性数据库特点"><a href="#关系性数据库特点" class="headerlink" title="关系性数据库特点"></a>关系性数据库特点</h4><ul>
+<li>高度组织化结构化数据</li>
+<li>结构化查询语言（SQL） (SQL)</li>
+<li>数据和关系都存储在单独的表中。</li>
+<li>数据操纵语言，数据定义语言</li>
+<li>严格的一致性</li>
+<li>基础事务</li>
+</ul>
+<h4 id="非关系型数据库特点"><a href="#非关系型数据库特点" class="headerlink" title="非关系型数据库特点"></a>非关系型数据库特点</h4><ul>
+<li>代表着不仅仅是SQL</li>
+<li>没有声明性查询语言</li>
+<li>没有预定义的模式</li>
+<li>键 - 值对存储，列存储，文档存储，图形数据库</li>
+<li>最终一致性，而非ACID属性</li>
+<li>非结构化和不可预知的数据</li>
+<li>CAP定理</li>
+<li>高性能，高可用性和可伸缩性<blockquote>
+<p>由上可以看出,关系型数据库更加安全,严谨,而非关系型数据库更加追求性能.从他们遵从的原则同样可以得出以上结论</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/images/18-01.png"></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/11/18-%5B%E7%AC%94%E8%AE%B0%5DMongoDB%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/01/02/20-%5B%E7%AC%94%E8%AE%B0%5DOracle%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/02/20-%5B%E7%AC%94%E8%AE%B0%5DOracle%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/" itemprop="url">【笔记】Oracle中的排序与分页踩坑实录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-02T15:02:12+08:00">
+                2016-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+</blockquote>
+<h4 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h4><p>  在项目中有用到某表作为数据来源，在页面以列表的形式显示。使用的数据库是Oracle，分页的时候使用到了rownum这个关键字。<br>  列表有排序功能，自然也用到了order by。<br>  接下来问题出现了，我在用order by查询数据库数据的时候显示的内容，和页面列表处显示的内容竟然不一致。心里想不明白，各种倒腾，终于弄明白了其中一二。</p>
+<h5 id="首先说结论"><a href="#首先说结论" class="headerlink" title="首先说结论"></a>首先说结论</h5><p>当使用order by与rownum结合时,请一定保证order by后有一个能保证唯一的列<br>例如 select t.* from person t order by t.age,t.id; //id为主键,age可能重复</p>
+<blockquote>
+<p>接下来验证之前的现象和我得出的结论</p>
+</blockquote>
+<p>1,首先创建表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> A_LXZ (id <span class="type">int</span> ,name VARchar2(<span class="number">10</span>),age <span class="type">int</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2,插入数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">1</span>,<span class="string">&#x27;a&#x27;</span>,<span class="number">3</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">2</span>,<span class="string">&#x27;b&#x27;</span>,<span class="number">4</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">3</span>,<span class="string">&#x27;c&#x27;</span>,<span class="number">5</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">4</span>,<span class="string">&#x27;d&#x27;</span>,<span class="number">6</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">8</span>,<span class="string">&#x27;h&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">9</span>,<span class="string">&#x27;i&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">6</span>,<span class="string">&#x27;f&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">5</span>,<span class="string">&#x27;e&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">7</span>,<span class="string">&#x27;g&#x27;</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">10</span>,<span class="string">&#x27;j&#x27;</span>,<span class="number">8</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> A_LXZ(id,name,age)<span class="keyword">values</span>(<span class="number">11</span>,<span class="string">&#x27;k&#x27;</span>,<span class="number">9</span>);</span><br></pre></td></tr></table></figure>
+
+<p>3,查询结果<br><img src="/images/20-01.png"></p>
+<p>4,使用order by age查询结果<br><img src="/images/20-02.png"></p>
+<p>5,使用order by + rownum 获取前面的N条结果时,结果如下<br><img src="/images/20-03.png"></p>
+<p>到这里,问题就出来了,ID为7的数据去了哪里? 本来想要得到的结果集是这样的:<br><img src="/images/20-04.png"></p>
+<p>却得到了这样<br><img src="/images/20-05.png"></p>
+<h5 id="原因是"><a href="#原因是" class="headerlink" title="原因是:"></a>原因是:</h5><p>当order by 排序后遇到相同的数据时,rownum的确定是无序排列(不稳定排序),<br>比如打印出rownum的值:<br><img src="/images/20-06.png"></p>
+<p>可以看到id=7的rownum是9,所以我们获取rownum&lt;=8时,是获取不到id=7的数据的,所以看到的和真正获取到的可能不一致.  </p>
+<p>由此得出结论,当我们使用order by和rownum的时候,请保证order by 后至少有一个列是具有唯一值的.<br>例如:<br><img src="/images/20-07.png"><br><img src="/images/20-08.png"><br>这样数据就能够保证查询与获取是一致的了.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/01/02/19-%5B%E7%AC%94%E8%AE%B0%5DJava%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86%E4%BB%A5%E5%8F%8A%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/02/19-%5B%E7%AC%94%E8%AE%B0%5DJava%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86%E4%BB%A5%E5%8F%8A%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/" itemprop="url">【笔记】Java实现二叉树遍历以及常用算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-02T15:02:12+08:00">
+                2016-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+</blockquote>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>常用二叉树有:<br>完全二叉树,平衡二叉树,红黑树,满二叉树等</p>
+<h4 id="二叉树有4种遍历方式"><a href="#二叉树有4种遍历方式" class="headerlink" title="二叉树有4种遍历方式"></a>二叉树有4种遍历方式</h4><ol>
+<li>前序遍历:<blockquote>
+<p>首先访问根，再先序遍历左（右）子树，最后先序遍历右（左）子树</p>
+</blockquote>
+</li>
+<li>中序遍历:<blockquote>
+<p>首先中序遍历左（右）子树，再访问根，最后中序遍历右（左）子树</p>
+</blockquote>
+</li>
+<li>后序遍历:<blockquote>
+<p>首先后序遍历左（右）子树，再后序遍历右（左）子树，最后访问根</p>
+</blockquote>
+</li>
+<li>层次遍历:<blockquote>
+<p>即按照层次访问，访问根，访问子女，再访问子女的子女（越往后的层次越低）（两个子女的级别相同,通常先左后右）</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/02/19-%5B%E7%AC%94%E8%AE%B0%5DJava%E5%AE%9E%E7%8E%B0%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86%E4%BB%A5%E5%8F%8A%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -605,7 +1711,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
   </nav>
 
 
@@ -655,7 +1761,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
