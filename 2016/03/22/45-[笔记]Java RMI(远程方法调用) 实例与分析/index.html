@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="目的通过本文,可以加深对Java RMI的理解,知道它的工作原理,怎么使用等. 也为了加深我自己的理解,故整理成文.不足之处,还望指出. 概念解释RMI（RemoteMethodInvocation）： 远程方法调用，顾名思义，通过远程的方式调用非本地对象的方法并返回结果。使用远程调用通常解决本地计算瓶颈问题，例如分布式记算，最近很火的阿尔法狗人机大战，据说运算使用上千个CPU。JRMP（ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【笔记】Java RMI(远程方法调用) 实例与分析">
+<meta property="og:url" content="https://lvxingzhi.github.io/2016/03/22/45-[%E7%AC%94%E8%AE%B0]Java%20RMI(%E8%BF%9C%E7%A8%8B%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8)%20%E5%AE%9E%E4%BE%8B%E4%B8%8E%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="吕兴志的学习笔记">
+<meta property="og:description" content="目的通过本文,可以加深对Java RMI的理解,知道它的工作原理,怎么使用等. 也为了加深我自己的理解,故整理成文.不足之处,还望指出. 概念解释RMI（RemoteMethodInvocation）： 远程方法调用，顾名思义，通过远程的方式调用非本地对象的方法并返回结果。使用远程调用通常解决本地计算瓶颈问题，例如分布式记算，最近很火的阿尔法狗人机大战，据说运算使用上千个CPU。JRMP（ja">
+<meta property="og:locale">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/45-01.png">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/45-02.png">
+<meta property="article:published_time" content="2016-03-22T05:02:12.000Z">
+<meta property="article:modified_time" content="2021-12-24T07:24:25.227Z">
+<meta property="article:author" content="吕兴志">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lvxingzhi.github.io/images/45-01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lvxingzhi.github.io/2016/03/22/45-[笔记]Java RMI(远程方法调用) 实例与分析/"/>
+
+
+
+
+
+  <title>【笔记】Java RMI(远程方法调用) 实例与分析 | 吕兴志的学习笔记</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">吕兴志的学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录,思考,成长,回忆</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/03/22/45-%5B%E7%AC%94%E8%AE%B0%5DJava%20RMI(%E8%BF%9C%E7%A8%8B%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8)%20%E5%AE%9E%E4%BE%8B%E4%B8%8E%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="吕兴志的学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【笔记】Java RMI(远程方法调用) 实例与分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-22T13:02:12+08:00">
+                2016-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+</blockquote>
+<h4 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h4><p>通过本文,可以加深对Java RMI的理解,知道它的工作原理,怎么使用等. 也为了加深我自己的理解,故整理成文.不足之处,还望指出.</p>
+<h4 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h4><p><strong>RMI（RemoteMethodInvocation）：</strong> 远程方法调用，顾名思义，通过远程的方式调用非本地对象的方法并返回结果。使用远程调用通常解决本地计算瓶颈问题，例如分布式记算，最近很火的阿尔法狗人机大战，据说运算使用上千个CPU。<br><strong>JRMP（java remote method protocol）：</strong> java远程方法协议，这是完成java到java远程调用的协议，基于TCP协议。<br><strong>stub与skeleton：</strong> 这两个概念下面会用到，这里解释下，skeleton是放在服务端的代理，它知道真正的对象在哪。stub是放在客户端的代理，它记录了查找和调用skeleton信息。理解成远程对象引用也成.</p>
+<blockquote>
+<p>容易混淆的概念</p>
+</blockquote>
+<p>远程方法调用与远程过程调用的区别：远程方法调用是java独有的，基于JRMP对象流协议实现，支持传输java序列化对象。远程过程调用是基于socket技术实现的，不能传输java对象，socket套接字协议支持多种语言。它们都是基于TCP协议传输。远程方法调用传输的是java序列化对象和基本数据类型，而远程过程调用不支持传输对象。</p>
+<p><strong>RMI调用模型：</strong><br><img src="/images/45-01.png"><br>从宏观看,想要远程调用需要做两件事情,1,服务端向本地对象注册表中注册能被调用的远程对象. 2,客户端向远程对象注册表请求远程对象的引用.</p>
+<span id="more"></span>
+<h4 id="Java中RMI实现"><a href="#Java中RMI实现" class="headerlink" title="Java中RMI实现"></a>Java中RMI实现</h4><p>先通过一个例子了解Java中RMI是怎么用的,然后再根据代码分析源码是如何实现的.</p>
+<p>1,先创建远程对象接口,继承自Remote(稍后源码中有分析为什么要有这个接口)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> remote.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 远程接口,实现Remote</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lxz</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IRemote</span> <span class="keyword">extends</span> <span class="title">Remote</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">show</span><span class="params">()</span><span class="keyword">throws</span> RemoteException</span>;<span class="comment">//声明方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2,接口实现,需要继承UnicastRemoteObject类,等会分析</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> remote.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 远程接口实现,继承UnicastRemoteObject</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lxz</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteImpl</span> <span class="keyword">extends</span> <span class="title">UnicastRemoteObject</span>  <span class="keyword">implements</span> <span class="title">IRemote</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RemoteImpl</span><span class="params">()</span><span class="keyword">throws</span> RemoteException</span>&#123;&#125;<span class="comment">//构造方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">show</span><span class="params">()</span><span class="keyword">throws</span> RemoteException</span>&#123;<span class="comment">//调用方法实现</span></span><br><span class="line">        System.out.println(<span class="string">&quot;进入&quot;</span>);</span><br><span class="line">        System.out.println(<span class="keyword">this</span>.toString());</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;远程调用成功&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3,服务端向本地端口1234对象注册表注册对象和它的名字</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> remote.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.AlreadyBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  服务端启动,创建端口上的对象注册列表,向对象注册表中注册远程调用对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lxz</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MalformedURLException, RemoteException, AlreadyBoundException, InterruptedException </span>&#123;</span><br><span class="line">        RemoteImpl r = <span class="keyword">new</span> RemoteImpl();<span class="comment">//创建远程对象</span></span><br><span class="line">        Registry rr = LocateRegistry.createRegistry(<span class="number">1234</span>); <span class="comment">//创建1234端口上的对象注册表,如果已经创建了就用getRegistry方法获取</span></span><br><span class="line">        rr.bind(<span class="string">&quot;testrmi&quot;</span>, r);<span class="comment">//向注册表中注册对象</span></span><br><span class="line">        System.out.println(r.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+
+<p>4,根据JDK API,以上远程服务就算搭建完毕了,下面通过客户端调用测试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> remote.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.NotBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 客户端启动,获得远程的对象注册表中的对象引用</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lxz</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClient</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> MalformedURLException, RemoteException, NotBoundException </span>&#123;</span><br><span class="line">        IRemote r = (IRemote) Naming.lookup(<span class="string">&quot;rmi://localhost:1234/testrmi&quot;</span>);<span class="comment">//获取远程1234端口对象注册表中testrmi的stub</span></span><br><span class="line">        String a = r.show();<span class="comment">//调用引用的方法,实际上调用的是stub,由stub与服务端交互并返回结果</span></span><br><span class="line">        System.out.println(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">服务端:</span><br><span class="line"></span><br><span class="line">RemoteImpl[UnicastServerRef [liveRef: [endpoint:[192.168.1.253:58169](local),objID:[-60651394:1539d5944e6:-7fff, -6910034932968554489]]]]</span><br><span class="line">客户端:</span><br><span class="line"></span><br><span class="line">远程调用成功</span><br></pre></td></tr></table></figure>
+
+<p>这样就完成了一个远程对象注册与远程对象方法调用的完整例子. 现在根据这个例子来分析它为什么要继承UnicastRemoteObject,实现Remote,向注册表注册等等.</p>
+<p>首先远程对象实现类中需要继承UnicastRemoteObject类,UnicastRemoteObject具有注册为远程对象,生成远程引用的功能等,所有都已经被JDK封装好了,不需要编写,其中的实现有些是sun包开头的,不公开.</p>
+<p><strong>UnicastRemoteObject继承关系:</strong><br><img src="/images/45-02.png"></p>
+<p>有了远程对象实现类,看服务端的启动逻辑,其中:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Registry rr = LocateRegistry.createRegistry(1234); </span><br></pre></td></tr></table></figure>
+<p>LocateRegistry类:用于创建或获取某端口的对象注册表</p>
+<p>LocateRegistry.createRegistry：这个方法表示获得远程对象注册表引用,返回Registry对象</p>
+<p>Registry：真正操作远程对象注册表的接口</p>
+<p>接着,</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rr.bind(&quot;testrmi&quot;, r);</span><br></pre></td></tr></table></figure>
+<p>利用Registry的对象,把刚刚创建的远程对象注册为名称testrmi. 这里还有一种写法,效果是一样的.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LocateRegistry.createRegistry(1234); //创建,如果已经创建了就可省略这一句</span><br><span class="line">Naming.bind(&quot;rmi://localhost:1234/testrmi&quot;, r);//需要带上端口</span><br></pre></td></tr></table></figure>
+<p>Naming：与对象注册表交互的工具类</p>
+<p>上面是服务端从远程对象创建到对象注册的整个逻辑.客户端调用的逻辑比较简单,先通过Naming工具类获取到远程对象的引用以后,就可以正常使用了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(IRemote) Naming.lookup(&quot;rmi://localhost:1234/testrmi&quot;);</span><br></pre></td></tr></table></figure>
+<p>这里返回的”引用”和通常讲的对象引用不同,是远程对象的引用信息.拿到这个”引用”以后就可以像使用真正的对象一样调用其中的方法.</p>
+<p>结束.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/16/43-%5B%E7%AC%94%E8%AE%B0%5D%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81,%E4%BB%A5%E5%8F%8A%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B9%90%E8%A7%82%E9%94%81/" rel="next" title="【笔记】程序中的乐观锁与悲观锁,以及动手实现乐观锁">
+                <i class="fa fa-chevron-left"></i> 【笔记】程序中的乐观锁与悲观锁,以及动手实现乐观锁
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/25/46-%5B%E7%AC%94%E8%AE%B0%5DJava%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AF%B9%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%80%E8%AF%8D%E7%9A%84%E8%A7%A3%E9%87%8A/" rel="prev" title="【笔记】Java程序员对服务器一词的解释">
+                【笔记】Java程序员对服务器一词的解释 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/myhead.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lvxingzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:349024548@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5%E8%A7%A3%E9%87%8A"><span class="nav-number">2.</span> <span class="nav-text">概念解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java%E4%B8%ADRMI%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Java中RMI实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吕兴志</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

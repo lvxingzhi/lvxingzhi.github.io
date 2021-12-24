@@ -87,7 +87,7 @@
 <meta property="og:description" content="介绍概念: 运用共享技术有效地支持大量细粒度的对象。应用场景: 项目中某个类需要产生大量的对象,其中对象中的属性创建占用了大量的内存,如果这些属性对象可以被公用,那么可以利用享元模式把他们指向同一个地址.  这让我想起了字符串常量池的做法.那么我们就用例子模仿一个字符串存储的逻辑.  CODE 自创字符串类  123456789101112131415161718package note.co">
 <meta property="og:locale">
 <meta property="article:published_time" content="2015-06-11T03:22:02.000Z">
-<meta property="article:modified_time" content="2021-12-23T08:15:39.056Z">
+<meta property="article:modified_time" content="2021-12-23T08:44:20.021Z">
 <meta property="article:author" content="吕兴志">
 <meta name="twitter:card" content="summary">
 
@@ -341,7 +341,7 @@
 <p>自创字符串类</p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> note.com.flyweight;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义String类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lxz</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyString</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyString</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<span id="more"></span>
 <blockquote>
 <p>自创字符串常量池</p>
 </blockquote>
@@ -479,7 +479,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
