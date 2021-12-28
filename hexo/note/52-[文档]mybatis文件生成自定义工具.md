@@ -9,7 +9,7 @@ categories:
 > 代码地址: https://github.com/lvxingzhi/MybatisGeneratorMysqlUtil.git
 
 快速构建项目自定义的实体映射相关文件
-
+<!-- more -->
 ### 使用说明
 ```java
 package org.note.main;
