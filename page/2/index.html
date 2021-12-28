@@ -81,9 +81,9 @@
 
 <meta name="description" content="记录,思考,成长,回忆">
 <meta property="og:type" content="website">
-<meta property="og:title" content="吕兴志的原创知识库">
+<meta property="og:title" content="LXZ的原创知识库">
 <meta property="og:url" content="https://lvxingzhi.github.io/page/2/index.html">
-<meta property="og:site_name" content="吕兴志的原创知识库">
+<meta property="og:site_name" content="LXZ的原创知识库">
 <meta property="og:description" content="记录,思考,成长,回忆">
 <meta property="og:locale">
 <meta property="article:author" content="吕兴志">
@@ -123,7 +123,7 @@
 
 
 
-  <title>吕兴志的原创知识库</title>
+  <title>LXZ的原创知识库</title>
   
 
 
@@ -154,7 +154,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">吕兴志的原创知识库</span>
+        <span class="site-title">LXZ的原创知识库</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -241,6 +241,224 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2020/09/12/53-%5B%E7%AC%94%E8%AE%B0%5D%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89%E6%A0%87%E5%87%86%E5%8C%96%E8%A7%84%E8%8C%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LXZ的原创知识库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/12/53-%5B%E7%AC%94%E8%AE%B0%5D%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89%E6%A0%87%E5%87%86%E5%8C%96%E8%A7%84%E8%8C%83/" itemprop="url">【笔记】对接接口定义标准化规范</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-12T12:33:00+08:00">
+                2020-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.</p>
+</blockquote>
+<p>与不绝对信任的机构或企业交换数据的时候, 通常需要考虑严格的数据安全问题, 我在这里定义了一种, 完整版就不放了, 列一些关键的点</p>
+<h3 id="文档定义"><a href="#文档定义" class="headerlink" title="文档定义"></a>文档定义</h3><h4 id="一-接口访问定义"><a href="#一-接口访问定义" class="headerlink" title="一, 接口访问定义"></a>一, 接口访问定义</h4><p>请求方式: http请求post方式<br>请求类型: application/json;charset=utf-8<br>返回类型: application/json;charset=utf-8<br>域名: </p>
+<h4 id="二-参数定义"><a href="#二-参数定义" class="headerlink" title="二, 参数定义"></a>二, 参数定义</h4><ol>
+<li>请求头信息(Header)</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>plantformCode</td>
+<td>String</td>
+<td>商家授权码</td>
+<td>如:</td>
+</tr>
+<tr>
+<td>timeStamp</td>
+<td>Long</td>
+<td>时间戳</td>
+<td>如:1626255054672 (相当于2021-07-14 17:30:54)</td>
+</tr>
+<tr>
+<td>sign</td>
+<td>String</td>
+<td>签名</td>
+<td>8d2472fac5a4a1879bde18075f7a879e</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>请求体内容(Body),具体内容依据具体接口</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>messageId</td>
+<td>String</td>
+<td>消息唯一标识</td>
+<td></td>
+</tr>
+<tr>
+<td>data</td>
+<td>String</td>
+<td>JSON字符串</td>
+<td></td>
+</tr>
+<tr>
+<td>timeStamp</td>
+<td>Long</td>
+<td>时间戳</td>
+<td></td>
+</tr>
+<tr>
+<td>dataSource</td>
+<td>String</td>
+<td>数据来源,供应商唯一标识</td>
+<td>如BOLIAN</td>
+</tr>
+</tbody></table>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/09/12/53-%5B%E7%AC%94%E8%AE%B0%5D%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89%E6%A0%87%E5%87%86%E5%8C%96%E8%A7%84%E8%8C%83/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2020/04/10/50-%5B%E7%AC%94%E8%AE%B0%5D%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -250,7 +468,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
+      <meta itemprop="name" content="LXZ的原创知识库">
     </span>
 
     
@@ -395,7 +613,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
+      <meta itemprop="name" content="LXZ的原创知识库">
     </span>
 
     
@@ -541,6 +759,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2019/04/07/52-%5B%E6%96%87%E6%A1%A3%5Dmybatis%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LXZ的原创知识库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/07/52-%5B%E6%96%87%E6%A1%A3%5Dmybatis%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E5%85%B7/" itemprop="url">【文档】mybatis文件生成自定义工具</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-07T11:10:33+08:00">
+                2019-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%96%87%E6%A1%A3/" itemprop="url" rel="index">
+                    <span itemprop="name">文档</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>[文档系列文章说明]: 该类型的文章是对项目使用进行说明.</p>
+</blockquote>
+<blockquote>
+<p>代码地址: <a target="_blank" rel="noopener" href="https://github.com/lvxingzhi/MybatisGeneratorMysqlUtil.git">https://github.com/lvxingzhi/MybatisGeneratorMysqlUtil.git</a></p>
+</blockquote>
+<p>快速构建项目自定义的实体映射相关文件</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/07/52-%5B%E6%96%87%E6%A1%A3%5Dmybatis%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E5%85%B7/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2017/11/20/16-%5B%E6%96%B9%E6%A1%88%5DJDK%E5%AE%9E%E7%8E%B0DB%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -550,7 +920,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
+      <meta itemprop="name" content="LXZ的原创知识库">
     </span>
 
     
@@ -582,6 +952,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%96%B9%E6%A1%88/" itemprop="url" rel="index">
+                    <span itemprop="name">方案</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -677,7 +1069,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
+      <meta itemprop="name" content="LXZ的原创知识库">
     </span>
 
     
@@ -709,6 +1101,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-pattern/" itemprop="url" rel="index">
+                    <span itemprop="name">Design pattern</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -807,7 +1221,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
+      <meta itemprop="name" content="LXZ的原创知识库">
     </span>
 
     
@@ -839,6 +1253,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%96%B9%E6%A1%88/" itemprop="url" rel="index">
+                    <span itemprop="name">方案</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -940,7 +1376,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
+      <meta itemprop="name" content="LXZ的原创知识库">
     </span>
 
     
@@ -972,6 +1408,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%96%B9%E6%A1%88/" itemprop="url" rel="index">
+                    <span itemprop="name">方案</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1077,7 +1535,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
+      <meta itemprop="name" content="LXZ的原创知识库">
     </span>
 
     
@@ -1234,7 +1692,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
+      <meta itemprop="name" content="LXZ的原创知识库">
     </span>
 
     
@@ -1383,302 +1841,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/06/23/17-%5B%E6%96%B9%E6%A1%88%5D%E6%8E%A5%E5%8F%A3+%E6%8A%BD%E8%B1%A1%E7%B1%BB+%E5%AE%9E%E7%8E%B0%E7%B1%BB%E7%9A%84%E4%B8%89%E5%B1%82%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/myhead.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/06/23/17-%5B%E6%96%B9%E6%A1%88%5D%E6%8E%A5%E5%8F%A3+%E6%8A%BD%E8%B1%A1%E7%B1%BB+%E5%AE%9E%E7%8E%B0%E7%B1%BB%E7%9A%84%E4%B8%89%E5%B1%82%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%9E%8B/" itemprop="url">【方案】接口+抽象类+实现类的三层设计模型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-23T11:21:11+08:00">
-                2016-06-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
-</blockquote>
-<h4 id="结构模型"><a href="#结构模型" class="headerlink" title="结构模型"></a>结构模型</h4><p><img src="/images/17-01.png"></p>
-<h4 id="应用情景"><a href="#应用情景" class="headerlink" title="应用情景"></a>应用情景</h4><ol>
-<li>访问入口是统一的</li>
-<li>具体实现有多种变化</li>
-</ol>
-<h4 id="模拟情景"><a href="#模拟情景" class="headerlink" title="模拟情景"></a>模拟情景</h4><p>1,蛋糕店有一台生产蛋糕的机器(接口),机器有磨具插槽(定义入口)<br>2,机器需要有不同的蛋糕磨具才能塑形(抽象类),磨具与机器之间有相匹配的型号(入口实现)<br>3,磨具又规定了蛋糕的大小,但是蛋糕材料没有固定(差异化定义)<br>4,果仁蛋糕磨具中放入果仁,鸡蛋蛋糕磨具中放入鸡蛋(差异化实现)<br>(1),机器是接口 (2),磨具是抽象类 (3),磨具+材料是具体实现</p>
-<blockquote>
-<p>抽象类对接口进行了统一入口的实现,并且约束了具体实现类的定义</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2016/05/02/48-%5B%E7%AC%94%E8%AE%B0%5DJava%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0%E5%8E%86%E5%8F%B2(ing)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/myhead.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的原创知识库">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/02/48-%5B%E7%AC%94%E8%AE%B0%5DJava%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0%E5%8E%86%E5%8F%B2(ing)/" itemprop="url">【笔记】Java版本更新历史(ing)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-02T19:30:05+08:00">
-                2016-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.</p>
-</blockquote>
-<h3 id="历史版本特性"><a href="#历史版本特性" class="headerlink" title="历史版本特性"></a>历史版本特性</h3><blockquote>
-<p>JDK Version 1.0</p>
-</blockquote>
-<p>开发代号为Oak(橡树),于1996-01-23发行.</p>
-<blockquote>
-<p>JDK Version 1.1</p>
-</blockquote>
-<p>于1997-02-19发行.</p>
-<p>引入的新特性包括:</p>
-<p>引入JDBC(Java DataBase Connectivity);</p>
-<p>支持内部类;</p>
-<p>引入Java Bean;</p>
-<p>引入RMI(Remote Method Invocation)</p>
-<p>引入反射(仅用于内省)</p>
-<blockquote>
-<p>J2SE Version 1.2</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/05/02/48-%5B%E7%AC%94%E8%AE%B0%5DJava%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0%E5%8E%86%E5%8F%B2(ing)/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1733,7 +1895,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1744,7 +1906,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
