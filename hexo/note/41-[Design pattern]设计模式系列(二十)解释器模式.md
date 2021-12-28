@@ -3,7 +3,7 @@ title: 【Design pattern】设计模式系列(二十)解释器模式
 date: 2015-06-20 11:22:02
 tags:
 categories:
-- 笔记
+    - Design pattern
 ---
 > \[Design pattern\]: 设计模式相关系列
 

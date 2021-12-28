@@ -3,7 +3,7 @@ title: 【Design pattern】设计模式系列(十一)享元模式
 date: 2015-06-11 11:22:02
 tags:
 categories:
-- 笔记
+    - Design pattern
 ---
 > \[Design pattern\]: 设计模式相关系列
 

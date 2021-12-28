@@ -3,7 +3,7 @@ title: 【Design pattern】设计模式系列(三)生成器模式
 date: 2015-06-03 11:22:02
 tags:
 categories:
-- 笔记
+    - Design pattern
 ---
 > \[Design pattern\]: 设计模式相关系列
 
