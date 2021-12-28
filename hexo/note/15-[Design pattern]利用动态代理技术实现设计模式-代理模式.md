@@ -4,7 +4,7 @@ date: 2017-11-07 21:01:21
 tags:
 categories:
 ---
-> [Design pattern]: 设计模式相关系列
+> \[Design pattern\]: 设计模式相关系列
 
 #### 什么时候可以使用代理模式?
 

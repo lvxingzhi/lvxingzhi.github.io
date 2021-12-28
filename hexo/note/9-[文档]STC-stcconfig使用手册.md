@@ -4,7 +4,7 @@ date: 2021-12-17 11:00:00
 tags: 
 categories:
 ---
->[手册系列文章说明]: 该类型的文章是对项目使用进行说明.
+>\[文档系列文章说明\]: 该类型的文章是对项目使用进行说明.
 
 > 代码地址: https://github.com/lvxingzhi/stcconfig
 ### 概述

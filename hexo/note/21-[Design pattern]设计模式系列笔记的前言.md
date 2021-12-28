@@ -5,7 +5,7 @@ tags:
 categories:
 - 笔记
 ---
-> [Design pattern]: 设计模式相关系列
+> \[Design pattern\]: 设计模式相关系列
 
 本系列为本人2015年间通过Java语言对常见设计模式的通俗化代码实现, 通过关系图降低理解难度.
 

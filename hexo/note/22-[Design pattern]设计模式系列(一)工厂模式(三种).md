@@ -5,7 +5,7 @@ tags:
 categories:
 - 笔记
 ---
-> [Design pattern]: 设计模式相关系列
+> \[Design pattern\]: 设计模式相关系列
 
 关系图
 ----
