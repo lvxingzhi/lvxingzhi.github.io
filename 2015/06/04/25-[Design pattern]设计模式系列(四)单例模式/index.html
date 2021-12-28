@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="介绍概念: 保证一个类仅有一个实例，并提供一个访问它的全局访问点。使用场景: 整个项目中只能创建一次对象的类.防止出现多个对象同时存在.如:数据库连接池,有多个就不能有效控制连接数了. 两种实现方式第一种 单例类  1234567891011121314package note.com.singleton;public class Singleton &amp;#123;    private sta">
+<meta name="description" content="[Design pattern]: 设计模式相关系列  介绍概念: 保证一个类仅有一个实例，并提供一个访问它的全局访问点。使用场景: 整个项目中只能创建一次对象的类.防止出现多个对象同时存在.如:数据库连接池,有多个就不能有效控制连接数了. 两种实现方式第一种 单例类  1234567891011121314package note.com.singleton;public class Sing">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Design pattern】设计模式系列(四)单例模式">
 <meta property="og:url" content="https://lvxingzhi.github.io/2015/06/04/25-[Design%20pattern]%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97(%E5%9B%9B)%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/index.html">
-<meta property="og:site_name" content="吕兴志的学习笔记">
-<meta property="og:description" content="介绍概念: 保证一个类仅有一个实例，并提供一个访问它的全局访问点。使用场景: 整个项目中只能创建一次对象的类.防止出现多个对象同时存在.如:数据库连接池,有多个就不能有效控制连接数了. 两种实现方式第一种 单例类  1234567891011121314package note.com.singleton;public class Singleton &amp;#123;    private sta">
+<meta property="og:site_name" content="吕兴志的原创知识库">
+<meta property="og:description" content="[Design pattern]: 设计模式相关系列  介绍概念: 保证一个类仅有一个实例，并提供一个访问它的全局访问点。使用场景: 整个项目中只能创建一次对象的类.防止出现多个对象同时存在.如:数据库连接池,有多个就不能有效控制连接数了. 两种实现方式第一种 单例类  1234567891011121314package note.com.singleton;public class Sing">
 <meta property="og:locale">
 <meta property="article:published_time" content="2015-06-04T03:22:02.000Z">
-<meta property="article:modified_time" content="2021-12-23T08:44:20.219Z">
+<meta property="article:modified_time" content="2021-12-28T08:25:28.094Z">
 <meta property="article:author" content="吕兴志">
 <meta name="twitter:card" content="summary">
 
@@ -125,7 +125,7 @@
 
 
 
-  <title>【Design pattern】设计模式系列(四)单例模式 | 吕兴志的学习笔记</title>
+  <title>【Design pattern】设计模式系列(四)单例模式 | 吕兴志的原创知识库</title>
   
 
 
@@ -155,7 +155,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">吕兴志的学习笔记</span>
+        <span class="site-title">吕兴志的原创知识库</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -251,7 +251,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的学习笔记">
+      <meta itemprop="name" content="吕兴志的原创知识库">
     </span>
 
     
@@ -332,6 +332,7 @@
 
       
         <blockquote>
+<p>[Design pattern]: 设计模式相关系列</p>
 </blockquote>
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong>概念:</strong> 保证一个类仅有一个实例，并提供一个访问它的全局访问点。<br><strong>使用场景:</strong> 整个项目中只能创建一次对象的类.防止出现多个对象同时存在.如:数据库连接池,有多个就不能有效控制连接数了.</p>
 <h3 id="两种实现方式"><a href="#两种实现方式" class="headerlink" title="两种实现方式"></a>两种实现方式</h3><h4 id="第一种"><a href="#第一种" class="headerlink" title="第一种"></a>第一种</h4><blockquote>

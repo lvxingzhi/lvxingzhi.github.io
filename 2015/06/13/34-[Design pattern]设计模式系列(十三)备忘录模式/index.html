@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="介绍概念: 在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可将该对象恢复到原先保存的状态。应用场景: 需要保存某个对象的某个时间的状态,如游戏的暂停,存档,恢复功能. 如果把数据库与实体关联起来了,也可以说数据库是这个对象的备忘录.">
+<meta name="description" content="[Design pattern]: 设计模式相关系列  介绍概念: 在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可将该对象恢复到原先保存的状态。应用场景: 需要保存某个对象的某个时间的状态,如游戏的暂停,存档,恢复功能. 如果把数据库与实体关联起来了,也可以说数据库是这个对象的备忘录.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Design pattern】设计模式系列(十三)备忘录模式">
 <meta property="og:url" content="https://lvxingzhi.github.io/2015/06/13/34-[Design%20pattern]%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%B3%BB%E5%88%97(%E5%8D%81%E4%B8%89)%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/index.html">
-<meta property="og:site_name" content="吕兴志的学习笔记">
-<meta property="og:description" content="介绍概念: 在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可将该对象恢复到原先保存的状态。应用场景: 需要保存某个对象的某个时间的状态,如游戏的暂停,存档,恢复功能. 如果把数据库与实体关联起来了,也可以说数据库是这个对象的备忘录.">
+<meta property="og:site_name" content="吕兴志的原创知识库">
+<meta property="og:description" content="[Design pattern]: 设计模式相关系列  介绍概念: 在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可将该对象恢复到原先保存的状态。应用场景: 需要保存某个对象的某个时间的状态,如游戏的暂停,存档,恢复功能. 如果把数据库与实体关联起来了,也可以说数据库是这个对象的备忘录.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2015-06-13T03:22:02.000Z">
-<meta property="article:modified_time" content="2021-12-23T08:44:20.304Z">
+<meta property="article:modified_time" content="2021-12-28T08:25:28.046Z">
 <meta property="article:author" content="吕兴志">
 <meta name="twitter:card" content="summary">
 
@@ -125,7 +125,7 @@
 
 
 
-  <title>【Design pattern】设计模式系列(十三)备忘录模式 | 吕兴志的学习笔记</title>
+  <title>【Design pattern】设计模式系列(十三)备忘录模式 | 吕兴志的原创知识库</title>
   
 
 
@@ -155,7 +155,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">吕兴志的学习笔记</span>
+        <span class="site-title">吕兴志的原创知识库</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -251,7 +251,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的学习笔记">
+      <meta itemprop="name" content="吕兴志的原创知识库">
     </span>
 
     
@@ -332,6 +332,7 @@
 
       
         <blockquote>
+<p>[Design pattern]: 设计模式相关系列</p>
 </blockquote>
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong>概念:</strong> 在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可将该对象恢复到原先保存的状态。<br><strong>应用场景:</strong> 需要保存某个对象的某个时间的状态,如游戏的暂停,存档,恢复功能. 如果把数据库与实体关联起来了,也可以说数据库是这个对象的备忘录.</p>
 <span id="more"></span>

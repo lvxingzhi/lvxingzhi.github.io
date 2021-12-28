@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="说明zookeeper是一个分布式的,为分布式应用提供数据一致性服务的程序. Zookeeper是怎么来的?分布式系统： 是一个硬件或软件组件分布在不同的网络计算机上，彼此之间仅仅通过 消息传递 进行通信和协调的系统。 在这个消息传递的过程中遇到的问题: 传输中数据被篡改,数据丢失处理,数据超时处理,数据的事务控制,可以统称为数据的一致性问题. 解决分布式系统中数据传输的一致性问题的理论基础:">
+<meta name="description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  说明zookeeper是一个分布式的,为分布式应用提供数据一致性服务的程序. Zookeeper是怎么来的?分布式系统： 是一个硬件或软件组件分布在不同的网络计算机上，彼此之间仅仅通过 消息传递 进行通信和协调的系统。 在这个消息传递的过程中遇到的问题: 传输中数据被篡改,数据丢失处理,数据超时处理,数据的事务控制,可以统称">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【笔记】Zookeeper应用">
 <meta property="og:url" content="https://lvxingzhi.github.io/2016/04/11/47-[%E7%AC%94%E8%AE%B0]Zookeeper%E5%BA%94%E7%94%A8/index.html">
-<meta property="og:site_name" content="吕兴志的学习笔记">
-<meta property="og:description" content="说明zookeeper是一个分布式的,为分布式应用提供数据一致性服务的程序. Zookeeper是怎么来的?分布式系统： 是一个硬件或软件组件分布在不同的网络计算机上，彼此之间仅仅通过 消息传递 进行通信和协调的系统。 在这个消息传递的过程中遇到的问题: 传输中数据被篡改,数据丢失处理,数据超时处理,数据的事务控制,可以统称为数据的一致性问题. 解决分布式系统中数据传输的一致性问题的理论基础:">
+<meta property="og:site_name" content="吕兴志的原创知识库">
+<meta property="og:description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  说明zookeeper是一个分布式的,为分布式应用提供数据一致性服务的程序. Zookeeper是怎么来的?分布式系统： 是一个硬件或软件组件分布在不同的网络计算机上，彼此之间仅仅通过 消息传递 进行通信和协调的系统。 在这个消息传递的过程中遇到的问题: 传输中数据被篡改,数据丢失处理,数据超时处理,数据的事务控制,可以统称">
 <meta property="og:locale">
 <meta property="og:image" content="https://lvxingzhi.github.io/images/47-01.png">
 <meta property="og:image" content="https://lvxingzhi.github.io/images/47-02.png">
 <meta property="article:published_time" content="2016-04-11T04:22:55.000Z">
-<meta property="article:modified_time" content="2021-12-24T07:43:22.002Z">
+<meta property="article:modified_time" content="2021-12-28T08:25:05.001Z">
 <meta property="article:author" content="吕兴志">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://lvxingzhi.github.io/images/47-01.png">
@@ -128,7 +128,7 @@
 
 
 
-  <title>【笔记】Zookeeper应用 | 吕兴志的学习笔记</title>
+  <title>【笔记】Zookeeper应用 | 吕兴志的原创知识库</title>
   
 
 
@@ -158,7 +158,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">吕兴志的学习笔记</span>
+        <span class="site-title">吕兴志的原创知识库</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -254,7 +254,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="吕兴志的学习笔记">
+      <meta itemprop="name" content="吕兴志的原创知识库">
     </span>
 
     
@@ -335,6 +335,7 @@
 
       
         <blockquote>
+<p>[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.</p>
 </blockquote>
 <h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p>zookeeper是一个分布式的,为分布式应用提供数据一致性服务的程序.</p>
 <h4 id="Zookeeper是怎么来的"><a href="#Zookeeper是怎么来的" class="headerlink" title="Zookeeper是怎么来的?"></a>Zookeeper是怎么来的?</h4><p><strong>分布式系统：</strong> 是一个硬件或软件组件分布在不同的网络计算机上，彼此之间仅仅通过 <strong>消息传递</strong> 进行通信和协调的系统。</p>
