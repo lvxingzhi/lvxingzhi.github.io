@@ -324,4 +324,10 @@ public class TraceProviderFilter implements Filter {
 ```xml
 	<dubbo:provider protocol="dubbo" filter="traceProviderFilter" version="1.0" timeout="3500" delay="-1" />
 ```
-
+增加dubbo filter配置
+```text
+路径: src/main/resources/META-INF/dubbo/com.alibaba.dubbo.rpc.Filter
+内容:
+traceConsumerFilter=com.qctrip.monitor.common.base.dubbo.spi.TraceConsumerFilter
+traceProviderFilter=com.qctrip.monitor.common.base.dubbo.spi.TraceProviderFilter
+```
