@@ -18,12 +18,13 @@ Vue 是一种JS,HTML,CSS渲染框架,通过其独特的绑定渲染方式,使页
 6. Vue CLI
 7. Vetur 
 
+<!--more-->
 #### 一,  Hello word
 1, 下载vuejs文件
 ```text
 地址: https://unpkg.com/vue@3.2.26/dist/vue.global.js
 ```
-<!--more-->
+
 2, 新建HTML页面, 引入vuejs文件
 ```html
 <!DOCTYPE html>
@@ -76,17 +77,18 @@ const HelloVueApp = {
 }
 ```
 ##### 组件与元素使用vue绑定
-```html
+```js
 let vm = Vue.createApp(HelloVueApp).mount('#mainModuleId') // 绑定与渲染
 document.write(vm.$data.content) // 组件中data的管理和使用
 document.write(vm.myContentFn()) // 组件中methods的管理和使用
 // 固定格式名称 data, methods
 ```
 #### 二,  语法
+
 ##### 1, 模板
 1, 插入-文本
-语法: {{ * }}
 ```html
+语法: { { * } }
 <div id="app">
   <p>{{ message }}</p>
 </div>
