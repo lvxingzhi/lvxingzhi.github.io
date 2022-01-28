@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  开发工具123IDE: ideaidea插件: Lombok, SonarLint, Alibaba Java Coding Guidelines 项目管理工具1234567代码管理: git, gitlab需求管理平台: 禅道项目发布工具: jenkins日志收集展示: logstash收集 + elasticsearch">
+<meta name="description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  开发工具123IDE: ideaidea插件: Lombok, SonarLint, Alibaba Java Coding Guidelines 项目管理工具12345678代码管理: git, gitlab需求管理平台: 禅道项目发布工具: jenkins日志收集展示: logstash收集 + elasticsearc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【笔记】项目管理工具(持续更新)">
 <meta property="og:url" content="https://lvxingzhi.github.io/2020/04/10/50-[%E7%AC%94%E8%AE%B0]%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/index.html">
 <meta property="og:site_name" content="LXZ的原创知识库">
-<meta property="og:description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  开发工具123IDE: ideaidea插件: Lombok, SonarLint, Alibaba Java Coding Guidelines 项目管理工具1234567代码管理: git, gitlab需求管理平台: 禅道项目发布工具: jenkins日志收集展示: logstash收集 + elasticsearch">
+<meta property="og:description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  开发工具123IDE: ideaidea插件: Lombok, SonarLint, Alibaba Java Coding Guidelines 项目管理工具12345678代码管理: git, gitlab需求管理平台: 禅道项目发布工具: jenkins日志收集展示: logstash收集 + elasticsearc">
 <meta property="og:locale">
 <meta property="article:published_time" content="2020-04-10T03:14:18.000Z">
-<meta property="article:modified_time" content="2021-12-28T09:45:16.280Z">
+<meta property="article:modified_time" content="2021-12-29T07:18:08.441Z">
 <meta property="article:author" content="吕兴志">
 <meta name="twitter:card" content="summary">
 
@@ -335,7 +335,9 @@
 <p>[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.</p>
 </blockquote>
 <h4 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IDE: idea</span><br><span class="line">idea插件: Lombok, SonarLint, Alibaba Java Coding Guidelines</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="项目管理工具"><a href="#项目管理工具" class="headerlink" title="项目管理工具"></a>项目管理工具</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">代码管理: git, gitlab</span><br><span class="line">需求管理平台: 禅道</span><br><span class="line">项目发布工具: jenkins</span><br><span class="line">日志收集展示: logstash收集 + elasticsearch检索 + kibana展示</span><br><span class="line">接口API文档管理: YAPI</span><br><span class="line">数据库平台查询: yearning</span><br><span class="line">配置管理中心: necos, disconf, stcconfig</span><br></pre></td></tr></table></figure>
+<h4 id="项目管理工具"><a href="#项目管理工具" class="headerlink" title="项目管理工具"></a>项目管理工具</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">代码管理: git, gitlab</span><br><span class="line">需求管理平台: 禅道</span><br><span class="line">项目发布工具: jenkins</span><br><span class="line">日志收集展示: logstash收集 + elasticsearch检索 + kibana展示 简称: ELK</span><br><span class="line">接口API文档管理: YAPI</span><br><span class="line">数据库平台查询: yearning</span><br><span class="line">配置管理中心: necos, disconf, stcconfig</span><br><span class="line">系统监控平台: CAT</span><br></pre></td></tr></table></figure>
+
+<h4 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">远程调用体系: </span><br><span class="line">    1,SpringCloud(注册Eureka, 负载均衡ribbon, 服务注册Feign, Hystix服务治理熔断降级隔离监控, zuul网关过滤)</span><br><span class="line">    2,Dubbo(zookeeper/necos注册, mock降级, retry熔断, 配置最大并发数)</span><br><span class="line">熔断降级框架: Sentinel, Hystrix, nginx(对你没有看错,可以控制http请求)</span><br><span class="line">分布式事务框架: tx-lcn(停更), seata 原理: 托管事务管理,利用记录日志控制一致提交回滚</span><br><span class="line">seata: https://www.cnblogs.com/leeego-123/p/12677124.html </span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -452,7 +454,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -523,7 +525,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">开发工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">项目管理工具</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">开发工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">项目管理工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6"><span class="nav-number">3.</span> <span class="nav-text">框架</span></a></li></ol></div>
             
 
           </div>

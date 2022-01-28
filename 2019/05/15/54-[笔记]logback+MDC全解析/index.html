@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  logback的配置详解1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【笔记】logback+MDC全解析">
+<meta property="og:url" content="https://lvxingzhi.github.io/2019/05/15/54-[%E7%AC%94%E8%AE%B0]logback+MDC%E5%85%A8%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="LXZ的原创知识库">
+<meta property="og:description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  logback的配置详解1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-05-15T02:32:02.000Z">
+<meta property="article:modified_time" content="2021-12-29T08:41:29.568Z">
+<meta property="article:author" content="吕兴志">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lvxingzhi.github.io/2019/05/15/54-[笔记]logback+MDC全解析/"/>
+
+
+
+
+
+  <title>【笔记】logback+MDC全解析 | LXZ的原创知识库</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LXZ的原创知识库</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录,思考,成长,回忆</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lvxingzhi.github.io/2019/05/15/54-%5B%E7%AC%94%E8%AE%B0%5Dlogback+MDC%E5%85%A8%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/myhead.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LXZ的原创知识库">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【笔记】logback+MDC全解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-15T10:32:02+08:00">
+                2019-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.</p>
+</blockquote>
+<h4 id="logback的配置详解"><a href="#logback的配置详解" class="headerlink" title="logback的配置详解"></a>logback的配置详解</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        表达式一览       --&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        -X号: X信息输出时左对齐；--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %p: 输出日志信息优先级，即DEBUG，INFO，WARN，ERROR，FATAL,--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %d: 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式，比如：%d&#123;yyy MMM dd HH:mm:ss,SSS&#125;，输出类似：2002年10月18日 22：10：28，921--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %r: 输出自应用启动到输出该log信息耗费的毫秒数--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %c: 输出日志信息所属的类目，通常就是所在类的全名--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %t: 输出产生该日志事件的线程名--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %l: 输出日志事件的发生位置，相当于%C.%M(%F:%L)的组合,包括类目名、发生的线程，以及在代码中的行数。举例：Testlog4.main (TestLog4.java:10)--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %x: 输出和当前线程相关联的NDC(嵌套诊断环境),尤其用到像Java servlets这样的多客户多线程的应用中。--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %%: 输出一个”%”字符--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %F: 输出日志消息产生时所在的文件名称--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %L: 输出代码中的行号--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %m: 输出代码中指定的消息,产生的日志具体信息--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        %n: 输出一个回车换行符，Windows平台为”\r\n”，Unix平台为”\n”输出日志信息换行--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- scan属性未true时，如果配置文档发生改变将会进行重新加载 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- scanPeriod属性设置监测配置文件修改的时间间隔，默认单位为毫秒，在scan为true时才生效 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- debug属性如果为true时，会打印出logback内部的日志信息 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">&quot;true&quot;</span> <span class="attr">scanPeriod</span>=<span class="string">&quot;5 seconds&quot;</span> <span class="attr">debug</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--定义变量--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;app.name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;app&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;log.level&quot;</span> <span class="attr">value</span>=<span class="string">&quot;debug&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;log.maxHistory&quot;</span> <span class="attr">value</span>=<span class="string">&quot;30&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;log.filePath&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;catalina.base&#125;/logs/webapps&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;log.pattern&quot;</span> <span class="attr">value</span>=<span class="string">&quot;%d&#123;yyyy-MM-dd HH:mm:ss.SSSS&#125; [%thread] %-5level %logger&#123;50&#125;-%msg%n&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;log.pattern2&quot;</span> <span class="attr">value</span>=<span class="string">&quot;%d&#123;HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--每个appender代表一个输出--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--    org.apache.log4j.ConsoleAppender（控制台）--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--    org.apache.log4j.FileAppender（文件）--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--    org.apache.log4j.DailyRollingFileAppender（每天产生一个日志文件）--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--    org.apache.log4j.RollingFileAppender（文件大小到达指定尺寸的时候产生一个新的文件）--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--    org.apache.log4j.WriterAppender（将日志信息以流格式发送到任意指定的地方）--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--控制台输出--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;CONSOLE&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern2&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;FILE1&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d&#123;HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">charset</span>&gt;</span>utf-8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span>log/output.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        滚动策略--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        TimeBasedRollingPolicy - 基于时间--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        SizeAndTimeBasedRollingPolicy - 基于文件大小和时间--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        FixedWindowRollingPolicy - 基于自定义滚动触发 配合triggeringPolicy配置触发--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.FixedWindowRollingPolicy&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>rolllog/output.log.%i<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">triggeringPolicy</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">MaxFileSize</span>&gt;</span>1KB<span class="tag">&lt;/<span class="name">MaxFileSize</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">triggeringPolicy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;FILE2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d [%t] %-5level %logger&#123;36&#125; [%file : %line] - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">charset</span>&gt;</span>utf-8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--获取java启动时的配置值,可根据环境不同利用启动区分,java -Dscheduler.manager.server.home=/path/to--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span>log/$&#123;app.name&#125;.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--日志滚动策略--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.FixedWindowRollingPolicy&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>rolllog/$&#123;app.name&#125;.log.%i<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy&quot;&gt;--&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--日志文件输出的文件名--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--            &lt;FileNamePattern&gt;$&#123;LOG_HOME&#125;/$&#123;LOG_NAME&#125;.info.log.%d&#123;yyyy-MM-dd-HH&#125;.%i.log&lt;/FileNamePattern&gt;--&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--日志文件保留天数--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--            &lt;MaxHistory&gt;7&lt;/MaxHistory&gt;--&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--日志文件的最大大小--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--            &lt;MaxFileSize&gt;100MB&lt;/MaxFileSize&gt;--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        &lt;/rollingPolicy&gt;--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">triggeringPolicy</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">MaxFileSize</span>&gt;</span>1KB<span class="tag">&lt;/<span class="name">MaxFileSize</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">triggeringPolicy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--为appender增加异步--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 更改默认的队列的深度,该值会影响性能.默认值为256 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 添加附加的appender,最多只能添加一个 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;file.async&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.classic.AsyncAppender&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discardingThreshold</span>&gt;</span>0<span class="tag">&lt;/<span class="name">discardingThreshold</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">queueSize</span>&gt;</span>256<span class="tag">&lt;/<span class="name">queueSize</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">includeCallerData</span>&gt;</span>true<span class="tag">&lt;/<span class="name">includeCallerData</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;FILE2&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    　　<span class="comment">&lt;!-- 使用异步来记录其他信息--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;file.async.other&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.classic.AsyncAppender&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discardingThreshold</span>&gt;</span>0<span class="tag">&lt;/<span class="name">discardingThreshold</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">queueSize</span>&gt;</span>256<span class="tag">&lt;/<span class="name">queueSize</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">includeCallerData</span>&gt;</span>true<span class="tag">&lt;/<span class="name">includeCallerData</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;FILE1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--定义日志输出匹配的级别,包,默认root--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;ch.qos&quot;</span> <span class="attr">level</span>=<span class="string">&quot;%&#123;log.level&#125;&quot;</span> <span class="attr">additivity</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;file.async&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;file.async.other&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;INFO&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;CONSOLE&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;FILE1&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;FILE2&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--        https://www.cnblogs.com/wenbronk/p/6529161.html--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        http://www.51gjie.com/javaweb/1108.html--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="MDC-NDC"><a href="#MDC-NDC" class="headerlink" title="MDC,NDC"></a>MDC,NDC</h4><p><strong>什么是MDC?</strong><br>Mapped Diagnostic Context<br>线程独立自定义Map存储上下文信息,子线程拷贝父线程Map信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.保存信息到上下文</span><br><span class="line">MDC.put(key, value);</span><br><span class="line"></span><br><span class="line">2.从上下文获取设置的信息</span><br><span class="line">MDC.get(key);</span><br><span class="line"></span><br><span class="line">3.清楚上下文中指定的key的信息</span><br><span class="line">MDC.remove(key);</span><br><span class="line"></span><br><span class="line">4.清除所有</span><br><span class="line">clear()</span><br><span class="line"></span><br><span class="line">5.输出模板，注意是大写[%X&#123;key&#125;]</span><br><span class="line">log4j.appender.consoleAppender.layout.ConversionPattern = %-4r [%t] %5p %c %x - %m - %X&#123;key&#125;%n</span><br></pre></td></tr></table></figure>
+<p><strong>什么是NDC?</strong><br>Nested Diagnostic Context<br>线程独立自定义栈存储上下文信息,子线程拷贝父线程栈信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.开始调用</span><br><span class="line">NDC.push(message);</span><br><span class="line"></span><br><span class="line">2.删除栈顶消息</span><br><span class="line">NDC.pop();</span><br><span class="line"></span><br><span class="line">3.清除全部的消息，必须在线程退出前显示的调用，否则会导致内存溢出。</span><br><span class="line">NDC.remove();</span><br><span class="line"></span><br><span class="line">4.输出模板，注意是小写的[%x]</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern=[%d&#123;yyyy-MM-dd HH:mm:ssS&#125;] [%x] : %m%n</span><br></pre></td></tr></table></figure>
+
+<h4 id="logback中的MDC"><a href="#logback中的MDC" class="headerlink" title="logback中的MDC"></a>logback中的MDC</h4><h5 id="单机MDC使用"><a href="#单机MDC使用" class="headerlink" title="单机MDC使用"></a>单机MDC使用</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> ch.qos.logback.classic.LoggerContext;</span><br><span class="line"><span class="keyword">import</span> ch.qos.logback.classic.encoder.PatternLayoutEncoder;</span><br><span class="line"><span class="keyword">import</span> ch.qos.logback.classic.spi.ILoggingEvent;</span><br><span class="line"><span class="keyword">import</span> ch.qos.logback.core.ConsoleAppender;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.MDC;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleMDC</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Logger logger = LoggerFactory.getLogger(SimpleMDC.class);</span><br><span class="line">        programmaticConfiguration();</span><br><span class="line">        logger.info(<span class="string">&quot;今天的天气真不错&quot;</span>);</span><br><span class="line">        logger.info(<span class="string">&quot;是的, 雨好大啊&quot;</span>);</span><br><span class="line">        MDC.put(<span class="string">&quot;one&quot;</span>, <span class="string">&quot;one&quot;</span>);</span><br><span class="line">        MDC.put(<span class="string">&quot;two&quot;</span>, <span class="string">&quot;two&quot;</span>);</span><br><span class="line">        logger.info(<span class="string">&quot;今天的天气真不错&quot;</span>);</span><br><span class="line">        logger.debug(<span class="string">&quot;是的, 雨好大啊&quot;</span>);</span><br><span class="line">        MDC.put(<span class="string">&quot;one&quot;</span>, <span class="string">&quot;three&quot;</span>);</span><br><span class="line">        MDC.put(<span class="string">&quot;two&quot;</span>, <span class="string">&quot;four&quot;</span>);</span><br><span class="line">        logger.info(<span class="string">&quot;今天的天气真不错&quot;</span>);</span><br><span class="line">        logger.info(<span class="string">&quot;是的, 雨好大啊&quot;</span>);</span><br><span class="line">        <span class="comment">// 实际使用,通常在finally中使用MDC.remove清除掉旧值</span></span><br><span class="line">        MDC.remove(<span class="string">&quot;one&quot;</span>);</span><br><span class="line">        MDC.remove(<span class="string">&quot;two&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 定义日志输出格式</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">programmaticConfiguration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();</span><br><span class="line">        loggerContext.reset();</span><br><span class="line">        PatternLayoutEncoder layout = <span class="keyword">new</span> PatternLayoutEncoder();</span><br><span class="line">        layout.setContext(loggerContext);</span><br><span class="line">        layout.setPattern(<span class="string">&quot;%X&#123;one&#125; %X&#123;two&#125; - %m%n&quot;</span>);</span><br><span class="line">        layout.start();</span><br><span class="line">        ConsoleAppender&lt;ILoggingEvent&gt; appender = <span class="keyword">new</span> ConsoleAppender&lt;ILoggingEvent&gt;();</span><br><span class="line">        appender.setContext(loggerContext);</span><br><span class="line">        appender.setEncoder(layout);</span><br><span class="line">        appender.start();</span><br><span class="line">        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">        root.addAppender(appender);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="跨服务MDC使用-web-dubbo"><a href="#跨服务MDC使用-web-dubbo" class="headerlink" title="跨服务MDC使用(web + dubbo)"></a>跨服务MDC使用(web + dubbo)</h4><ol>
+<li><p>使用Spring拦截器HandlerInterceptorAdapter初始化MDC trace</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 日志跟踪</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraceLogInterceptor</span> <span class="keyword">extends</span> <span class="title">HandlerInterceptorAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 追踪ID */</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TRACE_KEY = <span class="string">&quot;traceId&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span><span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String a = UUID.randomUUID().toString().replace(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">		MDC.put(TRACE_KEY, a);</span><br><span class="line">		HttpLogLocalCache.setMsg( a);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		MDC.clear();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>使用Dubbo Filter拦截, RpcContext传递<br>调用者设置值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraceConsumerFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Logger logger = LoggerFactory.getLogger(TraceConsumerFilter.class);</span><br><span class="line">    <span class="comment">/* 追踪ID */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TRACE_KEY = <span class="string">&quot;traceId&quot;</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Result <span class="title">invoke</span><span class="params">(Invoker&lt;?&gt; invoker, Invocation invocation)</span> <span class="keyword">throws</span> RpcException </span>&#123;</span><br><span class="line">        LoggerFactory.getLogger(invoker.getInterface().getName()).info(<span class="string">&quot; [dubbo consumer] 服务调用-请求|method:&#123;&#125;|参数:&#123;&#125;| client[ip:&#123;&#125;-protocol:&#123;&#125;]&quot;</span>, invocation.getMethodName(), invocation.getArguments(), RpcContext.getContext().getRemoteAddressString(), invoker.getUrl().getProtocol());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            logger.debug(<span class="string">&quot;MDC-traceId:&quot;</span> + MDC.get(TRACE_KEY));</span><br><span class="line">            RpcContext.getContext().setAttachments(MDC.getCopyOfContextMap());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">            logger.error(<span class="string">&quot;dubbo consumer MDC-traceId:reset fail&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Result result = invoker.invoke(invocation);</span><br><span class="line">        LoggerFactory.getLogger(invoker.getInterface().getName()).info(<span class="string">&quot; [dubbo consumer] 服务调用-返回|method:&#123;&#125;|结果:&#123;&#125;| client[ip:&#123;&#125;-protocol:&#123;&#125;]&quot;</span>, invocation.getMethodName(), result, RpcContext.getContext().getRemoteAddressString(), invoker.getUrl().getProtocol());</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>消费者获取值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraceProviderFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Result <span class="title">invoke</span><span class="params">(Invoker&lt;?&gt; invoker, Invocation inv)</span> <span class="keyword">throws</span> RpcException </span>&#123;</span><br><span class="line">        RpcContext context = RpcContext.getContext();</span><br><span class="line">        MDC.setContextMap(context.getAttachments());</span><br><span class="line">        LoggerFactory.getLogger(invoker.getInterface().getName()).info(<span class="string">&quot; [dubbo provider] 服务调用-接收|method:&#123;&#125;|参数:&#123;&#125;| client[ip:&#123;&#125;-protocol:&#123;&#125;]&quot;</span>, inv.getMethodName(), inv.getArguments(), RpcContext.getContext().getRemoteAddressString(), invoker.getUrl().getProtocol());</span><br><span class="line">        <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">        Result result = invoker.invoke(inv);</span><br><span class="line">        <span class="keyword">long</span> time = System.currentTimeMillis() - start;</span><br><span class="line">        Object rval = result.getValue();</span><br><span class="line">        String logtxt = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (rval != <span class="keyword">null</span>) &#123;</span><br><span class="line">            Class&lt;?&gt; clazz = rval.getClass();</span><br><span class="line">            <span class="keyword">if</span> (List.class.isAssignableFrom(clazz)) &#123;</span><br><span class="line">                <span class="keyword">int</span> size = ((List) rval).size();</span><br><span class="line">                <span class="keyword">if</span> (size &gt; <span class="number">5</span>) &#123;</span><br><span class="line">                    logtxt = size + <span class="string">&quot;(SIZE)&quot;</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    logtxt = JSON.toJSONString(rval, <span class="keyword">new</span> LogArgumentFilter());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Set.class.isAssignableFrom(clazz)) &#123;</span><br><span class="line">                <span class="keyword">int</span> size = ((Set) rval).size();</span><br><span class="line">                <span class="keyword">if</span> (size &gt; <span class="number">5</span>) &#123;</span><br><span class="line">                    logtxt = size + <span class="string">&quot;(SIZE)&quot;</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    logtxt = JSON.toJSONString(rval, <span class="keyword">new</span> LogArgumentFilter());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                logtxt = JSON.toJSONString(rval, <span class="keyword">new</span> LogArgumentFilter());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        LoggerFactory.getLogger(invoker.getInterface().getName()).info(<span class="string">&quot; [dubbo provider] 服务调用-返回|method:&#123;&#125;|结果:&#123;&#125;| client[ip:&#123;&#125;-protocol:&#123;&#125;]&quot;</span>, inv.getMethodName(), logtxt, RpcContext.getContext().getRemoteAddressString(), invoker.getUrl().getProtocol());</span><br><span class="line">        LoggerFactory.getLogger(invoker.getInterface().getName()).info(<span class="string">&quot; [dubbo provider 服务性能] 统计|method:&#123;&#125;|耗时:&#123;&#125; ms|host:&#123;&#125;&quot;</span>, inv.getMethodName(), time, RpcContext.getContext().getRemoteAddressString());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            MDC.clear();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">            LoggerFactory.getLogger(TraceProviderFilter.class).error(<span class="string">&quot;dubbo provider MDC-traceId:reset fail&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>调用者配置 spring-dubbo-reference.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:consumer</span> <span class="attr">filter</span>=<span class="string">&quot;traceConsumerFilter&quot;</span>  <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span> <span class="attr">timeout</span>=<span class="string">&quot;3000&quot;</span> <span class="attr">check</span>=<span class="string">&quot;$&#123;dubbo.reference.check&#125;&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>提供者者配置 spring-dubbo-provider.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dubbo:provider</span> <span class="attr">protocol</span>=<span class="string">&quot;dubbo&quot;</span> <span class="attr">filter</span>=<span class="string">&quot;traceProviderFilter&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span> <span class="attr">timeout</span>=<span class="string">&quot;3500&quot;</span> <span class="attr">delay</span>=<span class="string">&quot;-1&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>增加dubbo filter配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">路径: src/main/resources/META-INF/dubbo/com.alibaba.dubbo.rpc.Filter</span><br><span class="line">内容:</span><br><span class="line">traceConsumerFilter=com.qctrip.monitor.common.base.dubbo.spi.TraceConsumerFilter</span><br><span class="line">traceProviderFilter=com.qctrip.monitor.common.base.dubbo.spi.TraceProviderFilter</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/07/52-%5B%E6%96%87%E6%A1%A3%5Dmybatis%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E5%85%B7/" rel="next" title="【文档】mybatis文件生成自定义工具">
+                <i class="fa fa-chevron-left"></i> 【文档】mybatis文件生成自定义工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/10/51-%5B%E7%AC%94%E8%AE%B0%5DGIT%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86&%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/" rel="prev" title="【笔记】GIT代码管理&提交规范">
+                【笔记】GIT代码管理&提交规范 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/myhead.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lvxingzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:349024548@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#logback%E7%9A%84%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">logback的配置详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MDC-NDC"><span class="nav-number">2.</span> <span class="nav-text">MDC,NDC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logback%E4%B8%AD%E7%9A%84MDC"><span class="nav-number">3.</span> <span class="nav-text">logback中的MDC</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%95%E6%9C%BAMDC%E4%BD%BF%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">单机MDC使用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%A8%E6%9C%8D%E5%8A%A1MDC%E4%BD%BF%E7%94%A8-web-dubbo"><span class="nav-number">4.</span> <span class="nav-text">跨服务MDC使用(web + dubbo)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吕兴志</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
