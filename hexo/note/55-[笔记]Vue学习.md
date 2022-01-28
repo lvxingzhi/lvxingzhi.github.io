@@ -23,6 +23,7 @@ Vue 是一种JS,HTML,CSS渲染框架,通过其独特的绑定渲染方式,使页
 ```text
 地址: https://unpkg.com/vue@3.2.26/dist/vue.global.js
 ```
+<!--more-->
 2, 新建HTML页面, 引入vuejs文件
 ```html
 <!DOCTYPE html>
