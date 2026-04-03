@@ -67,12 +67,6 @@ widgets:
     depth: 3
   -
     position: left
-    type: links
-    links:
-      Hexo: https://hexo.io
-      Icarus: https://github.com/ppoffice/hexo-theme-icarus
-  -
-    position: left
     type: categories
   -
     position: left
