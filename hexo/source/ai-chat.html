@@ -1,0 +1,48 @@
+<!-- AI 聊天助手 - 预留接口 -->
+<!-- 未来可以集成 OpenAI、Claude 或其他 AI 服务 -->
+
+<div id="ai-chat-widget" onclick="toggleAIChat()">
+  <i class="fas fa-robot"></i>
+</div>
+
+<div id="ai-chat-container">
+  <div id="ai-chat-header">
+    <span><i class="fas fa-robot"></i> AI 助手</span>
+    <span onclick="toggleAIChat()" style="cursor: pointer;">✕</span>
+  </div>
+  <div id="ai-chat-messages">
+    <div style="text-align: center; color: #999; padding: 20px;">
+      <i class="fas fa-robot" style="font-size: 48px; margin-bottom: 16px;"></i>
+      <p>AI 助手功能即将上线</p>
+      <p style="font-size: 12px;">敬请期待...</p>
+    </div>
+  </div>
+  <div id="ai-chat-input-area">
+    <input type="text" id="ai-chat-input" placeholder="输入消息..." disabled>
+    <button id="ai-chat-send" disabled>
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+function toggleAIChat() {
+  const container = document.getElementById('ai-chat-container');
+  if (container.style.display === 'flex') {
+    container.style.display = 'none';
+  } else {
+    container.style.display = 'flex';
+  }
+}
+
+// 未来 AI 集成接口
+// async function sendAIMessage(message) {
+//   // 调用 AI API
+//   const response = await fetch('YOUR_AI_API_ENDPOINT', {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({ message })
+//   });
+//   return await response.json();
+// }
+</script>

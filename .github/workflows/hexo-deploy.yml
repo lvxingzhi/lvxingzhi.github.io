@@ -34,7 +34,7 @@ jobs:
           mkdir site
           cd site
           npx hexo init .
-          npm install hexo-theme-butterfly --save
+          npm install hexo-theme-butterfly hexo-generator-searchdb --save
           rm -f source/_posts/hello-world.md
 
       - name: Sync blog source and configs
