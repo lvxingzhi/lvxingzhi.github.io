@@ -8,7 +8,6 @@ navbar:
     归档: /archives
     分类: /categories
     标签: /tags
-    关于: /about
   links:
     GitHub:
       icon: fab fa-github
@@ -49,7 +48,7 @@ widgets:
     author: LXZ
     author_title: 记录,思考,成长,回忆
     location: 
-    avatar: /images/myhead.jpg
+    avatar: /images/myhead.avif
     avatar_rounded: true
     gravatar:
     follow_link: https://github.com/lvxingzhi
