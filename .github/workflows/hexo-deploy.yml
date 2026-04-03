@@ -34,15 +34,15 @@ jobs:
           mkdir site
           cd site
           npx hexo init .
-          npm install hexo-theme-butterfly hexo-generator-searchdb --save
+          npm install hexo-theme-stellar --save
           rm -f source/_posts/hello-world.md
 
       - name: Sync blog source and configs
         run: |
           cp hexo/config/_config.yml site/_config.yml
 
-          if [ -f hexo/them/butterfly-conf/_config.yml ]; then
-            cp hexo/them/butterfly-conf/_config.yml site/_config.butterfly.yml
+          if [ -f hexo/them/stellar-conf/_config.yml ]; then
+            cp hexo/them/stellar-conf/_config.yml site/_config.stellar.yml
           fi
 
           if [ -d hexo/source ]; then
