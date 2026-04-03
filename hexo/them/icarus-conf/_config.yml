@@ -109,3 +109,5 @@ providers:
   cdn: jsdelivr
   fontcdn: google
   iconcdn: fontawesome
+head:
+  favicon: /images/myhead.avif
