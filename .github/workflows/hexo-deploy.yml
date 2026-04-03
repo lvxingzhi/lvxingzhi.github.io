@@ -1,0 +1,88 @@
+name: Hexo Auto Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "hexo/**"
+      - ".github/workflows/hexo-deploy.yml"
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: hexo-auto-deploy
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Initialize Hexo site
+        run: |
+          mkdir site
+          cd site
+          npx hexo init .
+          npm install hexo-theme-next
+          rm -f source/_posts/hello-world.md
+
+      - name: Sync blog source and configs
+        run: |
+          cp hexo/config/_config.yml site/_config.yml
+
+          if [ -f hexo/them/next-conf/_config.yml ]; then
+            cp hexo/them/next-conf/_config.yml site/_config.next.yml
+          fi
+
+          if [ -d hexo/source ]; then
+            cp -R hexo/source/. site/source/
+          fi
+
+          mkdir -p site/source/_posts site/source/images
+
+          if [ -d hexo/note ]; then
+            cp -R hexo/note/. site/source/_posts/
+          fi
+
+          if [ -d hexo/images ]; then
+            cp -R hexo/images/. site/source/images/
+          fi
+
+          if [ -d hexo/categories ]; then
+            mkdir -p site/source/categories
+            cp -R hexo/categories/. site/source/categories/
+          fi
+
+          if [ -d hexo/tags ]; then
+            mkdir -p site/source/tags
+            cp -R hexo/tags/. site/source/tags/
+          fi
+
+          if [ -d hexo/doc ]; then
+            mkdir -p site/source/doc
+            cp -R hexo/doc/. site/source/doc/
+          fi
+
+      - name: Build static files
+        run: |
+          cd site
+          npx hexo clean
+          npx hexo generate
+
+      - name: Deploy to lvxingzhi.github.io
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.DEPLOY_PAT }}
+          external_repository: lvxingzhi/lvxingzhi.github.io
+          publish_branch: master
+          publish_dir: ./site/public
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "chore: auto deploy from data-space"
