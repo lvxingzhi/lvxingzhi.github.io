@@ -159,7 +159,7 @@ links_layout: block
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
 avatar:
-  url: /images/avatar.gif
+  url: /images/myhead.jpg
   rounded: false
   rotated: false
 
@@ -699,17 +699,12 @@ pace: false
 # pace_theme: pace-theme-center-simple
 pace_theme: pace-theme-minimal
 
-# Canvas-nest
-canvas_nest: true
-
-# three_waves
-three_waves: false
-
-# canvas_lines
-canvas_lines: false
-
-# canvas_sphere
-canvas_sphere: false
+# JavaScript 3D background effects (NexT 8 compatible)
+three:
+  enable: true
+  three_waves: false
+  canvas_lines: true
+  canvas_sphere: false
 
 # Only fit scheme Pisces
 # Canvas-ribbon
