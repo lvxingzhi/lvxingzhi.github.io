@@ -12,6 +12,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     concurrency:
       group: hexo-auto-deploy
       cancel-in-progress: true
@@ -76,13 +78,12 @@ jobs:
           npx hexo clean
           npx hexo generate
 
-      - name: Deploy to lvxingzhi.github.io
+      - name: Deploy to current repository gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.DEPLOY_PAT }}
-          external_repository: lvxingzhi/lvxingzhi.github.io
-          publish_branch: master
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
           publish_dir: ./site/public
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
-          commit_message: "chore: auto deploy from data-space"
+          commit_message: "chore: auto deploy to gh-pages"
