@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【方案】前后端数据传输加密实现方案 | sunday</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.  在处理前后端安全上,需要对数据进行加密增加安全性,这里列出我的方案 背景前后端数据传输要求对敏感信息进行加密后传输, 后台统一进行解密后进入Controller 方案1, 加密方式: AES&#x2F;ECB&#x2F;PKCS5P">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【方案】前后端数据传输加密实现方案">
+<meta property="og:url" content="https://lvxingzhi.github.io/2021/11/19/6-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="sunday">
+<meta property="og:description" content="[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.  在处理前后端安全上,需要对数据进行加密增加安全性,这里列出我的方案 背景前后端数据传输要求对敏感信息进行加密后传输, 后台统一进行解密后进入Controller 方案1, 加密方式: AES&#x2F;ECB&#x2F;PKCS5P">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lvxingzhi.github.io/images/06-01.png">
+<meta property="article:published_time" content="2021-11-19T07:56:31.000Z">
+<meta property="article:modified_time" content="2026-04-03T10:28:47.602Z">
+<meta property="article:author" content="LXZ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lvxingzhi.github.io/images/06-01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="sunday" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">sunday</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">hit the shops</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lvxingzhi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-6-[方案]前后端数据传输加密实现方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/11/19/6-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/" class="article-date">
+  <time class="dt-published" datetime="2021-11-19T07:56:31.000Z" itemprop="datePublished">2021-11-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%96%B9%E6%A1%88/">方案</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【方案】前后端数据传输加密实现方案
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>[方案系列文章说明]: 该类型的文章是我在使用和学习中认为不错的解决办法,当然会有更好的方案,也一定会有, 所以文章具有一定的局限性, 请结合自己的思考辩证的看.</p>
+</blockquote>
+<p>在处理前后端安全上,需要对数据进行加密增加安全性,这里列出我的方案</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前后端数据传输要求对敏感信息进行加密后传输, 后台统一进行解密后进入Controller</p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>1, 加密方式: AES&#x2F;ECB&#x2F;PKCS5Padding (PKCS5Padding,PKCS7Padding效果相同)<br>2, 生成的密文编码: UTF-8<br>3, 秘钥长度: 16位, 0000000000000000<br>4, 数据块长度: 128<br>5, header中设置加密开关,加密属性</p>
+<p>|key            |value                   				  |<br>|—-           |—-                    				  |<br>|isEncrypt      |true&#x2F;false 解密&#x2F;不解密   				  |<br>|decryptFields  |user|age|id 需要解密的字段,以|分割    |</p>
+<p>6, 支持请求方式: method支持GET&#x2F;POST<br>7, 支持数据类型: contentType支持application&#x2F;json,application&#x2F;x-www-form-urlencoded</p>
+<span id="more"></span>
+
+<h2 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h2><p>见: 前后端数据传输加密实现方案-前端实现, 前后端数据传输加密实现方案-后端实现</p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p>测试加密解密地址: <a target="_blank" rel="noopener" href="http://tool.chacuo.net/cryptaes/">http://tool.chacuo.net/cryptaes/</a><br>配置如下<br><img src="/images/06-01.png"></p>
+<h2 id="待优化"><a href="#待优化" class="headerlink" title="待优化"></a>待优化</h2><p>1, 拦截路径优化<br>2, 增加非对称加密(真加密), 前端公钥加密, 后端私钥解密<br>3, 秘钥动态获取<br>4, filter转为实现OncePerRequestFilter纳入spring体系</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lvxingzhi.github.io/2021/11/19/6-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/" data-id="cuid4VounLBVDKYaD6MUbyZny" data-title="【方案】前后端数据传输加密实现方案" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/11/19/7-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%89%8D%E7%AB%AF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          【方案】前后端数据传输加密实现方案 - 前端实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/11/03/5-%5B%E9%A1%B9%E7%9B%AE%5DSTC-stcconfig/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">【项目】STC-stcconfig 分布式动态配置中心</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Design-pattern/">Design pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E6%A1%A3/">文档</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%B9%E6%A1%88/">方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/markdown/" style="font-size: 10px;">markdown</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/10/55-%5B%E7%AC%94%E8%AE%B0%5DVue%E5%AD%A6%E4%B9%A0/">【笔记】Vue学习</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/21/10-%5B%E7%AC%94%E8%AE%B0%5DECMAScript6%E5%AD%A6%E4%B9%A0/">【笔记】ECMAScript6学习</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/9-%5B%E6%96%87%E6%A1%A3%5DSTC-stcconfig%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">【文档】STC-stcconfig 分布式动态配置中心使用手册</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/19/8-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%90%8E%E7%AB%AF/">【方案】前后端数据传输加密实现方案 - 后端实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/19/7-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%89%8D%E7%AB%AF/">【方案】前后端数据传输加密实现方案 - 前端实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 LXZ<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【笔记】程序中的乐观锁与悲观锁,以及动手实现乐观锁 | sunday</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  概念这里抛开数据库来谈乐观锁和悲观锁,扯上数据库总会觉得和Java离得很远. 悲观锁: 一段执行逻辑加上悲观锁,不同线程同时执行时,只能有一个线程执行,其他的线程在入口处等待,直到锁被释放. 乐观锁: 一段执行逻辑加上乐观锁,不同线程同时执行时,可以同时进入执行,在最后更新数据的时候要检查这些数据是否被其他线程修改了(版本和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【笔记】程序中的乐观锁与悲观锁,以及动手实现乐观锁">
+<meta property="og:url" content="https://lvxingzhi.github.io/2016/03/16/43-%5B%E7%AC%94%E8%AE%B0%5D%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81,%E4%BB%A5%E5%8F%8A%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B9%90%E8%A7%82%E9%94%81/index.html">
+<meta property="og:site_name" content="sunday">
+<meta property="og:description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  概念这里抛开数据库来谈乐观锁和悲观锁,扯上数据库总会觉得和Java离得很远. 悲观锁: 一段执行逻辑加上悲观锁,不同线程同时执行时,只能有一个线程执行,其他的线程在入口处等待,直到锁被释放. 乐观锁: 一段执行逻辑加上乐观锁,不同线程同时执行时,可以同时进入执行,在最后更新数据的时候要检查这些数据是否被其他线程修改了(版本和">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-03-16T11:02:12.000Z">
+<meta property="article:modified_time" content="2026-04-03T10:28:47.601Z">
+<meta property="article:author" content="LXZ">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="sunday" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">sunday</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">hit the shops</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lvxingzhi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-43-[笔记]程序中的乐观锁与悲观锁,以及动手实现乐观锁" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/03/16/43-%5B%E7%AC%94%E8%AE%B0%5D%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81,%E4%BB%A5%E5%8F%8A%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B9%90%E8%A7%82%E9%94%81/" class="article-date">
+  <time class="dt-published" datetime="2016-03-16T11:02:12.000Z" itemprop="datePublished">2016-03-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【笔记】程序中的乐观锁与悲观锁,以及动手实现乐观锁
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.</p>
+</blockquote>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>这里抛开数据库来谈乐观锁和悲观锁,扯上数据库总会觉得和Java离得很远.</p>
+<p><strong>悲观锁:</strong> 一段执行逻辑加上悲观锁,不同线程同时执行时,只能有一个线程执行,其他的线程在入口处等待,直到锁被释放.</p>
+<p><strong>乐观锁:</strong> 一段执行逻辑加上乐观锁,不同线程同时执行时,可以同时进入执行,在最后更新数据的时候要检查这些数据是否被其他线程修改了(版本和执行初是否相同),没有修改则进行更新,否则放弃本次操作.</p>
+<p>从解释上可以看出,悲观锁具有很强的独占性,也是最安全的.而乐观锁很开放,效率高,安全性比悲观锁低,因为在乐观锁检查数据版本一致性时也可能被其他线程修改数据.从下面的例子中可以看出来这里说的安全差别.</p>
+<span id="more"></span>
+<h4 id="乐观锁例子"><a href="#乐观锁例子" class="headerlink" title="乐观锁例子"></a>乐观锁例子</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> note.com;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 乐观锁</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 场景:有一个对象value,需要被两个线程调用,由于是共享数据,存在脏数据的问题</span></span><br><span class="line"><span class="comment"> * 悲观锁可以利用synchronized实现,这里不提.</span></span><br><span class="line"><span class="comment"> * 现在用乐观锁来解决这个脏数据问题</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> lxz</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OptimisticLock</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">value</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// 多线程同时调用的操作对象</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * A线程要执行的方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">invoke</span><span class="params">(<span class="type">int</span> Avalue, String i)</span></span><br><span class="line">            <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        Thread.sleep(<span class="number">1000L</span>);<span class="comment">//延长执行时间</span></span><br><span class="line">        <span class="keyword">if</span> (Avalue != value) &#123;<span class="comment">//判断value版本</span></span><br><span class="line">            System.out.println(Avalue + <span class="string">&quot;:&quot;</span> + value + <span class="string">&quot;A版本不一致,不执行&quot;</span>);</span><br><span class="line">            value--;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Avalue++;<span class="comment">//对数据操作</span></span><br><span class="line">            value = Avalue;;<span class="comment">//对数据操作</span></span><br><span class="line">            System.out.println(i + <span class="string">&quot;:&quot;</span> + value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * B线程要执行的方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">invoke2</span><span class="params">(<span class="type">int</span> Bvalue, String i)</span></span><br><span class="line">            <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        Thread.sleep(<span class="number">1000L</span>);<span class="comment">//延长执行时间</span></span><br><span class="line">        <span class="keyword">if</span> (Bvalue != value) &#123;<span class="comment">//判断value版本</span></span><br><span class="line">            System.out.println(Bvalue + <span class="string">&quot;:&quot;</span> + value + <span class="string">&quot;B版本不一致,不执行&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;B:利用value运算,value=&quot;</span>+Bvalue);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试,期待结果:B线程执行的时候value数据总是当前最新的</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;<span class="comment">//A线程</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">                        <span class="type">int</span> <span class="variable">Avalue</span> <span class="operator">=</span> OptimisticLock.value;<span class="comment">//A获取的value</span></span><br><span class="line">                        OptimisticLock.invoke(Avalue, <span class="string">&quot;A&quot;</span>);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;<span class="comment">//B线程</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">                        <span class="type">int</span> <span class="variable">Bvalue</span> <span class="operator">=</span> OptimisticLock.value;<span class="comment">//B获取的value</span></span><br><span class="line">                        OptimisticLock.invoke2(Bvalue, <span class="string">&quot;B&quot;</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">A:1</span><br><span class="line">0:1B版本不一致,不执行</span><br><span class="line">B:利用value运算,value=1</span><br><span class="line">A:2</span><br><span class="line">B:利用value运算,value=2</span><br><span class="line">A:3</span><br></pre></td></tr></table></figure>
+
+<h5 id="从结果中看出-B线程在执行的时候最后发现自己的value和执行前不一致-说明被A修改了-那么放弃了本次执行"><a href="#从结果中看出-B线程在执行的时候最后发现自己的value和执行前不一致-说明被A修改了-那么放弃了本次执行" class="headerlink" title="从结果中看出,B线程在执行的时候最后发现自己的value和执行前不一致,说明被A修改了,那么放弃了本次执行."></a>从结果中看出,B线程在执行的时候最后发现自己的value和执行前不一致,说明被A修改了,那么放弃了本次执行.</h5><p>多运行几次发现了下面的结果:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">A:1</span><br><span class="line">B:利用value运算,value=0</span><br><span class="line">A:2</span><br><span class="line">1:2B版本不一致,不执行</span><br><span class="line">A:3</span><br><span class="line">B:利用value运算,value=2</span><br></pre></td></tr></table></figure>
+
+<p>从结果看A修改了value值,B却没有检查出来,利用错误的value值进行了操作. 为什么会这样呢?</p>
+<p>这里就回到前面说的乐观锁是有一定的不安全性的,B在检查版本的时候A还没有修改,在B检查完版本后更新数据前(例子中的输出语句),A更改了value值,这时B执行更新数据(例子中的输出语句)就发生了与现存value不一致的现象.</p>
+<p>针对这个问题,我觉得乐观锁要解决这个问题还需要在检查版本(解决ABA问题)与更新数据这个操作的时候能够使用悲观锁,比如加上synchronized,让它在最后一步保证数据的一致性.这样既保证多线程都能同时执行,牺牲最后一点的性能去保证数据的一致.</p>
+<p>ABA: 三个线程同时操作数值, 仅比较值是否和获取的相同无法保证,值未被修改C检查A+ B-后值未变,此时也应放弃操作才对<br>解决ABA: 操作前增加版本号对比</p>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>以前不知道cas(比较-交换)这个在java中的存在,找了找资料才发现java的concurrent包确实使用的cas实现乐观锁的数据同步问题.<br>下面是我对这两种方式的一点看法:</p>
+<h5 id="有两种方式来保证乐观锁最后同步数据保证它原子性的方法"><a href="#有两种方式来保证乐观锁最后同步数据保证它原子性的方法" class="headerlink" title="有两种方式来保证乐观锁最后同步数据保证它原子性的方法"></a>有两种方式来保证乐观锁最后同步数据保证它原子性的方法</h5><ol>
+<li>CAS方式:Java非公开API类Unsafe实现的CAS(比较-交换),由C++编写的调用硬件操作内存,保证这个操作的原子性,concurrent包下很多乐观锁实现使用到这个类,但这个类不作为公开API使用,随时可能会被更改.我在本地测试了一下,确实不能够直接调用,源码中Unsafe是私有构造函数,只能通过getUnsafe方法获取单例,首先去掉eclipse的检查(非API的调用限制)限制以后,执行发现报 java.lang.SecurityException异常,源码中getUnsafe方法中执行访问检查,看来java不允许应用程序获取Unsafe类. 值得一提的是反射是可以得到这个类对象的.</li>
+<li>加锁方式:利用Java提供的现有API来实现最后数据同步的原子性(用悲观锁).看似乐观锁最后还是用了悲观锁来保证安全,效率没有提高.实际上针对于大多数只执行不同步数据的情况,效率比悲观加锁整个方法要高.特别注意:针对一个对象的数据同步,悲观锁对这个对象加锁和乐观锁效率差不多,如果是多个需要同步数据的对象,乐观锁就比较方便.</li>
+</ol>
+<h4 id="扩展-利用反射获得Unsafe对象"><a href="#扩展-利用反射获得Unsafe对象" class="headerlink" title="扩展:利用反射获得Unsafe对象"></a>扩展:利用反射获得Unsafe对象</h4><blockquote>
+<p>第一步:去掉eclipse受限制的API检查:</p>
+</blockquote>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将Windows-&gt;Preferences-&gt;Java-Complicer-&gt;Errors/Warnings-&gt;Deprecated and restricted API，中的Forbidden references(access rules)设置为Warning，Unsafe可以编译通过。</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>第二步:利用反射跳过安全检查获取Unsafe对象:</p>
+</blockquote>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;Unsafe&gt; s1  = (Class&lt;Unsafe&gt;) Class.forName(&quot;sun.misc.Unsafe&quot;);</span><br><span class="line">Field u1 = s1.getDeclaredField(&quot;theUnsafe&quot;);//获得Unsafe的theUnsafe属性</span><br><span class="line">u1.setAccessible(true);//获得private属性的可访问权限</span><br><span class="line">Unsafe unsafe1 = (Unsafe) u1.get(null);//获得Class中属性对应的值</span><br><span class="line">System.out.println(unsafe1.addressSize());//测试获取的Unsafe对象</span><br><span class="line">//或者</span><br><span class="line">Field u = Unsafe.class.getDeclaredField(&quot;theUnsafe&quot;);</span><br><span class="line">u.setAccessible(true);</span><br><span class="line">Unsafe unsafe = (Unsafe) u.get(null);  </span><br><span class="line">System.out.println(unsafe.addressSize());//测试获取的Unsafe对象</span><br></pre></td></tr></table></figure>
+<p>关于Unsafe的使用方法给个参考地址,平时用不到,我没有去深入看.</p>
+<p>地址:Java Magic. Part 4: sun.misc.Unsafe</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lvxingzhi.github.io/2016/03/16/43-%5B%E7%AC%94%E8%AE%B0%5D%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81,%E4%BB%A5%E5%8F%8A%E5%8A%A8%E6%89%8B%E5%AE%9E%E7%8E%B0%E4%B9%90%E8%A7%82%E9%94%81/" data-id="cuid7MqidO1Alm1f9IRqLSM9j" data-title="【笔记】程序中的乐观锁与悲观锁,以及动手实现乐观锁" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/22/45-%5B%E7%AC%94%E8%AE%B0%5DJava%20RMI(%E8%BF%9C%E7%A8%8B%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8)%20%E5%AE%9E%E4%BE%8B%E4%B8%8E%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          【笔记】Java RMI(远程方法调用) 实例与分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/16/44-%5B%E7%AC%94%E8%AE%B0%5DJava%E4%B8%AD%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF%E7%94%9F%E6%88%90%E7%9A%84%E7%B1%BB%E4%B8%8E%E5%8E%9F%E5%A7%8B%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">【笔记】Java中动态代理技术生成的类与原始类的区别</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Design-pattern/">Design pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E6%A1%A3/">文档</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%B9%E6%A1%88/">方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/markdown/" style="font-size: 10px;">markdown</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/10/55-%5B%E7%AC%94%E8%AE%B0%5DVue%E5%AD%A6%E4%B9%A0/">【笔记】Vue学习</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/21/10-%5B%E7%AC%94%E8%AE%B0%5DECMAScript6%E5%AD%A6%E4%B9%A0/">【笔记】ECMAScript6学习</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/9-%5B%E6%96%87%E6%A1%A3%5DSTC-stcconfig%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">【文档】STC-stcconfig 分布式动态配置中心使用手册</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/19/8-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%90%8E%E7%AB%AF/">【方案】前后端数据传输加密实现方案 - 后端实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/19/7-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%89%8D%E7%AB%AF/">【方案】前后端数据传输加密实现方案 - 前端实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 LXZ<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
