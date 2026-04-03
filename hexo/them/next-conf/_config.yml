@@ -781,7 +781,7 @@ vendors:
 
   # Internal version: 1.0.0
   # https://github.com/hustcc/canvas-nest.js
-  canvas_nest:
+  canvas_nest: https://cdn.jsdelivr.net/npm/canvas-nest.js@1.0.2/dist/canvas-nest.min.js
 
   # three
   three:
