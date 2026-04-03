@@ -27,6 +27,7 @@ code_word_wrap: true
 # 社交图标
 social:
   fab fa-github: https://github.com/lvxingzhi || Github || '#24292e'
+  fas fa-envelope: mailto:349024548@qq.com || Email || '#ea4335'
 
 # 头像
 avatar:
