@@ -25,22 +25,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
+          cache: 'npm'
+          cache-dependency-path: 'package.json'
 
       - name: Initialize Hexo site
         run: |
           mkdir site
           cd site
-          npx hexo init .
-          npm install hexo-theme-next
+          npm init -y
+          npm install hexo hexo-cli hexo-theme-butterfly --save
+          npx hexo init . --no-install
+          npm install
           rm -f source/_posts/hello-world.md
 
       - name: Sync blog source and configs
         run: |
           cp hexo/config/_config.yml site/_config.yml
 
-          if [ -f hexo/them/next-conf/_config.yml ]; then
-            cp hexo/them/next-conf/_config.yml site/_config.next.yml
+          if [ -f hexo/them/butterfly-conf/_config.yml ]; then
+            cp hexo/them/butterfly-conf/_config.yml site/_config.butterfly.yml
           fi
 
           if [ -d hexo/source ]; then
