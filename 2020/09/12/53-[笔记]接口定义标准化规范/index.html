@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【笔记】对接接口定义标准化规范 | sunday</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  与不绝对信任的机构或企业交换数据的时候, 通常需要考虑严格的数据安全问题, 我在这里定义了一种, 完整版就不放了, 列一些关键的点 文档定义一, 接口访问定义请求方式: http请求post方式请求类型: application&#x2F;json;charset&#x3D;utf-8返回类型: application&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【笔记】对接接口定义标准化规范">
+<meta property="og:url" content="https://lvxingzhi.github.io/2020/09/12/53-%5B%E7%AC%94%E8%AE%B0%5D%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89%E6%A0%87%E5%87%86%E5%8C%96%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="sunday">
+<meta property="og:description" content="[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.  与不绝对信任的机构或企业交换数据的时候, 通常需要考虑严格的数据安全问题, 我在这里定义了一种, 完整版就不放了, 列一些关键的点 文档定义一, 接口访问定义请求方式: http请求post方式请求类型: application&#x2F;json;charset&#x3D;utf-8返回类型: application&amp;#x">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-12T04:33:00.000Z">
+<meta property="article:modified_time" content="2026-04-03T10:20:17.383Z">
+<meta property="article:author" content="LXZ">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="sunday" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">sunday</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">hit the shops</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lvxingzhi.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-53-[笔记]接口定义标准化规范" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/09/12/53-%5B%E7%AC%94%E8%AE%B0%5D%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89%E6%A0%87%E5%87%86%E5%8C%96%E8%A7%84%E8%8C%83/" class="article-date">
+  <time class="dt-published" datetime="2020-09-12T04:33:00.000Z" itemprop="datePublished">2020-09-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【笔记】对接接口定义标准化规范
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>[笔记系列文章说明]: 该类型的文章是笔者学习过程中整理的学习笔记.</p>
+</blockquote>
+<p>与不绝对信任的机构或企业交换数据的时候, 通常需要考虑严格的数据安全问题, 我在这里定义了一种, 完整版就不放了, 列一些关键的点</p>
+<h3 id="文档定义"><a href="#文档定义" class="headerlink" title="文档定义"></a>文档定义</h3><h4 id="一-接口访问定义"><a href="#一-接口访问定义" class="headerlink" title="一, 接口访问定义"></a>一, 接口访问定义</h4><p>请求方式: http请求post方式<br>请求类型: application&#x2F;json;charset&#x3D;utf-8<br>返回类型: application&#x2F;json;charset&#x3D;utf-8<br>域名: </p>
+<h4 id="二-参数定义"><a href="#二-参数定义" class="headerlink" title="二, 参数定义"></a>二, 参数定义</h4><ol>
+<li>请求头信息(Header)</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>plantformCode</td>
+<td>String</td>
+<td>商家授权码</td>
+<td>如:</td>
+</tr>
+<tr>
+<td>timeStamp</td>
+<td>Long</td>
+<td>时间戳</td>
+<td>如:1626255054672 (相当于2021-07-14 17:30:54)</td>
+</tr>
+<tr>
+<td>sign</td>
+<td>String</td>
+<td>签名</td>
+<td>8d2472fac5a4a1879bde18075f7a879e</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>请求体内容(Body),具体内容依据具体接口</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>messageId</td>
+<td>String</td>
+<td>消息唯一标识</td>
+<td></td>
+</tr>
+<tr>
+<td>data</td>
+<td>String</td>
+<td>JSON字符串</td>
+<td></td>
+</tr>
+<tr>
+<td>timeStamp</td>
+<td>Long</td>
+<td>时间戳</td>
+<td></td>
+</tr>
+<tr>
+<td>dataSource</td>
+<td>String</td>
+<td>数据来源,供应商唯一标识</td>
+<td>如BOLIAN</td>
+</tr>
+</tbody></table>
+<span id="more"></span>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;messageId&quot;:”9527”,</span><br><span class="line">&quot;data&quot;:&quot;[&#123;\&quot;id\&quot;:54,\&quot;gpsId\&quot;:\&quot;Auth\&quot;,\&quot;longitude\&quot;:18.98,\&quot;latitude\&quot;:43.44,\&quot;direction\&quot;:180,\&quot;speed\&quot;:555,\&quot;timeStamp\&quot;:1626321005219&#125;]&quot;,</span><br><span class="line">&quot;timeStamp&quot;:1626321005219</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>签名生成方式: MD5,32位,小写</li>
+</ol>
+<ul>
+<li>第一步:  获取data内容<br>例如:</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String data = &quot;&#123;\&quot;id\&quot;:54,\&quot;gpsId\&quot;:\&quot;Auth\&quot;,\&quot;longitude\&quot;:18.98,\&quot;latitude\&quot;:43.44,\&quot;direction\&quot;:180,\&quot;speed\&quot;:555,\&quot;timeStamp\&quot;:1626321005219&#125;&quot;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二步:  append秘钥 (对接时由企橙提供唯一秘钥salt)</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StringBuffer str = new StringBuffer(data).append(salt);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第三步:  进行MD5加密</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sign=MD5(str)</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>返回结果格式</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>code</td>
+<td>Integer</td>
+<td>状态码</td>
+<td>200:成功</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>消息内容</td>
+<td></td>
+</tr>
+<tr>
+<td>result</td>
+<td>Json</td>
+<td>接口返回内容</td>
+<td></td>
+</tr>
+<tr>
+<td>timeStamp</td>
+<td>Long</td>
+<td>时间戳</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;code&quot;:stc200,</span><br><span class="line">&quot;message&quot;:stc&quot;成功&quot;,</span><br><span class="line">&quot;result&quot;:stc&#123;</span><br><span class="line">&quot;id&quot;:stc&quot;9527&quot;,</span><br><span class="line">&quot;dataSource&quot;:stcnull,</span><br><span class="line">&quot;gpsId&quot;:stc&quot;Auth&quot;</span><br><span class="line">&#125;,</span><br><span class="line">&quot;timeStamp&quot;:stc1626332760670</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="三-接口内容"><a href="#三-接口内容" class="headerlink" title="三, 接口内容"></a>三, 接口内容</h4><ol>
+<li>车辆GPS数据上报接口<br>描述: 接收供应商上传的GPS数据<br>地址: http:&#x2F;&#x2F;域名&#x2F;openApi&#x2F;gps&#x2F;push<br>参数</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必传</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>String</td>
+<td>是</td>
+<td>记录唯一标识</td>
+</tr>
+<tr>
+<td>gpsId</td>
+<td>String</td>
+<td>是</td>
+<td>Gps唯一标识(设备号)</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>Double</td>
+<td>是</td>
+<td>经度</td>
+</tr>
+<tr>
+<td>latitude</td>
+<td>Double</td>
+<td>是</td>
+<td>纬度</td>
+</tr>
+<tr>
+<td>direction</td>
+<td>Integer</td>
+<td>是</td>
+<td>方向</td>
+</tr>
+<tr>
+<td>speed</td>
+<td>Integer</td>
+<td>是</td>
+<td>速度</td>
+</tr>
+<tr>
+<td>timeStamp</td>
+<td>Long</td>
+<td>是</td>
+<td>时间戳</td>
+</tr>
+<tr>
+<td>参数例子</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;messageId&quot;:&quot;9527&quot;,</span><br><span class="line">&quot;data&quot;: &quot;[&#123;\&quot;id\&quot;:9527,\&quot;gpsId\&quot;:\&quot;Auth\&quot;,\&quot;longitude\&quot;:18.98,\&quot;latitude\&quot;:43.44,\&quot;direction\&quot;:180,\&quot;speed\&quot;:555,\&quot;timeStamp\&quot;:1626321005219&#125;]&quot;,</span><br><span class="line">&quot;timeStamp&quot;:1626320711603 </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>返回</p>
+<table>
+<thead>
+<tr>
+<th>返回名称</th>
+<th>返回类型</th>
+<th>是否必返</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>code</td>
+<td>Integer</td>
+<td>是</td>
+<td>返回码,200:成功</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>是</td>
+<td>返回消息</td>
+</tr>
+<tr>
+<td>result</td>
+<td>Json</td>
+<td>否</td>
+<td>返回内容</td>
+</tr>
+<tr>
+<td>timeStamp</td>
+<td>Long</td>
+<td>是</td>
+<td>时间戳</td>
+</tr>
+<tr>
+<td>返回例子</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;code&quot;: 200,</span><br><span class="line">&quot;message&quot;: &quot;成功&quot;,</span><br><span class="line">&quot;result&quot;: null,</span><br><span class="line">&quot;timestamp&quot;: 1626332760670</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lvxingzhi.github.io/2020/09/12/53-%5B%E7%AC%94%E8%AE%B0%5D%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89%E6%A0%87%E5%87%86%E5%8C%96%E8%A7%84%E8%8C%83/" data-id="cuidW9c6BZ8kBVSFulbRkBhrD" data-title="【笔记】对接接口定义标准化规范" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/27/1-%5B%E7%AC%94%E8%AE%B0%5Dmarkdown%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          【笔记】markdown学习
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/10/50-%5B%E7%AC%94%E8%AE%B0%5D%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">【笔记】项目管理工具(持续更新)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Design-pattern/">Design pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E6%A1%A3/">文档</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%B9%E6%A1%88/">方案</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/markdown/" style="font-size: 10px;">markdown</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/10/55-%5B%E7%AC%94%E8%AE%B0%5DVue%E5%AD%A6%E4%B9%A0/">【笔记】Vue学习</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/21/10-%5B%E7%AC%94%E8%AE%B0%5DECMAScript6%E5%AD%A6%E4%B9%A0/">【笔记】ECMAScript6学习</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/17/9-%5B%E6%96%87%E6%A1%A3%5DSTC-stcconfig%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">【文档】STC-stcconfig 分布式动态配置中心使用手册</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/19/8-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%90%8E%E7%AB%AF/">【方案】前后端数据传输加密实现方案 - 后端实现</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/19/7-%5B%E6%96%B9%E6%A1%88%5D%E5%89%8D%E5%90%8E%E7%AB%AF%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%20-%20%E5%89%8D%E7%AB%AF/">【方案】前后端数据传输加密实现方案 - 前端实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 LXZ<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
